@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { Check, X } from 'lucide-react';
 import type { GameMode } from '@/types';
 import { useProfile } from '@/hooks/useProfile';
-import { ACHIEVEMENTS, effectiveStreak } from '@/game/progression';
+import { ACHIEVEMENTS, CLASSIC_MODES, effectiveStreak } from '@/game/progression';
 import { MODES } from '@/game/engine';
 import { getPlayer, PLAYERS } from '@/data';
 import { toDateKey } from '@/utils/date';
@@ -18,14 +18,15 @@ export function StatsPage() {
   const { profile } = useProfile();
   const h = profile.history;
   const wins = h.filter((g) => g.won);
+  const classicWins = wins.filter((g) => CLASSIC_MODES.includes(g.mode));
   const played = h.length;
   const winPct = played ? Math.round((wins.length / played) * 100) : 0;
   const avg = (xs: number[]) => (xs.length ? (xs.reduce((a, b) => a + b, 0) / xs.length).toFixed(1) : '–');
   const discovered = Object.keys(profile.discovered).length;
 
   const maxGuess = 6;
-  const dist = Array.from({ length: maxGuess }, (_, i) => wins.filter((g) => g.guesses === i + 1).length);
-  const losses = played - wins.length;
+  const dist = Array.from({ length: maxGuess }, (_, i) => classicWins.filter((g) => g.guesses === i + 1).length);
+  const losses = h.filter((g) => CLASSIC_MODES.includes(g.mode) && !g.won).length;
   const distMax = Math.max(1, ...dist, losses);
 
   const byMode = (Object.keys(MODES) as GameMode[]).map((m) => {
@@ -66,8 +67,8 @@ export function StatsPage() {
           </motion.div>
           <motion.section custom={4} variants={rise} initial="hidden" animate="show" className="card p-5">
             <div className="grid grid-cols-2 gap-x-4 gap-y-4">
-              <Small value={avg(wins.map((g) => g.guesses))} label="Average guesses" />
-              <Small value={avg(h.map((g) => g.cluesRevealed))} label="Average clues" />
+              <Small value={avg(classicWins.map((g) => g.guesses))} label="Average guesses" />
+              <Small value={avg(h.filter((g) => CLASSIC_MODES.includes(g.mode)).map((g) => g.cluesRevealed))} label="Average clues" />
               <Small value={`${discovered} of ${PLAYERS.length}`} label="Players identified" />
               <Small value={profile.xp.toLocaleString()} label="Total XP" />
             </div>
@@ -130,7 +131,12 @@ export function StatsPage() {
                   <div className="min-w-0 flex-1">
                     <div className="truncate text-[15px] font-semibold text-ink">{p?.name ?? 'Unknown player'}</div>
                     <div className="text-[12.5px] text-ink-muted">
-                      {MODES[g.mode].name}, {g.guesses} guess{g.guesses === 1 ? '' : 'es'}, {g.cluesRevealed} clue{g.cluesRevealed === 1 ? '' : 's'}
+                      {MODES[g.mode].name},{' '}
+                      {g.mode === 'teammate'
+                        ? `${g.caseNumber} teammate${g.caseNumber === 1 ? '' : 's'} named`
+                        : g.mode === 'clubpath'
+                          ? `player ${g.caseNumber} of a run`
+                          : `${g.guesses} guess${g.guesses === 1 ? '' : 'es'}, ${g.cluesRevealed} clue${g.cluesRevealed === 1 ? '' : 's'}`}
                     </div>
                   </div>
                   <span className={`text-[15px] font-semibold tabular-nums ${g.won ? 'text-lime' : 'text-ink-faint'}`}>{g.score}</span>

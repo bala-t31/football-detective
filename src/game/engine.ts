@@ -2,6 +2,7 @@ import type { Clue, GameMode, Player, RoundState } from '@/types';
 import { PLAYERS, getPlayer } from '@/data';
 import { toDateKey } from '@/utils/date';
 import { caseNumberFor, dailyPlayerId } from './daily';
+import { legendsForWeek, legendsProgress, weekKeyFor } from './weekly';
 import { hashString, randomId } from './random';
 import { calculateScore } from './scoring';
 import { compareGuess } from './feedback';
@@ -52,6 +53,30 @@ export const MODES: Record<GameMode, ModeConfig> = {
     hintsAllowed: true,
     pool: (p) => distinctClubs(p) >= 3,
   },
+  legends: {
+    id: 'legends',
+    name: 'Weekly Legends',
+    tagline: 'Five retired greats a week, the same for everyone. ×1.3 XP.',
+    maxAttempts: 6,
+    hintsAllowed: true,
+    pool: (p) => p.retired && p.difficulty !== 'hard',
+  },
+  clubpath: {
+    id: 'clubpath',
+    name: 'Club Path Run',
+    tagline: 'Name players from their club path alone. One miss ends the run.',
+    maxAttempts: 2,
+    hintsAllowed: false,
+    pool: (p) => distinctClubs(p) >= 3,
+  },
+  teammate: {
+    id: 'teammate',
+    name: 'Name the Teammate',
+    tagline: 'Name players who shared a dressing room with a star.',
+    maxAttempts: 3,
+    hintsAllowed: false,
+    pool: () => true,
+  },
 };
 
 /** Clues shown for a round. Career mode builds a progressive club timeline instead. */
@@ -92,6 +117,14 @@ export function createRound(mode: GameMode, opts: { date?: string; exclude?: str
     date = opts.date ?? toDateKey();
     playerId = dailyPlayerId(date);
     caseNumber = caseNumberFor(date);
+  } else if (mode === 'legends') {
+    // `date` holds the week key; `caseNumber` is the legend's position in the week (1–5).
+    date = weekKeyFor(opts.date ?? toDateKey());
+    const done = legendsProgress(date).map((r) => r.playerId);
+    const list = legendsForWeek(date);
+    const nextIdx = Math.max(0, list.findIndex((id) => !done.includes(id)));
+    playerId = list[nextIdx];
+    caseNumber = nextIdx + 1;
   } else {
     playerId = pickRandom(mode, opts.exclude ?? []).id;
     caseNumber = opts.caseNumber ?? 100 + (hashString(`${playerId}:${Date.now()}`) % 900);

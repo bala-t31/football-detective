@@ -10,6 +10,8 @@ import { GamePage } from '@/pages/GamePage';
 import { StatsPage } from '@/pages/StatsPage';
 import { PlayersPage } from '@/pages/PlayersPage';
 import { AboutPage } from '@/pages/AboutPage';
+import { ClubPathPage } from '@/pages/ClubPathPage';
+import { TeammatePage } from '@/pages/TeammatePage';
 
 function Routes() {
   const { route, navigate } = useRouter();
@@ -30,7 +32,9 @@ function Routes() {
             transition={{ type: 'spring', stiffness: 380, damping: 34, mass: 0.7 }}
           >
             {route.name === 'home' && <HomePage navigate={navigate} />}
-            {route.name === 'play' && <GamePage mode={route.mode} navigate={navigate} />}
+            {route.name === 'play' && route.mode === 'clubpath' && <ClubPathPage navigate={navigate} />}
+            {route.name === 'play' && route.mode === 'teammate' && <TeammatePage navigate={navigate} />}
+            {route.name === 'play' && route.mode !== 'clubpath' && route.mode !== 'teammate' && <GamePage mode={route.mode} navigate={navigate} />}
             {route.name === 'stats' && <StatsPage />}
             {route.name === 'players' && <PlayersPage />}
             {route.name === 'about' && <AboutPage />}

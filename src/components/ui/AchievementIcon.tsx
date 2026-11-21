@@ -1,4 +1,4 @@
-import { Brain, Calendar, EyeOff, Flame, Route, Search, Skull, Target, Trophy, Zap, type LucideProps } from 'lucide-react';
+import { Brain, Calendar, Crown, EyeOff, Flame, Route, Search, Skull, Target, Trophy, Users, Waypoints, Zap, type LucideProps } from 'lucide-react';
 
 const ICONS = {
   search: Search,
@@ -11,6 +11,9 @@ const ICONS = {
   trophy: Trophy,
   calendar: Calendar,
   zap: Zap,
+  waypoints: Waypoints,
+  users: Users,
+  crown: Crown,
 } as const;
 
 export function AchievementIcon({ icon, ...props }: { icon: string } & LucideProps) {

@@ -8,7 +8,7 @@ export type Route =
   | { name: 'players' }
   | { name: 'about' };
 
-const MODES: GameMode[] = ['daily', 'practice', 'hardcore', 'career'];
+const MODES: GameMode[] = ['daily', 'practice', 'hardcore', 'career', 'legends', 'clubpath', 'teammate'];
 
 export function parseHash(hash: string): Route {
   const parts = hash.replace(/^#\/?/, '').split('/').filter(Boolean);

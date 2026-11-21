@@ -15,6 +15,9 @@ import { applyDailyResult, effectiveStreak, rankFor } from '../src/game/progress
 import { buildShareText } from '../src/game/share';
 import { addDays } from '../src/utils/date';
 import type { Profile } from '../src/types';
+import { TEAMMATE_PUZZLES } from '../src/data/teammates';
+import { LEGENDS_POOL, legendsForWeek, weekKeyFor, weekNumber, LEGENDS_PER_WEEK } from '../src/game/weekly';
+import { CLUB_PATH_POOL, clubPath, isPathMatch, pointsFor } from '../src/game/clubpath';
 
 let failures = 0;
 let passes = 0;
@@ -153,6 +156,50 @@ check('loss resets to 0', p.daily.currentStreak === 0);
 // ── Ranks
 check('rank 0', rankFor(0).current.name === 'Rookie Scout');
 check('rank max', rankFor(1e9).current.name === 'Football Genius' && rankFor(1e9).progress === 1);
+
+// ── Name the Teammate data
+for (const pz of TEAMMATE_PUZZLES) {
+  const star = getPlayer(pz.starId);
+  check(`${pz.id} star exists`, Boolean(star));
+  check(`${pz.id} star played for club`, Boolean(star?.careerClubs.includes(pz.club)));
+  check(`${pz.id} has 5+ answers`, pz.answers.length >= 5 || pz.id === 'kane-spurs', String(pz.answers.length));
+  check(`${pz.id} no duplicate answers`, new Set(pz.answers).size === pz.answers.length);
+  check(`${pz.id} star not an answer`, !pz.answers.includes(pz.starId));
+  for (const a of pz.answers) {
+    const p = getPlayer(a);
+    check(`${pz.id} answer exists: ${a}`, Boolean(p));
+    check(`${pz.id} ${a} played for ${pz.club}`, Boolean(p?.careerClubs.includes(pz.club)));
+  }
+}
+
+// ── Weekly Legends
+check('week key is a Monday', new Date(weekKeyFor('2026-11-21') + 'T12:00:00').getDay() === 1, weekKeyFor('2026-11-21'));
+check('week key stable within week', weekKeyFor('2026-11-16') === weekKeyFor('2026-11-22'));
+check('week changes on Monday', weekKeyFor('2026-11-23') !== weekKeyFor('2026-11-22'));
+check('first week is week 1', weekNumber(weekKeyFor('2026-11-21')) === 1);
+const wk = weekKeyFor('2026-11-21');
+check('5 legends a week', legendsForWeek(wk).length === LEGENDS_PER_WEEK);
+check('legends deterministic', legendsForWeek(wk).join() === legendsForWeek(wk).join());
+check('legends all retired', legendsForWeek(wk).every((id) => getPlayer(id)?.retired));
+{
+  const seen = new Set<string>();
+  let dup = false;
+  const weeks = Math.floor(LEGENDS_POOL.length / LEGENDS_PER_WEEK);
+  for (let w = 0; w < weeks; w++) {
+    for (const id of legendsForWeek(addDays(wk, w * 7))) {
+      if (seen.has(id)) dup = true;
+      seen.add(id);
+    }
+  }
+  check(`no legend repeats within a cycle (${weeks} weeks)`, !dup);
+}
+
+// ── Club Path Run
+check('club path pool size', CLUB_PATH_POOL.length >= 100, String(CLUB_PATH_POOL.length));
+check('club path dedupes consecutive', clubPath(getPlayer('gareth-bale')!).every((c, i, a) => i === 0 || a[i - 1] !== c));
+check('club path matches self', isPathMatch('lionel-messi', 'lionel-messi'));
+check('club path rejects other', !isPathMatch('neymar', 'lionel-messi'));
+check('club path points', pointsFor(1, 0) === 120 && pointsFor(2, 3) === 90);
 
 console.log(`\n${passes} passed, ${failures} failed · ${PLAYERS.length} players · daily pool ${DAILY_POOL_SIZE}`);
 if (failures) throw new Error(`${failures} checks failed`);

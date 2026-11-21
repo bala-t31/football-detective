@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronDown, Copy, Crown, RotateCcw, Share2, Trophy } from 'lucide-react';
+import { ChevronDown, Copy, Crown, Image as ImageIcon, RotateCcw, Share2, Trophy } from 'lucide-react';
 import type { Achievement, Clue, Player, RoundState } from '@/types';
 import { POSITION_LABEL } from '@/data/positions';
 import { MODES, wrongGuessCount } from '@/game/engine';
 import { caseExplanation } from '@/game/dossier';
-import { buildShareText, copyText, shareText } from '@/game/share';
+import { buildShareText, cardForRound, copyText, shareCard, shareText } from '@/game/share';
 import { formatCountdown } from '@/utils/date';
 import { useMidnightCountdown } from '@/hooks/useCountdown';
 import { isNative } from '@/utils/native';
@@ -23,6 +23,9 @@ interface Props {
   clues: Clue[];
   unlocked: Achievement[];
   onPlayAgain?: () => void;
+  playAgainLabel?: string;
+  /** Extra content shown under the actions (e.g. the weekly summary). */
+  footer?: ReactNode;
   onHome: () => void;
   onPractice: () => void;
 }
@@ -34,12 +37,13 @@ function shareUrl(): string | undefined {
 
 const spring = { type: 'spring', stiffness: 260, damping: 26 } as const;
 
-export function ResultsPanel({ round, player, clues, unlocked, onPlayAgain, onHome, onPractice }: Props) {
+export function ResultsPanel({ round, player, clues, unlocked, onPlayAgain, playAgainLabel = 'Next case', footer, onHome, onPractice }: Props) {
   const won = round.status === 'won';
   const score = round.score;
   const toast = useToast();
   const [includeName, setIncludeName] = useState(false);
   const [showFile, setShowFile] = useState(false);
+  const [imageBusy, setImageBusy] = useState(false);
   const { ms } = useMidnightCountdown();
   const uniqueClubs = player.careerClubs.filter((c, i, arr) => i === 0 || arr[i - 1] !== c);
   const n = round.guesses.length;
@@ -56,6 +60,18 @@ export function ResultsPanel({ round, player, clues, unlocked, onPlayAgain, onHo
     if (res === 'copied') toast('Result copied', 'success');
     else if (res === 'shared') toast('Result shared', 'success');
     else if (res === 'failed') toast('Sharing isn’t available here. Use Copy instead.', 'error');
+  };
+  const doShareImage = async () => {
+    setImageBusy(true);
+    try {
+      const res = await shareCard(cardForRound(round, includeName), shareUrl());
+      if (res === 'downloaded') toast('Image saved. Post it anywhere', 'success');
+      else if (res === 'failed') toast('Couldn’t share the image. Try the text option', 'error');
+    } catch {
+      toast('Couldn’t make the image', 'error');
+    } finally {
+      setImageBusy(false);
+    }
   };
   const doCopy = async () => {
     const res = await copyText(buildShareText(round, { includeName, url: shareUrl() }));
@@ -150,9 +166,12 @@ export function ResultsPanel({ round, player, clues, unlocked, onPlayAgain, onHo
 
         {/* Actions */}
         <div className="mt-7 grid gap-2.5">
-          <div className="grid grid-cols-[1fr_auto] gap-2.5">
-            <Button variant="primary" size="lg" onClick={doShare} icon={<Share2 size={18} />}>
-              Share result
+          <div className="grid grid-cols-[1fr_auto_auto] gap-2.5">
+            <Button variant="primary" size="lg" onClick={doShareImage} disabled={imageBusy} icon={<ImageIcon size={18} />}>
+              {imageBusy ? 'Making image…' : 'Share image'}
+            </Button>
+            <Button size="lg" onClick={doShare} icon={<Share2 size={18} />} aria-label="Share as text" className="w-14 !px-0">
+              <span className="sr-only">Share as text</span>
             </Button>
             <Button size="lg" onClick={doCopy} icon={<Copy size={18} />} aria-label="Copy" className="w-14 !px-0">
               <span className="sr-only">Copy</span>
@@ -165,7 +184,7 @@ export function ResultsPanel({ round, player, clues, unlocked, onPlayAgain, onHo
           <div className="grid grid-cols-2 gap-2.5">
             {onPlayAgain ? (
               <Button onClick={onPlayAgain} icon={<RotateCcw size={17} />}>
-                Next case
+                {playAgainLabel}
               </Button>
             ) : (
               <Button onClick={onPractice} icon={<RotateCcw size={17} />}>
@@ -176,6 +195,7 @@ export function ResultsPanel({ round, player, clues, unlocked, onPlayAgain, onHo
               Back to today
             </Button>
           </div>
+          {footer}
           {round.mode === 'daily' && (
             <p className="pt-1 text-[13px] text-ink-muted">
               Next mystery in <span className="font-semibold tabular-nums text-ink">{formatCountdown(ms)}</span>

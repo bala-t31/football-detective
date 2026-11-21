@@ -13,6 +13,8 @@ import { GuessInput } from '@/components/game/GuessInput';
 import { FeedbackGrid } from '@/components/game/FeedbackGrid';
 import { ResultsPanel } from '@/components/game/ResultsPanel';
 import type { Route } from '@/hooks/useRouter';
+import { WeekSummary } from '@/components/game/WeekSummary';
+import { LEGENDS_PER_WEEK, weekNumber } from '@/game/weekly';
 
 const DIFFICULTY: Record<Difficulty, { label: string; style: string }> = {
   easy: { label: 'Easy', style: 'border-ok/30 bg-ok/10 text-ok' },
@@ -25,6 +27,9 @@ const MODE_TITLE: Record<GameMode, string> = {
   practice: 'Practice',
   hardcore: 'Hardcore',
   career: 'Career Detective',
+  legends: 'Weekly Legends',
+  clubpath: 'Club Path Run',
+  teammate: 'Name the Teammate',
 };
 
 interface Props {
@@ -33,7 +38,7 @@ interface Props {
 }
 
 export function GamePage({ mode, navigate }: Props) {
-  const { round, player, clues, feedback, busy, hintsLeft, attemptsLeft, submit, reveal, newRound, lastUnlocked } = useRound(mode);
+  const { round, player, clues, feedback, busy, hintsLeft, attemptsLeft, submit, reveal, newRound, lastUnlocked, legends } = useRound(mode);
   const toast = useToast();
   const { profile } = useProfile();
   const cfg = MODES[mode];
@@ -41,6 +46,10 @@ export function GamePage({ mode, navigate }: Props) {
   // Daily already closed on this device but the saved round was lost: don't allow a replay.
   const dailyLocked = mode === 'daily' && !finished && Boolean(round.date && profile.daily.completed[round.date]);
   const totalClues = cfg.hintsAllowed ? clues.length : 1;
+  const isLegends = mode === 'legends';
+  const weekDone = isLegends && legends.length >= LEGENDS_PER_WEEK;
+  // All five legends played but the saved round is gone: show the week instead of replaying.
+  const weekLocked = weekDone && !finished;
   const topRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -71,13 +80,26 @@ export function GamePage({ mode, navigate }: Props) {
           <ChevronLeft size={20} />
         </button>
         <div className="min-w-0 flex-1">
-          <p className="text-[13px] font-medium text-ink-muted">{MODE_TITLE[mode]}</p>
-          <h1 className="heading text-[24px] leading-tight">Case {round.caseNumber}</h1>
+          <p className="text-[13px] font-medium text-ink-muted">
+            {MODE_TITLE[mode]}
+            {isLegends && round.date ? ` · Week ${weekNumber(round.date)}` : ''}
+          </p>
+          <h1 className="heading text-[24px] leading-tight">
+            {isLegends ? (weekLocked ? 'Week complete' : `Legend ${round.caseNumber} of ${LEGENDS_PER_WEEK}`) : `Case ${round.caseNumber}`}
+          </h1>
         </div>
         <span className={`rounded-full border px-3 py-1 text-[12.5px] font-semibold ${diff.style}`}>{diff.label}</span>
       </div>
 
-      {dailyLocked ? (
+      {weekLocked && round.date ? (
+        <div className="card mx-auto max-w-md p-6 text-center">
+          <h2 className="heading text-[24px] leading-tight">You&apos;ve played this week&apos;s legends</h2>
+          <WeekSummary weekKey={round.date} results={legends} />
+          <Button variant="ghost" className="mt-4 w-full" onClick={() => navigate({ name: 'home' })}>
+            Back to today
+          </Button>
+        </div>
+      ) : dailyLocked ? (
         <div className="card mx-auto max-w-md p-7 text-center">
           <h2 className="heading text-[26px] leading-tight">You&apos;ve already played today&apos;s case</h2>
           <p className="mt-2 text-[15px] text-ink-muted">A new mystery arrives at midnight. Practice keeps your eye in until then.</p>
@@ -97,7 +119,9 @@ export function GamePage({ mode, navigate }: Props) {
             player={player}
             clues={clues}
             unlocked={lastUnlocked}
-            onPlayAgain={mode === 'daily' ? undefined : newRound}
+            onPlayAgain={mode === 'daily' || weekDone ? undefined : newRound}
+            playAgainLabel={isLegends ? 'Next legend' : 'Next case'}
+            footer={isLegends && round.date ? <WeekSummary weekKey={round.date} results={legends} /> : undefined}
             onHome={() => navigate({ name: 'home' })}
             onPractice={() => navigate({ name: 'play', mode: 'practice' })}
           />

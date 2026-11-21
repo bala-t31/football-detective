@@ -1,4 +1,4 @@
-import type { Achievement, GameRecord, Profile, Rank } from '@/types';
+import type { GameMode, Achievement, GameRecord, Profile, Rank } from '@/types';
 import { addDays } from '@/utils/date';
 
 // ─── Ranks ──────────────────────────────────────────────────────────
@@ -26,16 +26,19 @@ export function rankFor(xp: number) {
 // ─── Achievements ───────────────────────────────────────────────────
 
 const wins = (p: Profile) => p.history.filter((h) => h.won);
+/** Modes played as a clue-and-guess round; guess and clue counts only mean something there. */
+export const CLASSIC_MODES: GameMode[] = ['daily', 'practice', 'hardcore', 'career', 'legends'];
+const classicWins = (p: Profile) => wins(p).filter((h) => CLASSIC_MODES.includes(h.mode));
 
 export const ACHIEVEMENTS: Achievement[] = [
   { id: 'first-case', title: 'First Case', description: 'Solve your first mystery.', icon: 'search', check: (p) => wins(p).length >= 1 },
   {
     id: 'perfect-detective', title: 'Perfect Detective', description: 'Solve a case on the first guess.', icon: 'target',
-    check: (p) => wins(p).some((h) => h.guesses === 1),
+    check: (p) => classicWins(p).some((h) => h.guesses === 1),
   },
   {
     id: 'no-hints', title: 'No Hints', description: 'Solve without revealing extra clues.', icon: 'eye-off',
-    check: (p) => wins(p).some((h) => h.cluesRevealed === 1),
+    check: (p) => classicWins(p).some((h) => h.cluesRevealed === 1),
   },
   { id: 'football-brain', title: 'Football Brain', description: 'Solve 10 cases.', icon: 'brain', check: (p) => wins(p).length >= 10 },
   {
@@ -61,6 +64,18 @@ export const ACHIEVEMENTS: Achievement[] = [
   {
     id: 'high-scorer', title: 'High Scorer', description: 'Score 1,400+ XP in a single case.', icon: 'zap',
     check: (p) => p.history.some((h) => h.score >= 1400),
+  },
+  {
+    id: 'path-finder', title: 'Path Finder', description: 'Name 5 players in a row in Club Path Run.', icon: 'waypoints',
+    check: (p) => wins(p).some((h) => h.mode === 'clubpath' && h.caseNumber >= 5),
+  },
+  {
+    id: 'dressing-room', title: 'Dressing Room', description: 'Name 5 teammates of one star.', icon: 'users',
+    check: (p) => p.history.some((h) => h.mode === 'teammate' && h.caseNumber >= 5),
+  },
+  {
+    id: 'hall-of-fame', title: 'Hall of Fame', description: 'Solve 5 Weekly Legends.', icon: 'crown',
+    check: (p) => wins(p).filter((h) => h.mode === 'legends').length >= 5,
   },
 ];
 

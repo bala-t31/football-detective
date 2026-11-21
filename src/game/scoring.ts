@@ -13,6 +13,9 @@ export const MODE_MULTIPLIER: Record<GameMode, number> = {
   practice: 1,
   hardcore: 1.5,
   career: 1.2,
+  legends: 1.3,
+  clubpath: 1,
+  teammate: 1,
 };
 
 export function calculateScore(opts: {

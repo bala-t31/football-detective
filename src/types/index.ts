@@ -75,7 +75,9 @@ export interface Player {
 
 // ─── Game types ─────────────────────────────────────────────────────
 
-export type GameMode = 'daily' | 'practice' | 'hardcore' | 'career';
+export type GameMode = 'daily' | 'practice' | 'hardcore' | 'career' | 'legends' | 'clubpath' | 'teammate';
+/** Modes played as a classic clue-and-guess round on the game screen. */
+export type RoundMode = 'daily' | 'practice' | 'hardcore' | 'career' | 'legends';
 export type RoundStatus = 'playing' | 'won' | 'lost';
 export type FeedbackStatus = 'correct' | 'partial' | 'wrong';
 

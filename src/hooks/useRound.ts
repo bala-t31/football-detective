@@ -16,11 +16,14 @@ import {
   type GuessResult,
 } from '@/game/engine';
 import { useProfile } from './useProfile';
+import { LEGENDS_PER_WEEK, legendsProgress, saveLegendResult, weekKeyFor } from '@/game/weekly';
 
 const PROCESS_DELAY_MS = 380;
 
 function keyFor(mode: GameMode, date: string) {
-  return mode === 'daily' ? `round.daily.${date}` : `round.active.${mode}`;
+  if (mode === 'daily') return `round.daily.${date}`;
+  if (mode === 'legends') return `round.legends.${weekKeyFor(date)}`;
+  return `round.active.${mode}`;
 }
 
 export function useRound(mode: GameMode) {
@@ -36,7 +39,8 @@ export function useRound(mode: GameMode) {
 
   const [round, setRound] = useState<RoundState>(() => {
     const saved = storage.get<unknown>(storageKey, null);
-    if (isValidRound(saved) && saved.mode === mode && (mode !== 'daily' || saved.date === today)) return saved;
+    const dateOk = mode === 'daily' ? saved && (saved as RoundState).date === today : mode === 'legends' ? saved && (saved as RoundState).date === weekKeyFor(today) : true;
+    if (isValidRound(saved) && saved.mode === mode && dateOk) return saved;
     return createRound(mode, { date: today, exclude: recentIds });
   });
   const [busy, setBusy] = useState(false);
@@ -47,9 +51,22 @@ export function useRound(mode: GameMode) {
     storage.set(storageKey, round);
   }, [round, storageKey]);
 
+  const [legends, setLegends] = useState(() => (mode === 'legends' ? legendsProgress(weekKeyFor(today)) : []));
+
   // If a finished round was restored (e.g. after refresh) make sure it's recorded exactly once.
   useEffect(() => {
-    if (round.status !== 'playing') recordRound(round);
+    if (round.status === 'playing') return;
+    recordRound(round);
+    if (round.mode === 'legends' && round.date) {
+      setLegends(
+        saveLegendResult(round.date, {
+          playerId: round.playerId,
+          won: round.status === 'won',
+          score: round.score?.total ?? 0,
+          guesses: round.guesses.length,
+        }),
+      );
+    }
   }, [round, recordRound]);
 
   const player = getPlayer(round.playerId)!;
@@ -102,6 +119,12 @@ export function useRound(mode: GameMode) {
 
   const newRound = useCallback(() => {
     if (mode === 'daily') return;
+    if (mode === 'legends') {
+      if (legendsProgress(weekKeyFor(today)).length >= LEGENDS_PER_WEEK) return;
+      setLastUnlocked([]);
+      setRound(createRound('legends', { date: today }));
+      return;
+    }
     const exclude = [round.playerId, ...recentIds];
     setLastUnlocked([]);
     setRound(createRound(mode, { exclude }));
@@ -119,6 +142,7 @@ export function useRound(mode: GameMode) {
     reveal,
     newRound,
     lastUnlocked,
+    legends,
   };
 }
 

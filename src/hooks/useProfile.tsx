@@ -73,7 +73,7 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
       mode: round.mode,
       playerId: round.playerId,
       caseNumber: round.caseNumber,
-      date: round.date ?? toDateKey(new Date(round.finishedAt ?? Date.now())),
+      date: round.mode === 'daily' && round.date ? round.date : toDateKey(new Date(round.finishedAt ?? Date.now())),
       won,
       guesses: round.guesses.length,
       cluesRevealed: round.revealed,
@@ -85,7 +85,7 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
       ...prev,
       xp: prev.xp + score,
       history: [record, ...prev.history].slice(0, HISTORY_CAP),
-      discovered: won && !prev.discovered[round.playerId] ? { ...prev.discovered, [round.playerId]: record.finishedAt } : prev.discovered,
+      discovered: won && round.mode !== 'teammate' && !prev.discovered[round.playerId] ? { ...prev.discovered, [round.playerId]: record.finishedAt } : prev.discovered,
     };
     if (round.mode === 'daily' && round.date) next = { ...next, daily: applyDailyResult(next, round.date, won, score) };
 

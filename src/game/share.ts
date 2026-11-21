@@ -1,8 +1,10 @@
-import type { RoundState } from '@/types';
+import type { FeedbackStatus, RoundState } from '@/types';
+import { renderShareCard, type ShareCardData } from './shareCard';
+import { weekNumber } from './weekly';
 import { getPlayer } from '@/data';
 import { FEEDBACK_EMOJI } from './feedback';
 import { MODES, feedbackFor } from './engine';
-import { nativeShare } from '@/utils/native';
+import { isNative, nativeShare, nativeShareImage } from '@/utils/native';
 
 export function buildShareText(state: RoundState, opts: { includeName: boolean; url?: string }): string {
   const mode = MODES[state.mode];
@@ -73,4 +75,66 @@ export async function copyText(text: string): Promise<ShareOutcome> {
   } catch {
     return 'failed';
   }
+}
+
+/**
+ * Shares a result image. Android: native share sheet. Web: Web Share with files where
+ * supported (most phones), otherwise the image is downloaded.
+ */
+export async function shareImage(blob: Blob, text?: string): Promise<ShareOutcome | 'downloaded'> {
+  const fileName = `football-detective-${Date.now()}.png`;
+  const native = await nativeShareImage(blob, fileName, text);
+  if (native) return native;
+  if (isNative()) return 'failed';
+  const file = new File([blob], fileName, { type: 'image/png' });
+  const nav = typeof navigator !== 'undefined' ? navigator : undefined;
+  if (nav?.canShare?.({ files: [file] }) && nav.share) {
+    try {
+      await nav.share({ files: [file], text });
+      return 'shared';
+    } catch (err) {
+      if (err instanceof DOMException && err.name === 'AbortError') return 'cancelled';
+    }
+  }
+  try {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 4000);
+    return 'downloaded';
+  } catch {
+    return 'failed';
+  }
+}
+
+// ─── Result cards ───────────────────────────────────────────────────
+
+export function cardForRound(state: RoundState, includeName: boolean): ShareCardData {
+  const won = state.status === 'won';
+  const eyebrow =
+    state.mode === 'daily'
+      ? `Daily mystery #${state.caseNumber}`
+      : state.mode === 'legends' && state.date
+        ? `Weekly Legends · Week ${weekNumber(state.date)} · Legend ${state.caseNumber}`
+        : `${MODES[state.mode].name} · Case ${state.caseNumber}`;
+  const rows = feedbackFor(state).map((f) => (f.correct ? (['correct', 'correct', 'correct', 'correct', 'correct'] as FeedbackStatus[]) : f.cells.map((c) => c.status)));
+  return {
+    eyebrow,
+    headline: won ? (state.guesses.length === 1 ? 'Solved first guess' : `Solved in ${state.guesses.length}/${state.maxAttempts}`) : 'Case unsolved',
+    won,
+    score: state.score?.total ?? 0,
+    detail: `${state.guesses.length} guess${state.guesses.length === 1 ? '' : 'es'} · ${state.revealed} clue${state.revealed === 1 ? '' : 's'}`,
+    rows,
+    reveal: includeName ? getPlayer(state.playerId)?.name : undefined,
+    cta: state.mode === 'daily' ? "Can you solve today's mystery?" : 'Can you crack the case?',
+  };
+}
+
+export async function shareCard(data: ShareCardData, text?: string) {
+  const blob = await renderShareCard(data);
+  return shareImage(blob, text);
 }

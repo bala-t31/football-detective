@@ -12,7 +12,7 @@ export function Confetti() {
         y: -(160 + Math.random() * 240),
         r: Math.random() * 540 - 270,
         size: 5 + Math.random() * 6,
-        color: ['#B7FF35', '#4ADE80', '#F4F6F3', '#FACC15'][i % 4],
+        color: ['#4be3a0', '#f4c95d', '#f5f8f6', '#9ff5cf'][i % 4],
         delay: Math.random() * 0.15,
       })),
     [],
@@ -24,7 +24,7 @@ export function Confetti() {
       {pieces.map((p) => (
         <motion.span
           key={p.id}
-          className="absolute block rounded-[2px]"
+          className="absolute block rounded-full"
           style={{ width: p.size, height: p.size * 0.45, background: p.color }}
           initial={{ x: 0, y: 0, opacity: 1, rotate: 0 }}
           animate={{ x: p.x, y: [0, p.y, p.y + 420], opacity: [1, 1, 0], rotate: p.r }}

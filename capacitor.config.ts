@@ -4,9 +4,9 @@ const config: CapacitorConfig = {
   appId: 'com.footballdetective.app',
   appName: 'Football Detective',
   webDir: 'dist',
-  backgroundColor: '#0B0D0C',
+  backgroundColor: '#06100D',
   android: {
-    backgroundColor: '#0B0D0C',
+    backgroundColor: '#06100D',
   },
   plugins: {
     // Light icons on our dark bars. With no `viewport-fit=cover`, Capacitor pads the WebView

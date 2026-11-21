@@ -3,14 +3,26 @@ import { ArrowDown, ArrowUp, Check } from 'lucide-react';
 import type { FeedbackCell, FeedbackStatus, GuessFeedback } from '@/types';
 import { getPlayer } from '@/data';
 import { nationInfo } from '@/data/nations';
+import { shortClub, shortLeague } from '@/data/clubs';
 import { POSITION_LABEL, POSITION_SHORT } from '@/data/positions';
 import type { PositionCode } from '@/types';
 
 const STATUS_STYLE: Record<FeedbackStatus, string> = {
-  correct: 'bg-ok/15 border-ok/50 text-ok',
-  partial: 'bg-warn/10 border-warn/45 text-warn',
-  wrong: 'bg-pitch-900 border-pitch-700 text-ink-muted',
+  correct:
+    'border-ok/45 text-[#c9ffe6] bg-[linear-gradient(180deg,rgb(75_227_160/0.32),rgb(75_227_160/0.14))] shadow-[inset_0_1px_0_rgb(255_255_255/0.25),0_6px_16px_-8px_rgb(75_227_160/0.6)]',
+  partial:
+    'border-warn/45 text-[#ffeab5] bg-[linear-gradient(180deg,rgb(244_201_93/0.28),rgb(244_201_93/0.1))] shadow-[inset_0_1px_0_rgb(255_255_255/0.22)]',
+  wrong: 'border-white/[0.08] text-ink-muted bg-white/[0.04] shadow-[inset_0_1px_0_rgb(255_255_255/0.06)]',
 };
+
+/** Phones: nation/position are 2–3 letter codes, so club and league get the room. */
+const MOBILE_COLS = 'grid-cols-[minmax(0,0.72fr)_minmax(0,0.72fr)_minmax(0,1.38fr)_minmax(0,1.32fr)_minmax(0,0.92fr)]';
+
+/** Step the size down for a long single word so it fits without breaking mid-word. */
+function compactSize(text: string): string {
+  const longest = Math.max(...text.split(/\s+/).map((w) => w.length));
+  return longest >= 12 ? 'text-[8.5px]' : longest >= 10 ? 'text-[9.5px]' : 'text-[10px]';
+}
 
 const HEADERS: { full: string; short: string }[] = [
   { full: 'Nation', short: 'Nat' },
@@ -39,6 +51,10 @@ function cellText(cell: FeedbackCell): { full: string; compact: string } {
     case 'era':
       // "2000s–20s" → "00s–20s" on phones
       return { full: cell.value, compact: cell.value.replace(/^\d{2}(\d{2}s)/, '$1') };
+    case 'club':
+      return { full: cell.value, compact: shortClub(cell.value) };
+    case 'league':
+      return { full: cell.value, compact: shortLeague(cell.value) };
     default:
       return { full: cell.value, compact: cell.value };
   }
@@ -49,10 +65,10 @@ export function FeedbackGrid({ feedback, maxAttempts }: { feedback: GuessFeedbac
   return (
     <div>
       {feedback.length > 0 && (
-        <div className="mb-1.5 grid grid-cols-5 gap-1 sm:grid-cols-[minmax(0,1.7fr)_repeat(5,minmax(0,1fr))] sm:gap-1.5 sm:px-1">
+        <div className={`mb-1.5 grid ${MOBILE_COLS} gap-1 sm:grid-cols-[minmax(0,1.7fr)_repeat(5,minmax(0,1fr))] sm:gap-1.5 sm:px-1`}>
           <span className="label hidden sm:block">Suspect</span>
           {HEADERS.map((h) => (
-            <span key={h.full} className="label text-center !text-[9px] sm:!text-[10px]">
+            <span key={h.full} className="text-center text-[11px] font-medium text-ink-faint sm:text-[12px]">
               <span className="sm:hidden">{h.short}</span>
               <span className="hidden sm:inline">{h.full}</span>
             </span>
@@ -68,11 +84,11 @@ export function FeedbackGrid({ feedback, maxAttempts }: { feedback: GuessFeedbac
             {Array.from({ length: empty }).map((_, i) => (
               <div
                 key={`empty-${i}`}
-                className="flex h-9 flex-1 items-center justify-center rounded-lg border border-dashed border-pitch-700/70 font-mono text-[10px] text-ink-faint sm:h-14 sm:justify-start sm:rounded-xl sm:px-3 sm:text-[11px]"
+                className="flex h-10 flex-1 items-center justify-center rounded-[14px] border border-white/[0.06] bg-white/[0.02] text-[12px] tabular-nums text-ink-faint sm:h-14 sm:justify-start sm:rounded-[20px] sm:px-4"
                 aria-label={`Attempt ${feedback.length + i + 1} unused`}
               >
-                <span className="sm:hidden">{String(feedback.length + i + 1).padStart(2, '0')}</span>
-                <span className="hidden sm:inline">ATTEMPT {String(feedback.length + i + 1).padStart(2, '0')}</span>
+                <span className="sm:hidden">{feedback.length + i + 1}</span>
+                <span className="hidden sm:inline">Guess {feedback.length + i + 1}</span>
               </div>
             ))}
           </div>
@@ -90,17 +106,17 @@ function GuessRow({ feedback, index }: { feedback: GuessFeedback; index: number 
     <motion.div
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`rounded-xl border p-1.5 sm:grid sm:grid-cols-[minmax(0,1.7fr)_repeat(5,minmax(0,1fr))] sm:items-stretch sm:gap-1.5 ${
-        feedback.correct ? 'border-ok/50 bg-ok/[0.06]' : 'border-pitch-700 bg-pitch-850'
+      className={`rounded-[20px] border p-1.5 sm:grid sm:grid-cols-[minmax(0,1.7fr)_repeat(5,minmax(0,1fr))] sm:items-stretch sm:gap-1.5 ${
+        feedback.correct ? 'border-ok/40 bg-ok/[0.08]' : 'border-white/[0.07] bg-white/[0.035]'
       }`}
     >
       <div className="mb-1.5 flex min-w-0 items-center gap-2 px-1 sm:mb-0">
-        <span className="font-mono text-[10px] text-ink-faint">{String(index + 1).padStart(2, '0')}</span>
+        <span className="w-3 text-[11px] font-semibold tabular-nums text-ink-faint">{index + 1}</span>
         <span className="text-base leading-none">{nationInfo(player.nationality).flag}</span>
-        <span className="line-clamp-2 text-sm font-bold leading-tight text-ink">{player.name}</span>
+        <span className="line-clamp-2 text-[14.5px] font-semibold leading-tight tracking-[-0.01em] text-ink">{player.name}</span>
         {feedback.correct && <Check size={16} className="ml-auto shrink-0 text-ok sm:ml-0" />}
       </div>
-      <div className="grid grid-cols-5 gap-1 sm:contents">
+      <div className={`grid ${MOBILE_COLS} gap-1 sm:contents`}>
         {feedback.cells.map((cell, i) => {
           const text = cellText(cell);
           return (
@@ -110,19 +126,19 @@ function GuessRow({ feedback, index }: { feedback: GuessFeedback; index: number 
               animate={{ rotateX: 0, opacity: 1 }}
               transition={{ delay: i * 0.09, duration: 0.35, ease: 'easeOut' }}
               style={{ transformPerspective: 600 }}
-              className={`flex min-h-[46px] min-w-0 flex-col items-center justify-center rounded-lg border px-0.5 py-1 text-center sm:min-h-[52px] sm:px-1 ${STATUS_STYLE[cell.status]}`}
+              className={`flex min-h-[48px] min-w-0 flex-col items-center justify-center rounded-[14px] border px-0.5 py-1 text-center sm:min-h-[52px] sm:px-1 ${STATUS_STYLE[cell.status]}`}
               title={`${cell.label}: ${cell.value}${cell.shared ? ' (shared)' : ''}`}
               aria-label={`${cell.label}: ${cell.value}, ${cell.status}${cell.direction ? `, mystery player is ${cell.direction}` : ''}`}
             >
-              <span className="flex max-w-full items-center justify-center gap-0.5 text-[10px] font-semibold leading-[1.15] sm:text-xs">
-                <span className="line-clamp-3 hyphens-auto [overflow-wrap:break-word] sm:line-clamp-2">
-                  <span className="sm:hidden">{text.compact}</span>
+              <span className="flex max-w-full items-center justify-center gap-0.5 overflow-hidden font-semibold leading-[1.15] sm:text-xs">
+                <span className="line-clamp-3 [overflow-wrap:anywhere] sm:line-clamp-2 sm:[overflow-wrap:normal]">
+                  <span className={`sm:hidden ${compactSize(text.compact)}`}>{text.compact}</span>
                   <span className="hidden sm:inline">{text.full}</span>
                 </span>
                 {cell.direction === 'earlier' && <ArrowDown size={10} className="shrink-0" aria-hidden />}
                 {cell.direction === 'later' && <ArrowUp size={10} className="shrink-0" aria-hidden />}
               </span>
-              {cell.shared && <span className="mt-0.5 font-mono text-[7.5px] uppercase tracking-wider opacity-70 sm:text-[8.5px]">shared</span>}
+              {cell.shared && <span className="mt-0.5 text-[9px] font-medium opacity-75 sm:text-[10px]">shared</span>}
             </motion.div>
           );
         })}
@@ -136,10 +152,10 @@ function Legend() {
     <div className="mt-3 space-y-1 px-1 text-[11px] leading-snug text-ink-muted">
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
         <span className="flex items-center gap-1.5">
-          <i className="h-2.5 w-2.5 rounded-sm bg-ok" /> Match
+          <i className="h-2.5 w-2.5 rounded-full bg-ok" /> Match
         </span>
         <span className="flex items-center gap-1.5">
-          <i className="h-2.5 w-2.5 rounded-sm bg-warn" /> Close
+          <i className="h-2.5 w-2.5 rounded-full bg-warn" /> Close
         </span>
         <span className="flex items-center gap-1">
           <ArrowUp size={11} />

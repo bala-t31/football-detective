@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { CheckCircle2, XCircle } from 'lucide-react';
+import { Check, X } from 'lucide-react';
 import type { GameMode } from '@/types';
 import { useProfile } from '@/hooks/useProfile';
 import { ACHIEVEMENTS, effectiveStreak } from '@/game/progression';
@@ -9,19 +9,24 @@ import { toDateKey } from '@/utils/date';
 import { RankCard } from '@/components/RankCard';
 import { AchievementIcon } from '@/components/ui/AchievementIcon';
 
+const rise = {
+  hidden: { opacity: 0, y: 14 },
+  show: (i: number) => ({ opacity: 1, y: 0, transition: { delay: 0.05 + i * 0.06, type: 'spring', stiffness: 260, damping: 28 } }),
+};
+
 export function StatsPage() {
   const { profile } = useProfile();
   const h = profile.history;
   const wins = h.filter((g) => g.won);
   const played = h.length;
   const winPct = played ? Math.round((wins.length / played) * 100) : 0;
-  const avg = (xs: number[]) => (xs.length ? (xs.reduce((a, b) => a + b, 0) / xs.length).toFixed(1) : '—');
+  const avg = (xs: number[]) => (xs.length ? (xs.reduce((a, b) => a + b, 0) / xs.length).toFixed(1) : '–');
   const discovered = Object.keys(profile.discovered).length;
 
   const maxGuess = 6;
   const dist = Array.from({ length: maxGuess }, (_, i) => wins.filter((g) => g.guesses === i + 1).length);
-  const distMax = Math.max(1, ...dist);
   const losses = played - wins.length;
+  const distMax = Math.max(1, ...dist, losses);
 
   const byMode = (Object.keys(MODES) as GameMode[]).map((m) => {
     const games = h.filter((g) => g.mode === m);
@@ -29,132 +34,154 @@ export function StatsPage() {
   });
 
   return (
-    <div className="space-y-4 sm:space-y-6">
-      <div>
-        <div className="label">Detective record</div>
-        <h1 className="heading mt-1 text-3xl">Statistics</h1>
-      </div>
+    <div className="space-y-5">
+      <motion.header custom={0} variants={rise} initial="hidden" animate="show" className="px-1 pt-1">
+        <p className="text-[14px] font-medium text-ink-muted">Your record</p>
+        <h1 className="heading mt-0.5 text-[40px] leading-none sm:text-[48px]">Stats</h1>
+      </motion.header>
 
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-        <Tile label="Games played" value={played} />
-        <Tile label="Games won" value={wins.length} />
-        <Tile label="Win %" value={`${winPct}%`} />
-        <Tile label="Current streak" value={effectiveStreak(profile, toDateKey())} />
-        <Tile label="Best streak" value={profile.daily.bestStreak} />
-        <Tile label="Avg guesses (wins)" value={avg(wins.map((g) => g.guesses))} />
-        <Tile label="Avg clues used" value={avg(h.map((g) => g.cluesRevealed))} />
-        <Tile label="Players identified" value={`${discovered}/${PLAYERS.length}`} />
-        <Tile label="Total XP" value={profile.xp.toLocaleString()} />
-        <Tile label="Achievements" value={`${Object.keys(profile.achievements).length}/${ACHIEVEMENTS.length}`} />
-      </div>
+      {/* Headline numbers */}
+      <motion.section custom={1} variants={rise} initial="hidden" animate="show" className="card grid grid-cols-2 gap-y-5 p-5 sm:grid-cols-4">
+        <Big value={played} label="Played" />
+        <Big value={`${winPct}%`} label="Win rate" />
+        <Big value={effectiveStreak(profile, toDateKey())} label="Day streak" accent />
+        <Big value={profile.daily.bestStreak} label="Best streak" />
+      </motion.section>
 
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-6">
-        <section className="card p-4 sm:p-5">
-          <h2 className="font-bold text-ink">Guess distribution</h2>
-          <p className="text-xs text-ink-muted">Solved cases by number of guesses</p>
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+        <motion.section custom={2} variants={rise} initial="hidden" animate="show" className="card p-5">
+          <h2 className="font-display text-[19px] font-bold tracking-[-0.02em]">Guesses to solve</h2>
+          <p className="mt-0.5 text-[13px] text-ink-muted">How many guesses your solved cases took</p>
           <div className="mt-4 space-y-2">
             {dist.map((count, i) => (
-              <div key={i} className="flex items-center gap-3">
-                <span className="w-4 font-mono text-xs text-ink-muted">{i + 1}</span>
-                <div className="h-7 flex-1 rounded-md bg-pitch-900">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: `${Math.max(count ? 8 : 0, (count / distMax) * 100)}%` }}
-                    transition={{ duration: 0.8, delay: i * 0.05, ease: [0.16, 1, 0.3, 1] }}
-                    className={`flex h-full items-center justify-end rounded-md font-mono text-xs font-bold text-pitch-950 ${count ? 'bg-lime/80 px-2' : ''}`}
-                  >
-                    {count > 0 && count}
-                  </motion.div>
-                </div>
-              </div>
+              <Bar key={i} label={String(i + 1)} count={count} max={distMax} delay={i * 0.05} />
             ))}
-            <div className="flex items-center gap-3">
-              <span className="w-4 font-mono text-xs text-bad">X</span>
-              <div className="h-7 flex-1 rounded-md bg-pitch-900">
-                <motion.div
-                  initial={{ width: 0 }}
-                  animate={{ width: `${losses ? Math.max(8, (losses / Math.max(distMax, losses)) * 100) : 0}%` }}
-                  transition={{ duration: 0.8, delay: 0.35 }}
-                  className={`flex h-full items-center justify-end rounded-md font-mono text-xs font-bold text-pitch-950 ${losses ? 'bg-bad/70 px-2' : ''}`}
-                >
-                  {losses > 0 && losses}
-                </motion.div>
-              </div>
-            </div>
+            <Bar label="✕" count={losses} max={distMax} delay={0.35} bad />
           </div>
-        </section>
+        </motion.section>
 
-        <div className="space-y-4">
-          <RankCard xp={profile.xp} />
-          <section className="card p-4 sm:p-5">
-            <h2 className="mb-3 font-bold text-ink">By mode</h2>
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+        <div className="space-y-5">
+          <motion.div custom={3} variants={rise} initial="hidden" animate="show">
+            <RankCard xp={profile.xp} />
+          </motion.div>
+          <motion.section custom={4} variants={rise} initial="hidden" animate="show" className="card p-5">
+            <div className="grid grid-cols-2 gap-x-4 gap-y-4">
+              <Small value={avg(wins.map((g) => g.guesses))} label="Average guesses" />
+              <Small value={avg(h.map((g) => g.cluesRevealed))} label="Average clues" />
+              <Small value={`${discovered} of ${PLAYERS.length}`} label="Players identified" />
+              <Small value={profile.xp.toLocaleString()} label="Total XP" />
+            </div>
+            <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4">
               {byMode.map((m) => (
-                <div key={m.mode} className="card-inset p-3">
-                  <div className="label">{MODES[m.mode].name}</div>
-                  <div className="mt-1 font-mono text-lg font-bold text-ink">
+                <div key={m.mode} className="card-inset px-3 py-2.5">
+                  <div className="text-[12px] font-medium text-ink-muted">{MODES[m.mode].name}</div>
+                  <div className="mt-0.5 text-[17px] font-semibold tabular-nums text-ink">
                     {m.won}
-                    <span className="text-ink-faint">/{m.played}</span>
+                    <span className="text-ink-faint"> / {m.played}</span>
                   </div>
                 </div>
               ))}
             </div>
-          </section>
+          </motion.section>
         </div>
       </div>
 
-      <section className="card p-4 sm:p-5">
-        <h2 className="mb-3 font-bold text-ink">Achievements</h2>
-        <div className="grid grid-cols-2 gap-2 lg:grid-cols-5">
+      <motion.section custom={5} variants={rise} initial="hidden" animate="show" className="card p-5">
+        <div className="flex items-baseline justify-between">
+          <h2 className="font-display text-[19px] font-bold tracking-[-0.02em]">Trophy cabinet</h2>
+          <span className="text-[13px] tabular-nums text-ink-muted">
+            {Object.keys(profile.achievements).length} of {ACHIEVEMENTS.length}
+          </span>
+        </div>
+        <div className="mt-4 grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-5">
           {ACHIEVEMENTS.map((a) => {
             const at = profile.achievements[a.id];
             return (
-              <div key={a.id} className={`rounded-xl border p-3 ${at ? 'border-lime/25 bg-lime/[0.04]' : 'border-pitch-700 bg-pitch-900 opacity-60'}`}>
-                <div className={`grid h-9 w-9 place-items-center rounded-lg ${at ? 'bg-lime text-pitch-950' : 'bg-pitch-800 text-ink-faint'}`}>
-                  <AchievementIcon icon={a.icon} size={16} />
+              <div key={a.id} className={`rounded-[20px] border p-3.5 ${at ? 'border-warn/25 bg-warn/[0.07]' : 'border-white/[0.07] bg-white/[0.03]'}`}>
+                <div
+                  className={`grid h-10 w-10 place-items-center rounded-full ${
+                    at ? 'bg-[linear-gradient(180deg,#f8dc8a,#e0ac35)] text-[#3a2600] shadow-[inset_0_1px_0_rgb(255_255_255/0.6)]' : 'bg-white/[0.06] text-ink-faint'
+                  }`}
+                >
+                  <AchievementIcon icon={a.icon} size={18} />
                 </div>
-                <div className="mt-2 text-sm font-semibold text-ink">{a.title}</div>
-                <div className="text-xs text-ink-muted">{a.description}</div>
-                {at && <div className="mt-1 font-mono text-[10px] text-lime">{new Date(at).toLocaleDateString()}</div>}
+                <div className={`mt-2.5 text-[14px] font-semibold ${at ? 'text-ink' : 'text-ink-muted'}`}>{a.title}</div>
+                <div className="text-[12.5px] leading-snug text-ink-faint">{a.description}</div>
+                {at && <div className="mt-1.5 text-[11.5px] font-medium text-warn">{new Date(at).toLocaleDateString()}</div>}
               </div>
             );
           })}
         </div>
-      </section>
+      </motion.section>
 
-      <section className="card p-4 sm:p-5">
-        <h2 className="mb-3 font-bold text-ink">Recent cases</h2>
+      <motion.section custom={6} variants={rise} initial="hidden" animate="show" className="card p-5">
+        <h2 className="font-display text-[19px] font-bold tracking-[-0.02em]">Recent cases</h2>
         {h.length === 0 ? (
-          <p className="py-6 text-center text-sm text-ink-muted">No cases closed yet. Your investigation history will appear here.</p>
+          <p className="py-8 text-center text-[14.5px] text-ink-muted">Solve your first case and it will show up here.</p>
         ) : (
-          <ul className="divide-y divide-pitch-700">
+          <ul className="mt-2 divide-y divide-white/[0.07]">
             {h.slice(0, 15).map((g) => {
               const p = getPlayer(g.playerId);
               return (
-                <li key={g.id} className="flex items-center gap-3 py-2.5">
-                  {g.won ? <CheckCircle2 size={16} className="shrink-0 text-ok" /> : <XCircle size={16} className="shrink-0 text-bad" />}
+                <li key={g.id} className="flex items-center gap-3 py-3">
+                  <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-full ${g.won ? 'bg-ok/15 text-ok' : 'bg-bad/15 text-bad'}`}>
+                    {g.won ? <Check size={16} strokeWidth={2.6} /> : <X size={16} strokeWidth={2.6} />}
+                  </span>
                   <div className="min-w-0 flex-1">
-                    <div className="truncate text-sm font-semibold text-ink">{p?.name ?? 'Unknown player'}</div>
-                    <div className="font-mono text-[11px] text-ink-muted">
-                      {MODES[g.mode].name} · {g.date} · {g.guesses} guess{g.guesses === 1 ? '' : 'es'} · {g.cluesRevealed} clue{g.cluesRevealed === 1 ? '' : 's'}
+                    <div className="truncate text-[15px] font-semibold text-ink">{p?.name ?? 'Unknown player'}</div>
+                    <div className="text-[12.5px] text-ink-muted">
+                      {MODES[g.mode].name}, {g.guesses} guess{g.guesses === 1 ? '' : 'es'}, {g.cluesRevealed} clue{g.cluesRevealed === 1 ? '' : 's'}
                     </div>
                   </div>
-                  <span className={`font-mono text-sm font-bold ${g.won ? 'text-lime' : 'text-ink-faint'}`}>{g.score}</span>
+                  <span className={`text-[15px] font-semibold tabular-nums ${g.won ? 'text-lime' : 'text-ink-faint'}`}>{g.score}</span>
                 </li>
               );
             })}
           </ul>
         )}
-      </section>
+      </motion.section>
     </div>
   );
 }
 
-function Tile({ label, value }: { label: string; value: string | number }) {
+function Big({ value, label, accent }: { value: string | number; label: string; accent?: boolean }) {
   return (
-    <div className="card p-4">
-      <div className="label">{label}</div>
-      <div className="mt-1.5 font-mono text-2xl font-bold text-ink">{value}</div>
+    <div className="text-center">
+      <div className={`font-display text-[34px] font-bold leading-none tracking-[-0.04em] tabular-nums ${accent ? 'text-warn' : 'text-ink'}`}>{value}</div>
+      <div className="mt-1.5 text-[13px] font-medium text-ink-muted">{label}</div>
+    </div>
+  );
+}
+
+function Small({ value, label }: { value: string | number; label: string }) {
+  return (
+    <div>
+      <div className="text-[20px] font-semibold tracking-[-0.02em] tabular-nums text-ink">{value}</div>
+      <div className="text-[12.5px] text-ink-muted">{label}</div>
+    </div>
+  );
+}
+
+function Bar({ label, count, max, delay, bad }: { label: string; count: number; max: number; delay: number; bad?: boolean }) {
+  return (
+    <div className="flex items-center gap-3">
+      <span className={`w-4 text-center text-[13px] font-semibold tabular-nums ${bad ? 'text-bad' : 'text-ink-muted'}`}>{label}</span>
+      <div className="h-8 flex-1 overflow-hidden rounded-full bg-white/[0.05]">
+        {count > 0 && (
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: `${Math.max(12, (count / max) * 100)}%` }}
+            transition={{ type: 'spring', stiffness: 120, damping: 20, delay }}
+            className={`flex h-full items-center justify-end rounded-full px-3 text-[13px] font-bold tabular-nums ${
+              bad
+                ? 'bg-[linear-gradient(90deg,#c94848,#ff7a7a)] text-[#2a0507]'
+                : 'bg-[linear-gradient(90deg,#2fc785,#7ff0bf)] text-[#052016] shadow-[inset_0_1px_0_rgb(255_255_255/0.5)]'
+            }`}
+          >
+            {count}
+          </motion.div>
+        )}
+      </div>
     </div>
   );
 }

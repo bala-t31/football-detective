@@ -1,10 +1,12 @@
-import type { ReactNode } from 'react';
-import { BarChart3, Flame, LayoutDashboard, Settings, Users } from 'lucide-react';
+import { useEffect, useState, type ReactNode } from 'react';
+import { motion } from 'framer-motion';
+import { BarChart3, Flame, Home, Settings, Users } from 'lucide-react';
 import type { Route } from '@/hooks/useRouter';
 import { useProfile } from '@/hooks/useProfile';
 import { effectiveStreak } from '@/game/progression';
 import { toDateKey } from '@/utils/date';
 import { Logo } from './Logo';
+import { PitchBackdrop } from './PitchBackdrop';
 
 interface Props {
   route: Route;
@@ -13,80 +15,120 @@ interface Props {
   children: ReactNode;
 }
 
-const NAV: { route: Route; label: string; icon: typeof LayoutDashboard }[] = [
-  { route: { name: 'home' }, label: 'HQ', icon: LayoutDashboard },
+const NAV: { route: Route; label: string; icon: typeof Home }[] = [
+  { route: { name: 'home' }, label: 'Today', icon: Home },
   { route: { name: 'stats' }, label: 'Stats', icon: BarChart3 },
   { route: { name: 'players' }, label: 'Players', icon: Users },
 ];
+
+function useScrolled() {
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const on = () => setScrolled(window.scrollY > 8);
+    on();
+    window.addEventListener('scroll', on, { passive: true });
+    return () => window.removeEventListener('scroll', on);
+  }, []);
+  return scrolled;
+}
 
 export function AppShell({ route, navigate, onOpenSettings, children }: Props) {
   const { profile } = useProfile();
   const streak = effectiveStreak(profile, toDateKey());
   const inGame = route.name === 'play';
-  const isActive = (r: Route) => r.name === route.name || (r.name === 'home' && route.name === 'play');
+  const scrolled = useScrolled();
+  const activeName = route.name === 'play' ? 'home' : route.name;
 
   return (
-    <div className="app-backdrop relative min-h-dvh">
-      <header className="sticky top-0 z-40 border-b border-pitch-700/70 bg-pitch-950/80 pt-[env(safe-area-inset-top)] backdrop-blur-md">
+    <div className="grain relative min-h-dvh">
+      <PitchBackdrop />
+
+      {/* Top bar: transparent at rest, frosted once content scrolls under it */}
+      <header
+        className={`sticky top-0 z-40 transition-[background,border-color,backdrop-filter] duration-300 ${
+          scrolled ? 'border-b border-white/[0.07] bg-pitch-950/55 backdrop-blur-2xl backdrop-saturate-150' : 'border-b border-transparent'
+        }`}
+      >
         <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4 sm:px-6">
-          <button onClick={() => navigate({ name: 'home' })} className="rounded-lg" aria-label="Football Detective home">
+          <button onClick={() => navigate({ name: 'home' })} className="rounded-xl" aria-label="Football Detective home">
             <Logo />
           </button>
-          <nav className="ml-6 hidden items-center gap-1 md:flex" aria-label="Main">
-            {NAV.map((n) => (
-              <button
-                key={n.label}
-                onClick={() => navigate(n.route)}
-                className={`flex h-9 items-center gap-2 rounded-lg px-3 text-sm font-medium transition-colors ${
-                  isActive(n.route) ? 'bg-pitch-800 text-ink' : 'text-ink-muted hover:text-ink'
-                }`}
-              >
-                <n.icon size={15} /> {n.label}
-              </button>
-            ))}
+
+          {/* Desktop: glass segmented control */}
+          <nav className="glass ml-6 hidden h-10 items-center gap-0.5 rounded-full p-1 md:flex" aria-label="Main">
+            {NAV.map((n) => {
+              const active = activeName === n.route.name;
+              return (
+                <button
+                  key={n.label}
+                  onClick={() => navigate(n.route)}
+                  className={`relative flex h-8 items-center gap-1.5 rounded-full px-3.5 text-[13.5px] font-medium transition-colors ${
+                    active ? 'text-ink' : 'text-ink-muted hover:text-ink'
+                  }`}
+                >
+                  {active && (
+                    <motion.span
+                      layoutId="desk-pill"
+                      className="absolute inset-0 rounded-full bg-white/[0.13] shadow-[inset_0_1px_0_rgb(255_255_255/0.2)]"
+                      transition={{ type: 'spring', stiffness: 420, damping: 34 }}
+                    />
+                  )}
+                  <n.icon size={15} className="relative" />
+                  <span className="relative">{n.label}</span>
+                </button>
+              );
+            })}
           </nav>
+
           <div className="ml-auto flex items-center gap-2">
             <div
-              className={`flex h-9 items-center gap-1.5 rounded-lg border px-2.5 font-mono text-sm font-bold ${
-                streak > 0 ? 'border-warn/30 bg-warn/[0.06] text-warn' : 'border-pitch-700 text-ink-faint'
+              className={`flex h-10 items-center gap-1.5 rounded-full border px-3 text-[14px] font-semibold tabular-nums backdrop-blur-xl ${
+                streak > 0 ? 'border-warn/30 bg-warn/[0.1] text-warn' : 'border-white/[0.1] bg-white/[0.06] text-ink-muted'
               }`}
               title="Daily streak"
               aria-label={`Daily streak: ${streak}`}
             >
-              <Flame size={15} className={streak > 0 ? 'fill-warn/30' : ''} /> {streak}
+              <Flame size={16} className={streak > 0 ? 'fill-warn/40' : ''} /> {streak}
             </div>
             <button
               onClick={onOpenSettings}
-              className="grid h-9 w-9 place-items-center rounded-lg border border-pitch-700 text-ink-muted hover:text-ink"
+              className="grid h-10 w-10 place-items-center rounded-full border border-white/[0.1] bg-white/[0.06] text-ink-muted backdrop-blur-xl transition-colors hover:text-ink"
               aria-label="Settings"
             >
-              <Settings size={16} />
+              <Settings size={17} />
             </button>
           </div>
         </div>
       </header>
 
-      <main className={`relative mx-auto max-w-6xl px-3.5 pt-4 sm:px-6 sm:pt-8 md:pb-16 ${inGame ? 'pb-10' : 'pb-28'}`}>{children}</main>
+      <main className={`relative mx-auto max-w-6xl px-4 pt-2 sm:px-6 sm:pt-6 md:pb-16 ${inGame ? 'pb-10' : 'pb-32'}`}>{children}</main>
 
-      {/* Mobile tab bar (hidden during a case so the game gets the whole screen) */}
-      <nav
-        hidden={inGame}
-        className="fixed inset-x-0 bottom-0 z-40 border-t border-pitch-700 bg-pitch-950/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-md md:hidden"
-        aria-label="Main"
-      >
-        <div className="grid grid-cols-3">
-          {NAV.map((n) => (
-            <button
-              key={n.label}
-              onClick={() => navigate(n.route)}
-              className={`flex h-16 flex-col items-center justify-center gap-1 text-[11px] font-medium ${
-                isActive(n.route) ? 'text-lime' : 'text-ink-muted'
-              }`}
-            >
-              <n.icon size={20} />
-              {n.label}
-            </button>
-          ))}
+      {/* Phones: floating glass tab bar (hidden during a case so the game gets the whole screen) */}
+      <nav hidden={inGame} className="fixed inset-x-0 bottom-0 z-40 px-5 pb-[calc(env(safe-area-inset-bottom)+14px)] md:hidden" aria-label="Main">
+        <div className="glass-strong mx-auto grid h-[62px] max-w-[340px] grid-cols-3 rounded-full p-1.5">
+          {NAV.map((n) => {
+            const active = activeName === n.route.name;
+            return (
+              <button
+                key={n.label}
+                onClick={() => navigate(n.route)}
+                className={`relative flex flex-col items-center justify-center gap-0.5 rounded-full text-[11px] font-medium transition-colors ${
+                  active ? 'text-ink' : 'text-ink-muted'
+                }`}
+                aria-current={active ? 'page' : undefined}
+              >
+                {active && (
+                  <motion.span
+                    layoutId="tab-pill"
+                    className="absolute inset-0 rounded-full bg-white/[0.12] shadow-[inset_0_1px_0_rgb(255_255_255/0.22)]"
+                    transition={{ type: 'spring', stiffness: 420, damping: 34 }}
+                  />
+                )}
+                <n.icon size={20} className={`relative ${active ? 'text-lime' : ''}`} strokeWidth={active ? 2.3 : 2} />
+                <span className="relative">{n.label}</span>
+              </button>
+            );
+          })}
         </div>
       </nav>
     </div>

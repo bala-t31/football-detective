@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react';
-import { motion } from 'framer-motion';
-import { CheckCircle2, Lock, Search } from 'lucide-react';
+import { Check, Lock, Search } from 'lucide-react';
 import type { Difficulty, PositionGroup } from '@/types';
 import { PLAYERS } from '@/data';
 import { nationInfo } from '@/data/nations';
@@ -11,9 +10,9 @@ import { useProfile } from '@/hooks/useProfile';
 type DiscFilter = 'all' | 'found' | 'unknown';
 
 const DIFF_STYLE: Record<Difficulty, string> = {
-  easy: 'text-ok border-ok/30',
-  medium: 'text-warn border-warn/30',
-  hard: 'text-bad border-bad/30',
+  easy: 'text-ok border-ok/25 bg-ok/10',
+  medium: 'text-warn border-warn/25 bg-warn/10',
+  hard: 'text-bad border-bad/25 bg-bad/10',
 };
 
 export function PlayersPage() {
@@ -38,92 +37,87 @@ export function PlayersPage() {
   }, [q, group, diff, disc, profile.discovered]);
 
   return (
-    <div className="space-y-4 sm:space-y-6">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <div className="label">Case archive</div>
-          <h1 className="heading mt-1 text-3xl">Player database</h1>
-          <p className="mt-1 text-sm text-ink-muted">Solve a case to unlock that player&apos;s full career file.</p>
-        </div>
-        <div className="card-inset px-4 py-2.5 text-right">
-          <div className="label">Identified</div>
-          <div className="font-mono text-xl font-bold text-lime">
-            {found}
-            <span className="text-ink-faint">/{PLAYERS.length}</span>
-          </div>
-        </div>
-      </div>
+    <div className="space-y-5">
+      <header className="px-1 pt-1">
+        <p className="text-[14px] font-medium text-ink-muted">
+          {found} of {PLAYERS.length} identified
+        </p>
+        <h1 className="heading mt-0.5 text-[40px] leading-none sm:text-[48px]">Players</h1>
+        <p className="mt-2 text-[14.5px] text-ink-muted">Solve a case to unlock that player&apos;s career.</p>
+      </header>
 
-      <div className="card space-y-3 p-3 sm:p-4">
-        <div className="flex h-12 items-center rounded-xl border border-pitch-700 bg-pitch-900 focus-within:border-pitch-600">
-          <Search size={16} className="ml-3.5 text-ink-faint" />
+      <div className="space-y-3">
+        <div className="flex h-12 items-center rounded-full border border-white/[0.1] bg-black/25 shadow-[inset_0_2px_6px_rgb(0_0_0/0.3)] focus-within:border-white/[0.22]">
+          <Search size={17} className="ml-4 text-ink-faint" />
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Search by name or nation"
-            className="h-full flex-1 bg-transparent px-3 text-[16px] text-ink placeholder:text-ink-faint focus:outline-none"
+            placeholder="Search by name or country"
+            className="h-full min-w-0 flex-1 bg-transparent px-3 text-[16px] text-ink placeholder:text-ink-faint focus:outline-none"
             aria-label="Search players"
           />
         </div>
-        <div className="flex flex-wrap gap-2">
-          <Seg value={group} onChange={setGroup} options={[['all', 'All'], ...(['GK', 'DEF', 'MID', 'FWD'] as const).map((g) => [g, GROUP_LABEL[g]] as [PositionGroup, string])]} />
-          <Seg value={diff} onChange={setDiff} options={[['all', 'Any'], ['easy', 'Easy'], ['medium', 'Medium'], ['hard', 'Hard']]} />
+        <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 scrollbar-thin">
           <Seg value={disc} onChange={setDisc} options={[['all', 'All'], ['found', 'Identified'], ['unknown', 'Unidentified']]} />
+          <Seg value={group} onChange={setGroup} options={[['all', 'Any position'], ...(['GK', 'DEF', 'MID', 'FWD'] as const).map((g) => [g, GROUP_LABEL[g]] as [PositionGroup, string])]} />
+          <Seg value={diff} onChange={setDiff} options={[['all', 'Any level'], ['easy', 'Easy'], ['medium', 'Medium'], ['hard', 'Hard']]} />
         </div>
       </div>
 
-      <div className="font-mono text-xs text-ink-muted">{list.length} players</div>
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {list.map((p, i) => {
-          const isFound = Boolean(profile.discovered[p.id]);
-          const clubs = p.careerClubs.filter((c, j, arr) => j === 0 || arr[j - 1] !== c);
-          return (
-            <motion.article
-              key={p.id}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: Math.min(i, 12) * 0.02 }}
-              className={`card p-4 ${isFound ? '' : 'opacity-90'}`}
-            >
-              <div className="flex items-start gap-3">
-                <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-pitch-900 text-xl">{nationInfo(p.nationality).flag}</div>
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-1.5">
-                    <h3 className="truncate font-bold text-ink">{p.name}</h3>
-                    {isFound && <CheckCircle2 size={14} className="shrink-0 text-lime" aria-label="Identified" />}
-                  </div>
-                  <div className="text-xs text-ink-muted">
-                    {p.nationality} · {POSITION_LABEL[p.position]}
-                  </div>
+      <div className="px-1 text-[13px] text-ink-muted">{list.length} players</div>
+      {list.length > 0 && (
+        <ul className="card divide-y divide-white/[0.06] overflow-hidden p-1.5 sm:grid sm:grid-cols-2 sm:gap-x-2 sm:divide-y-0">
+          {list.map((p) => {
+            const isFound = Boolean(profile.discovered[p.id]);
+            const clubs = p.careerClubs.filter((c, j, arr) => j === 0 || arr[j - 1] !== c);
+            return (
+              <li key={p.id} className="flex items-start gap-3 rounded-[20px] px-3 py-3 [content-visibility:auto] [contain-intrinsic-size:auto_72px]">
+                <div className="relative grid h-11 w-11 shrink-0 place-items-center rounded-full bg-white/[0.06] text-[22px]">
+                  {nationInfo(p.nationality).flag}
+                  {isFound && (
+                    <span className="absolute -bottom-0.5 -right-0.5 grid h-[18px] w-[18px] place-items-center rounded-full bg-lime text-[#052016] ring-2 ring-pitch-950">
+                      <Check size={11} strokeWidth={3.2} aria-label="Identified" />
+                    </span>
+                  )}
                 </div>
-                <span className={`rounded-md border px-1.5 py-0.5 font-mono text-[10px] uppercase ${DIFF_STYLE[p.difficulty]}`}>{p.difficulty}</span>
-              </div>
-              <div className="mt-3 border-t border-pitch-700 pt-3">
-                {isFound ? (
-                  <p className="text-[13px] leading-relaxed text-ink-muted">{clubs.join(' → ')}</p>
-                ) : (
-                  <p className="flex items-center gap-2 text-[13px] text-ink-faint">
-                    <Lock size={12} /> Career file classified — {clubs.length} club{clubs.length === 1 ? '' : 's'}
-                  </p>
-                )}
-              </div>
-            </motion.article>
-          );
-        })}
-      </div>
-      {list.length === 0 && <p className="py-10 text-center text-sm text-ink-muted">No players match those filters.</p>}
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2">
+                    <h3 className="truncate text-[15.5px] font-semibold tracking-[-0.01em] text-ink">{p.name}</h3>
+                    <span className={`ml-auto shrink-0 rounded-full border px-2 py-0.5 text-[11px] font-semibold ${DIFF_STYLE[p.difficulty]}`}>
+                      {p.difficulty[0].toUpperCase() + p.difficulty.slice(1)}
+                    </span>
+                  </div>
+                  <div className="text-[13px] text-ink-muted">
+                    {POSITION_LABEL[p.position]}, {p.nationality}
+                  </div>
+                  {isFound ? (
+                    <p className="mt-1 text-[12.5px] leading-relaxed text-ink-faint">{clubs.join(' / ')}</p>
+                  ) : (
+                    <p className="mt-1 flex items-center gap-1.5 text-[12.5px] text-ink-faint">
+                      <Lock size={11} /> {clubs.length} club{clubs.length === 1 ? '' : 's'} hidden until solved
+                    </p>
+                  )}
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+      {list.length === 0 && <p className="py-10 text-center text-[14.5px] text-ink-muted">No players match. Try clearing a filter.</p>}
     </div>
   );
 }
 
 function Seg<T extends string>({ value, onChange, options }: { value: T; onChange: (v: T) => void; options: [T, string][] }) {
   return (
-    <div className="flex rounded-lg border border-pitch-700 bg-pitch-900 p-0.5">
+    <div className="flex shrink-0 rounded-full border border-white/[0.1] bg-white/[0.06] p-1 backdrop-blur-xl">
       {options.map(([v, label]) => (
         <button
           key={v}
           onClick={() => onChange(v)}
-          className={`h-8 rounded-md px-2.5 text-xs font-medium transition-colors ${value === v ? 'bg-pitch-700 text-ink' : 'text-ink-muted hover:text-ink'}`}
+          className={`h-8 whitespace-nowrap rounded-full px-3 text-[13px] font-medium transition-colors ${
+            value === v ? 'bg-white/[0.14] text-ink shadow-[inset_0_1px_0_rgb(255_255_255/0.18)]' : 'text-ink-muted hover:text-ink'
+          }`}
           aria-pressed={value === v}
         >
           {label}

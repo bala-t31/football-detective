@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 import { RotateCcw, Volume2, Wind } from 'lucide-react';
 import { useProfile } from '@/hooks/useProfile';
 import { storage } from '@/utils/storage';
@@ -33,16 +34,16 @@ export function SettingsModal({ open, onClose, onReset }: { open: boolean; onClo
           />
         </div>
 
-        <div className="mt-5 rounded-xl border border-bad/25 bg-bad/[0.04] p-4">
-          <div className="font-semibold text-ink">Reset game progress</div>
-          <p className="mt-1 text-sm text-ink-muted">Deletes XP, streaks, achievements, history and discovered players on this device.</p>
+        <div className="mt-5 rounded-[20px] border border-bad/20 bg-bad/[0.06] p-4">
+          <div className="text-[15px] font-semibold text-ink">Reset game progress</div>
+          <p className="mt-1 text-[13.5px] text-ink-muted">Deletes XP, streaks, achievements, history and discovered players on this device.</p>
           <Button variant="danger" size="sm" className="mt-3" icon={<RotateCcw size={14} />} onClick={() => setConfirm(true)}>
             Reset progress…
           </Button>
         </div>
 
-        <div className="mt-5 space-y-2 text-sm text-ink-muted">
-          <div className="font-semibold text-ink">About</div>
+        <div className="mt-6 space-y-2 text-[13.5px] leading-relaxed text-ink-muted">
+          <div className="font-display text-[17px] font-bold tracking-[-0.02em] text-ink">About</div>
           <p>
             Football Detective is a daily football mystery. Identify the footballer from progressive clues in six attempts. Every
             incorrect guess reveals how close you were on nationality, position, club, league and era.
@@ -57,7 +58,7 @@ export function SettingsModal({ open, onClose, onReset }: { open: boolean; onClo
             on the same local date.
           </p>
           {!storage.available() && (
-            <p className="text-warn">Browser storage is unavailable — progress will be lost when you close this tab.</p>
+            <p className="text-warn">This device isn’t letting the game save. Progress will be lost when you close it.</p>
           )}
         </div>
       </Modal>
@@ -87,7 +88,7 @@ export function SettingsModal({ open, onClose, onReset }: { open: boolean; onClo
           </>
         }
       >
-        <p className="text-sm text-ink-muted">
+        <p className="text-[14.5px] leading-relaxed text-ink-muted">
           This permanently deletes your {profile.xp.toLocaleString()} XP, {profile.history.length} case records and{' '}
           {Object.keys(profile.achievements).length} achievements. This cannot be undone.
         </p>
@@ -114,16 +115,22 @@ function Toggle({
       role="switch"
       aria-checked={checked}
       onClick={() => onChange(!checked)}
-      className="flex w-full items-center gap-3 rounded-xl border border-pitch-700 bg-pitch-850 p-3.5 text-left hover:border-pitch-600"
+      className="flex w-full items-center gap-3 rounded-[20px] border border-white/[0.08] bg-white/[0.05] p-3.5 text-left transition-colors hover:bg-white/[0.08]"
     >
-      <div className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-pitch-800 text-ink-muted">{icon}</div>
+      <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white/[0.08] text-ink">{icon}</div>
       <div className="min-w-0 flex-1">
-        <div className="text-sm font-semibold text-ink">{label}</div>
-        <div className="text-xs text-ink-muted">{description}</div>
+        <div className="text-[15px] font-semibold text-ink">{label}</div>
+        <div className="text-[12.5px] text-ink-muted">{description}</div>
       </div>
-      <span className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${checked ? 'bg-lime' : 'bg-pitch-600'}`}>
-        <span
-          className={`absolute top-0.5 h-5 w-5 rounded-full bg-pitch-950 transition-transform ${checked ? 'translate-x-[22px]' : 'translate-x-0.5'}`}
+      <span
+        className={`relative h-[31px] w-[51px] shrink-0 rounded-full transition-colors duration-300 ${
+          checked ? 'bg-[linear-gradient(180deg,#5ef0ad,#2fc785)]' : 'bg-white/[0.16]'
+        } shadow-[inset_0_1px_2px_rgb(0_0_0/0.3)]`}
+      >
+        <motion.span
+          layout
+          transition={{ type: 'spring', stiffness: 600, damping: 32 }}
+          className={`absolute top-[2px] h-[27px] w-[27px] rounded-full bg-white shadow-[0_3px_8px_rgb(0_0_0/0.35)] ${checked ? 'right-[2px]' : 'left-[2px]'}`}
         />
       </span>
     </button>

@@ -123,19 +123,6 @@ export function ResultsPanel({ round, player, clues, unlocked, onPlayAgain, onHo
           </div>
         </div>
 
-        <div className="border-b border-pitch-700 p-4 sm:p-5">
-          <div className="label mb-2">Career clubs</div>
-          <div className="flex flex-wrap items-center gap-1.5">
-            {uniqueClubs.map((c, i) => (
-              <span key={`${c}-${i}`} className="flex items-center gap-1.5">
-                <span className="rounded-lg border border-pitch-700 bg-pitch-900 px-2.5 py-1 text-[13px] text-ink">{c}</span>
-                {i < uniqueClubs.length - 1 && <span className="text-ink-faint">→</span>}
-              </span>
-            ))}
-          </div>
-          <p className="mt-4 text-[14px] leading-relaxed text-ink-muted">{caseExplanation(player, round.mode)}</p>
-        </div>
-
         {/* Score */}
         <div className="grid grid-cols-3 border-b border-pitch-700">
           <Stat label="Guesses" value={`${round.guesses.length}/${round.maxAttempts}`} />
@@ -147,6 +134,19 @@ export function ResultsPanel({ round, player, clues, unlocked, onPlayAgain, onHo
             </div>
             <div className="font-mono text-[10px] text-ink-faint">XP</div>
           </div>
+        </div>
+
+        <div className="border-b border-pitch-700 p-4 sm:p-5">
+          <div className="label mb-2">Career clubs</div>
+          <div className="flex flex-wrap items-center gap-1.5">
+            {uniqueClubs.map((c, i) => (
+              <span key={`${c}-${i}`} className="flex items-center gap-1.5">
+                <span className="rounded-lg border border-pitch-700 bg-pitch-900 px-2.5 py-1 text-[13px] text-ink">{c}</span>
+                {i < uniqueClubs.length - 1 && <span className="text-ink-faint">→</span>}
+              </span>
+            ))}
+          </div>
+          <p className="mt-4 text-[14px] leading-relaxed text-ink-muted">{caseExplanation(player, round.mode)}</p>
         </div>
 
         {score && won && (

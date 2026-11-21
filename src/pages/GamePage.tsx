@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, Eye, FileSearch, Lightbulb, Skull, Sparkles } from 'lucide-react';
 import type { Difficulty, GameMode } from '@/types';
 import { useRound } from '@/hooks/useRound';
+import { useProfile } from '@/hooks/useProfile';
 import { MODES } from '@/game/engine';
 import { useToast } from '@/components/ui/Toast';
 import { Button } from '@/components/ui/Button';
@@ -27,8 +28,12 @@ interface Props {
 export function GamePage({ mode, navigate }: Props) {
   const { round, player, clues, feedback, busy, hintsLeft, attemptsLeft, submit, reveal, newRound, lastUnlocked } = useRound(mode);
   const toast = useToast();
+  const { profile } = useProfile();
   const cfg = MODES[mode];
   const finished = round.status !== 'playing';
+  // Daily already closed on this device but the saved round was lost: don't allow a replay.
+  const dailyLocked = mode === 'daily' && !finished && Boolean(round.date && profile.daily.completed[round.date]);
+  const totalClues = cfg.hintsAllowed ? clues.length : 1;
   const topRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -67,7 +72,21 @@ export function GamePage({ mode, navigate }: Props) {
         <span className={`chip ${DIFFICULTY_STYLE[player.difficulty]}`}>{player.difficulty}</span>
       </div>
 
-      {finished ? (
+      {dailyLocked ? (
+        <div className="card mx-auto max-w-md p-6 text-center">
+          <div className="label">Case closed</div>
+          <h2 className="heading mt-2 text-2xl">You&apos;ve already played today&apos;s case</h2>
+          <p className="mt-2 text-sm text-ink-muted">A new Daily Case unlocks at midnight. Keep sharpening your instincts in Practice.</p>
+          <div className="mt-5 grid gap-2">
+            <Button variant="primary" onClick={() => navigate({ name: 'play', mode: 'practice' })}>
+              Play practice
+            </Button>
+            <Button variant="ghost" onClick={() => navigate({ name: 'home' })}>
+              Back to headquarters
+            </Button>
+          </div>
+        </div>
+      ) : finished ? (
         <div className="mx-auto max-w-2xl">
           <ResultsPanel
             round={round}
@@ -103,7 +122,7 @@ export function GamePage({ mode, navigate }: Props) {
                       <div className="label">Clues</div>
                       <div className="font-mono text-lg font-bold text-ink">
                         {round.revealed}
-                        <span className="text-ink-faint">/{clues.length}</span>
+                        <span className="text-ink-faint">/{totalClues}</span>
                       </div>
                     </div>
                   </div>
@@ -120,7 +139,8 @@ export function GamePage({ mode, navigate }: Props) {
                   {cfg.hintsAllowed ? `${hintsLeft} hint${hintsLeft === 1 ? '' : 's'} left` : 'hints disabled'}
                 </span>
               </div>
-              <ClueList clues={clues} revealed={round.revealed} mode={mode} />
+              {/* Hardcore never reveals more, so don't show locked slots that can't be opened. */}
+              <ClueList clues={cfg.hintsAllowed ? clues : clues.slice(0, 1)} revealed={round.revealed} mode={mode} />
               {cfg.hintsAllowed ? (
                 <Button
                   className="mt-3 w-full"
@@ -144,7 +164,9 @@ export function GamePage({ mode, navigate }: Props) {
               <div className="label mb-2">Identify the suspect</div>
               <GuessInput onSubmit={handleSubmit} disabled={finished} busy={busy} guessedIds={round.guesses} />
               <p className="mt-2 text-xs text-ink-faint">
-                Type to search · ↑ ↓ to navigate · Enter to select and submit. Wrong guesses cost 100 XP.
+                <span className="hidden sm:inline">Type to search · ↑ ↓ to navigate · Enter to select and submit. </span>
+                <span className="sm:hidden">Type a name and pick from the list. </span>
+                Wrong guesses cost 100 XP.
               </p>
             </motion.div>
             <div className="card p-4">

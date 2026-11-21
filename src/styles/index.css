@@ -10,12 +10,28 @@
   html,
   body {
     @apply bg-pitch-950 text-ink antialiased;
+    overflow-x: clip;
+    max-width: 100%;
     font-feature-settings: 'cv11', 'ss01', 'ss03';
     overscroll-behavior-y: none;
   }
   body {
     min-height: 100dvh;
     overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+  #root {
+    overflow-x: clip;
+  }
+  /* Inside the Android app: no rubber-band, no long-press callouts on UI chrome */
+  html.native {
+    overscroll-behavior: none;
+  }
+  html.native button,
+  html.native nav {
+    -webkit-user-select: none;
+    user-select: none;
   }
   ::selection {
     background: #b7ff3555;

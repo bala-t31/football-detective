@@ -8,12 +8,25 @@ export const isNative = (): boolean => Capacitor.isNativePlatform();
 
 export async function initNative(): Promise<void> {
   if (!isNative()) return;
+  document.documentElement.classList.add('native');
   try {
-    const { StatusBar, Style } = await import('@capacitor/status-bar');
-    await StatusBar.setStyle({ style: Style.Dark });
-    await StatusBar.setBackgroundColor({ color: '#0B0D0C' });
+    const { App } = await import('@capacitor/app');
+    // Android back: close an open sheet first, then go back a screen, and only exit from the dashboard.
+    await App.addListener('backButton', ({ canGoBack }) => {
+      if (document.querySelector('[role="dialog"]')) {
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+        return;
+      }
+      const atHome = !window.location.hash || window.location.hash === '#/' || window.location.hash === '#';
+      if (!atHome) {
+        if (canGoBack) window.history.back();
+        else window.location.hash = '#/';
+        return;
+      }
+      void App.exitApp();
+    });
   } catch {
-    /* status bar styling is cosmetic */
+    /* back handling falls back to the WebView default */
   }
 }
 

@@ -14,10 +14,12 @@ export function Logo() {
     <div className="flex items-center gap-2.5">
       <LogoMark />
       <div className="leading-none">
-        <div className="text-[15px] font-black tracking-[-0.04em] text-ink">
+        <div className="whitespace-nowrap text-[13px] font-black tracking-[-0.04em] text-ink min-[380px]:text-[15px]">
           FOOTBALL <span className="text-lime">DETECTIVE</span>
         </div>
-        <div className="mt-0.5 font-mono text-[9px] uppercase tracking-[0.25em] text-ink-faint">Case files · est. 2026</div>
+        <div className="mt-0.5 hidden whitespace-nowrap font-mono text-[9px] uppercase tracking-[0.25em] text-ink-faint min-[380px]:block">
+          Case files · est. 2026
+        </div>
       </div>
     </div>
   );

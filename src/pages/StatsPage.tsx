@@ -61,7 +61,7 @@ export function StatsPage() {
                     initial={{ width: 0 }}
                     animate={{ width: `${Math.max(count ? 8 : 0, (count / distMax) * 100)}%` }}
                     transition={{ duration: 0.8, delay: i * 0.05, ease: [0.16, 1, 0.3, 1] }}
-                    className="flex h-full items-center justify-end rounded-md bg-lime/80 px-2 font-mono text-xs font-bold text-pitch-950"
+                    className={`flex h-full items-center justify-end rounded-md font-mono text-xs font-bold text-pitch-950 ${count ? 'bg-lime/80 px-2' : ''}`}
                   >
                     {count > 0 && count}
                   </motion.div>
@@ -75,7 +75,7 @@ export function StatsPage() {
                   initial={{ width: 0 }}
                   animate={{ width: `${losses ? Math.max(8, (losses / Math.max(distMax, losses)) * 100) : 0}%` }}
                   transition={{ duration: 0.8, delay: 0.35 }}
-                  className="flex h-full items-center justify-end rounded-md bg-bad/70 px-2 font-mono text-xs font-bold text-pitch-950"
+                  className={`flex h-full items-center justify-end rounded-md font-mono text-xs font-bold text-pitch-950 ${losses ? 'bg-bad/70 px-2' : ''}`}
                 >
                   {losses > 0 && losses}
                 </motion.div>
@@ -105,7 +105,7 @@ export function StatsPage() {
 
       <section className="card p-4 sm:p-5">
         <h2 className="mb-3 font-bold text-ink">Achievements</h2>
-        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="grid grid-cols-2 gap-2 lg:grid-cols-5">
           {ACHIEVEMENTS.map((a) => {
             const at = profile.achievements[a.id];
             return (

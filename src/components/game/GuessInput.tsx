@@ -5,7 +5,7 @@ import type { Player } from '@/types';
 import { PLAYERS } from '@/data';
 import { nationInfo } from '@/data/nations';
 import { POSITION_LABEL } from '@/data/positions';
-import { searchPlayers } from '@/game/search';
+import { normalize, searchPlayers } from '@/game/search';
 import { Button } from '@/components/ui/Button';
 
 interface Props {
@@ -23,7 +23,9 @@ export function GuessInput({ onSubmit, disabled, busy, guessedIds }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [shake, setShake] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
   const listId = useId();
+  const isTouch = () => typeof window !== 'undefined' && window.matchMedia?.('(pointer: coarse)').matches;
 
   const results = useMemo(() => (selected ? [] : searchPlayers(PLAYERS, query, 7)), [query, selected]);
 
@@ -53,15 +55,29 @@ export function GuessInput({ onSubmit, disabled, busy, guessedIds }: Props) {
     inputRef.current?.focus();
   };
 
+  const afterSuccess = () => {
+    setSelected(null);
+    setQuery('');
+    setError(null);
+    setOpen(false);
+    if (isTouch()) inputRef.current?.blur();
+    else inputRef.current?.focus();
+  };
+
   const submit = async () => {
     if (disabled || busy) return;
     if (!selected) {
-      // Allow an exact name match typed without picking from the list.
-      const exact = PLAYERS.find((p) => p.name.toLowerCase() === query.trim().toLowerCase());
-      if (exact && !guessedIds.includes(exact.id)) {
+      // Allow an exact (accent-insensitive) name or alias typed without picking from the list.
+      const q = normalize(query);
+      const exact = PLAYERS.find((p) => normalize(p.name) === q || p.aka.some((a) => normalize(a) === q && a.length > 3));
+      if (exact) {
+        if (guessedIds.includes(exact.id)) {
+          fail('You have already guessed this player.');
+          return;
+        }
         setSelected(exact);
         const res = await onSubmit(exact.id);
-        if (res.ok) clear();
+        if (res.ok) afterSuccess();
         else fail(res.message ?? 'Invalid guess');
         return;
       }
@@ -69,7 +85,7 @@ export function GuessInput({ onSubmit, disabled, busy, guessedIds }: Props) {
       return;
     }
     const res = await onSubmit(selected.id);
-    if (res.ok) clear();
+    if (res.ok) afterSuccess();
     else fail(res.message ?? 'Invalid guess');
   };
 
@@ -83,7 +99,7 @@ export function GuessInput({ onSubmit, disabled, busy, guessedIds }: Props) {
       setActive((a) => (a - 1 + results.length) % results.length);
     } else if (e.key === 'Enter') {
       e.preventDefault();
-      if (open && results[active] && !selected) choose(results[active]);
+      if (!selected && results[active]) choose(results[active]);
       else void submit();
     } else if (e.key === 'Escape') {
       setOpen(false);
@@ -93,7 +109,7 @@ export function GuessInput({ onSubmit, disabled, busy, guessedIds }: Props) {
   const showList = open && !selected && query.trim().length > 0;
 
   return (
-    <div className="relative">
+    <div ref={rootRef} className="relative scroll-mt-20">
       <motion.div
         key={shake}
         animate={shake ? { x: [0, -8, 8, -5, 5, 0] } : undefined}
@@ -116,7 +132,11 @@ export function GuessInput({ onSubmit, disabled, busy, guessedIds }: Props) {
               setOpen(true);
               setError(null);
             }}
-            onFocus={() => setOpen(true)}
+            onFocus={() => {
+              setOpen(true);
+              // On phones, bring the search box to the top so suggestions aren't hidden by the keyboard.
+              if (isTouch()) window.setTimeout(() => rootRef.current?.scrollIntoView({ block: 'start', behavior: 'smooth' }), 280);
+            }}
             onBlur={() => window.setTimeout(() => setOpen(false), 150)}
             onKeyDown={onKeyDown}
             placeholder={disabled ? 'Case closed' : 'Name your suspect…'}
@@ -127,6 +147,7 @@ export function GuessInput({ onSubmit, disabled, busy, guessedIds }: Props) {
             aria-autocomplete="list"
             aria-activedescendant={showList && results[active] ? `${listId}-${results[active].id}` : undefined}
             aria-invalid={Boolean(error)}
+            enterKeyHint="go"
             autoComplete="off"
             autoCorrect="off"
             spellCheck={false}
@@ -187,6 +208,7 @@ export function GuessInput({ onSubmit, disabled, busy, guessedIds }: Props) {
                     role="option"
                     aria-selected={i === active}
                     aria-disabled={used}
+                    onPointerDown={(e) => e.preventDefault()}
                     onMouseDown={(e) => e.preventDefault()}
                     onMouseEnter={() => setActive(i)}
                     onClick={() => choose(p)}

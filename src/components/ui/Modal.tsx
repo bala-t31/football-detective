@@ -53,7 +53,7 @@ export function Modal({ open, onClose, title, children, footer, size = 'md' }: M
           className="fixed inset-0 z-50 flex items-end justify-center p-0 sm:items-center sm:p-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          exit={{ opacity: 0, transition: { duration: 0.15 } }}
         >
           <div className="absolute inset-0 bg-black/70 backdrop-blur-[2px]" onClick={onClose} aria-hidden />
           <motion.div
@@ -64,7 +64,7 @@ export function Modal({ open, onClose, title, children, footer, size = 'md' }: M
             className={`relative w-full ${size === 'sm' ? 'sm:max-w-sm' : 'sm:max-w-lg'} max-h-[90dvh] overflow-y-auto rounded-t-3xl border border-pitch-700 bg-pitch-900 shadow-2xl sm:rounded-2xl scrollbar-thin`}
             initial={{ y: 40, opacity: 0, scale: 0.98 }}
             animate={{ y: 0, opacity: 1, scale: 1 }}
-            exit={{ y: 30, opacity: 0, scale: 0.98 }}
+            exit={{ y: 30, opacity: 0, scale: 0.98, transition: { duration: 0.15 } }}
             transition={{ type: 'spring', stiffness: 380, damping: 32 }}
           >
             <div className="sticky top-0 z-10 flex items-center justify-between border-b border-pitch-700 bg-pitch-900/95 px-5 py-4 backdrop-blur">

@@ -2,7 +2,7 @@ import type { Clue, GameMode, Player, RoundState } from '@/types';
 import { PLAYERS, getPlayer } from '@/data';
 import { toDateKey } from '@/utils/date';
 import { caseNumberFor, dailyPlayerId } from './daily';
-import { randomId } from './random';
+import { hashString, randomId } from './random';
 import { calculateScore } from './scoring';
 import { compareGuess } from './feedback';
 
@@ -81,7 +81,6 @@ function pickRandom(mode: GameMode, exclude: string[]): Player {
   return source[Math.floor(Math.random() * source.length)];
 }
 
-let practiceCounter = 0;
 
 export function createRound(mode: GameMode, opts: { date?: string; exclude?: string[]; caseNumber?: number } = {}): RoundState {
   const cfg = MODES[mode];
@@ -95,7 +94,7 @@ export function createRound(mode: GameMode, opts: { date?: string; exclude?: str
     caseNumber = caseNumberFor(date);
   } else {
     playerId = pickRandom(mode, opts.exclude ?? []).id;
-    caseNumber = opts.caseNumber ?? 100 + (++practiceCounter % 900);
+    caseNumber = opts.caseNumber ?? 100 + (hashString(`${playerId}:${Date.now()}`) % 900);
   }
 
   return {

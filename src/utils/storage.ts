@@ -30,7 +30,10 @@ export const storage = {
   get<T>(key: string, fallback: T): T {
     const k = PREFIX + key;
     try {
-      const raw = store()?.getItem(k) ?? memory.get(k) ?? null;
+      const s = store();
+      // Real storage is the source of truth. The memory map only holds values that could not be
+      // written to storage (storage unavailable, or a write failed on quota).
+      const raw = s ? (s.getItem(k) ?? memory.get(k) ?? null) : (memory.get(k) ?? null);
       if (raw === null) return fallback;
       return JSON.parse(raw) as T;
     } catch {
@@ -40,11 +43,17 @@ export const storage = {
   set<T>(key: string, value: T): void {
     const k = PREFIX + key;
     const raw = JSON.stringify(value);
-    memory.set(k, raw);
+    const s = store();
+    if (!s) {
+      memory.set(k, raw);
+      return;
+    }
     try {
-      store()?.setItem(k, raw);
+      s.setItem(k, raw);
+      memory.delete(k);
     } catch {
-      /* quota or disabled — memory copy keeps the session working */
+      /* quota exceeded — keep the session working from memory */
+      memory.set(k, raw);
     }
   },
   remove(key: string): void {

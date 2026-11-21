@@ -8,7 +8,7 @@ export function Confetti() {
     () =>
       Array.from({ length: 28 }, (_, i) => ({
         id: i,
-        x: (Math.random() - 0.5) * 520,
+        x: (Math.random() - 0.5) * Math.min(520, window.innerWidth * 0.9),
         y: -(160 + Math.random() * 240),
         r: Math.random() * 540 - 270,
         size: 5 + Math.random() * 6,
@@ -19,7 +19,8 @@ export function Confetti() {
   );
   if (reduce) return null;
   return (
-    <div className="pointer-events-none absolute left-1/2 top-24 z-20" aria-hidden>
+    <div className="pointer-events-none fixed inset-0 z-50 overflow-hidden" aria-hidden>
+      <div className="absolute left-1/2 top-[30%]">
       {pieces.map((p) => (
         <motion.span
           key={p.id}
@@ -30,6 +31,7 @@ export function Confetti() {
           transition={{ duration: 1.8, delay: p.delay, ease: [0.2, 0.7, 0.4, 1], times: [0, 0.35, 1] }}
         />
       ))}
+      </div>
     </div>
   );
 }

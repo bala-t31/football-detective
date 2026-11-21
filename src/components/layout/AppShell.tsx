@@ -22,6 +22,7 @@ const NAV: { route: Route; label: string; icon: typeof LayoutDashboard }[] = [
 export function AppShell({ route, navigate, onOpenSettings, children }: Props) {
   const { profile } = useProfile();
   const streak = effectiveStreak(profile, toDateKey());
+  const inGame = route.name === 'play';
   const isActive = (r: Route) => r.name === route.name || (r.name === 'home' && route.name === 'play');
 
   return (
@@ -65,10 +66,11 @@ export function AppShell({ route, navigate, onOpenSettings, children }: Props) {
         </div>
       </header>
 
-      <main className="relative mx-auto max-w-6xl px-4 pb-28 pt-5 sm:px-6 sm:pt-8 md:pb-16">{children}</main>
+      <main className={`relative mx-auto max-w-6xl px-3.5 pt-4 sm:px-6 sm:pt-8 md:pb-16 ${inGame ? 'pb-10' : 'pb-28'}`}>{children}</main>
 
-      {/* Mobile tab bar */}
+      {/* Mobile tab bar (hidden during a case so the game gets the whole screen) */}
       <nav
+        hidden={inGame}
         className="fixed inset-x-0 bottom-0 z-40 border-t border-pitch-700 bg-pitch-950/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-md md:hidden"
         aria-label="Main"
       >

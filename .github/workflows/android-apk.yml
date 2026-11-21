@@ -7,6 +7,9 @@ on:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: write # needed to publish the APK as a GitHub Release
+
 jobs:
   apk:
     runs-on: ubuntu-latest
@@ -46,3 +49,21 @@ jobs:
         with:
           name: football-detective-apk
           path: football-detective.apk
+
+      # Publish every main-branch build as a Release so the APK has a direct, public download link:
+      #   https://github.com/<owner>/<repo>/releases/latest/download/football-detective.apk
+      - name: Read app version
+        id: version
+        run: echo "name=$(grep -oP 'versionName \"\K[^\"]+' android/app/build.gradle)" >> "$GITHUB_OUTPUT"
+
+      - name: Publish release
+        if: github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.name }}-build${{ github.run_number }}
+          name: Football Detective ${{ steps.version.outputs.name }} (build ${{ github.run_number }})
+          body: |
+            Install on Android: download **football-detective.apk** below, open it, and allow installing from your browser or Files app if asked.
+            Built from commit ${{ github.sha }}.
+          files: football-detective.apk
+          make_latest: true

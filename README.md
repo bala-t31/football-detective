@@ -1,5 +1,7 @@
 # Football Detective
 
+**Download for Android:** [football-detective.apk](https://github.com/bala-t31/football-detective/releases/latest/download/football-detective.apk) (always the latest build)
+
 A daily football mystery game. Identify the footballer from clues that get more specific, in six attempts.
 
 ## Run it on your Mac

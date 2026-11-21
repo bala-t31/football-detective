@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Football Detective — the football guessing game for Android</title>
+  <meta name="description" content="Name the mystery footballer from the clues. A new case every day, 277 players from Pelé to Lamine Yamal, seven ways to play. Free for Android, no ads, no account." />
+  <meta name="theme-color" content="#06100D" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/assets/img/app-icon.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Football Detective" />
+  <meta property="og:description" content="Name the mystery footballer from the clues. Free for Android." />
+  <meta property="og:image" content="/assets/img/og.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preload" href="/assets/fonts/bricolage-grotesque-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/assets/fonts/geist-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="nav" data-nav>
+    <div class="wrap nav__inner">
+      <a class="brand" href="#top" aria-label="Football Detective home">
+        <img src="/favicon.svg" alt="" width="34" height="34" />
+        <span>Football Detective</span>
+      </a>
+      <nav class="nav__links" aria-label="Sections">
+        <a href="#try">Try it</a>
+        <a href="#modes">Modes</a>
+        <a href="#install">Install</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <a class="btn btn--small btn--primary" href="https://github.com/bala-t31/football-detective/releases/latest/download/football-detective.apk" data-download>Download</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero" id="top">
+      <svg class="pitch-circle" viewBox="0 0 800 800" aria-hidden="true">
+        <circle cx="400" cy="400" r="300" />
+        <circle cx="400" cy="400" r="6" class="spot" />
+        <line x1="-400" y1="400" x2="1200" y2="400" />
+      </svg>
+      <div class="wrap hero__grid">
+        <div class="hero__copy">
+          <a class="tag" href="#modes"><span class="tag__dot"></span>New in 1.4: Weekly Legends, Club Path Run and Name the Teammate</a>
+          <h1>Every footballer leaves clues.</h1>
+          <p class="lede">
+            Football Detective is a guessing game for Android. Read the clues, make your guesses and name the mystery player.
+            A new case every day, the same for everyone.
+          </p>
+          <div class="hero__cta">
+            <a class="btn btn--primary btn--large" href="https://github.com/bala-t31/football-detective/releases/latest/download/football-detective.apk" data-download>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M5 20h14" /></svg>
+              Download for Android
+            </a>
+            <a class="btn btn--glass btn--large" href="#try">Try a case first</a>
+          </div>
+          <p class="meta" data-release-meta>Version 1.4 · Free · Android 7 or newer</p>
+        </div>
+        <div class="hero__phones" aria-hidden="true">
+          <div class="phone phone--back"><img src="/assets/img/screen-game.webp" alt="" width="390" height="844" /></div>
+          <div class="phone phone--front"><img src="/assets/img/screen-home.webp" alt="" width="390" height="844" fetchpriority="high" /></div>
+          <div class="floodlight"></div>
+        </div>
+      </div>
+      <p class="wrap facts">
+        <strong data-count>277</strong> footballers, from Pelé to Lamine Yamal. Seven ways to play. No ads, no account, and it works offline.
+      </p>
+    </section>
+
+    <!-- Try it -->
+    <section class="section" id="try">
+      <div class="halfway" aria-hidden="true"></div>
+      <div class="wrap try__grid">
+        <div class="section__intro">
+          <h2>Try a case right here</h2>
+          <p>
+            This is the real game, running in your browser. You get one clue to start. Guess a player and every guess tells you how close you are:
+            the nation, position, club, league and era.
+          </p>
+          <ul class="legend-list">
+            <li><span class="swatch swatch--ok"></span>Exact match</li>
+            <li><span class="swatch swatch--close"></span>Close: same region, similar position, a shared club or league</li>
+            <li><span class="swatch swatch--arrow">↑</span>The mystery player played later (↓ earlier)</li>
+          </ul>
+        </div>
+
+        <div class="box" data-demo>
+          <div class="box__lines" aria-hidden="true"></div>
+          <div class="demo">
+            <div class="demo__head">
+              <div>
+                <p class="demo__label">Sample case</p>
+                <h3>Who is it?</h3>
+              </div>
+              <div class="beads" data-beads aria-label="Guesses left"></div>
+            </div>
+
+            <ol class="clues" data-clues></ol>
+            <button class="btn btn--glass btn--block" data-reveal type="button">Reveal another clue</button>
+
+            <form class="guess" data-form autocomplete="off">
+              <label class="sr-only" for="demo-input">Type a player's name</label>
+              <div class="guess__field">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
+                <input id="demo-input" type="text" placeholder="Type a player's name" role="combobox" aria-expanded="false" aria-controls="demo-list" aria-autocomplete="list" data-input />
+              </div>
+              <ul class="suggest" id="demo-list" role="listbox" data-suggest hidden></ul>
+              <p class="guess__error" data-error role="alert"></p>
+            </form>
+
+            <div class="rows" data-rows>
+              <div class="rows__head" aria-hidden="true"><span>Nation</span><span>Pos</span><span>Club</span><span>League</span><span>Era</span></div>
+            </div>
+
+            <div class="result" data-result hidden></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Modes -->
+    <section class="section" id="modes">
+      <div class="halfway" aria-hidden="true"></div>
+      <div class="wrap">
+        <div class="section__intro section__intro--center">
+          <h2>Seven ways to play</h2>
+          <p>Start with the daily mystery. When you want more, there is always another case.</p>
+        </div>
+
+        <article class="feature">
+          <div class="feature__shot"><div class="phone"><img src="/assets/img/screen-game.webp" alt="A case in progress: two clues revealed and four guesses left" loading="lazy" width="390" height="844" /></div></div>
+          <div class="feature__copy">
+            <p class="kicker">Every day</p>
+            <h3>Daily mystery</h3>
+            <p>One footballer, six guesses, the same case for everyone. Reveal extra clues when you are stuck, but each one costs a little XP. Win days in a row to build your streak.</p>
+          </div>
+        </article>
+
+        <article class="feature feature--flip">
+          <div class="feature__shot"><div class="phone"><img src="/assets/img/screen-clubpath.webp" alt="Club Path Run showing a player's clubs in order" loading="lazy" width="390" height="844" /></div></div>
+          <div class="feature__copy">
+            <p class="kicker">New</p>
+            <h3>Club Path Run</h3>
+            <p>You get a player's clubs in order and nothing else. Two tries each, and one miss ends the run. The players get harder the longer you last.</p>
+          </div>
+        </article>
+
+        <article class="feature">
+          <div class="feature__shot"><div class="phone"><img src="/assets/img/screen-teammate.webp" alt="Name the Teammate: who played with Lionel Messi at Barcelona" loading="lazy" width="390" height="844" /></div></div>
+          <div class="feature__copy">
+            <p class="kicker">New</p>
+            <h3>Name the Teammate</h3>
+            <p>Who played with Messi at Barcelona? With Maldini at Milan? Name as many teammates as you can before your three lives run out. Every answer is checked against when they were actually at the club.</p>
+          </div>
+        </article>
+
+        <div class="mode-grid">
+          <div class="mode">
+            <span class="mode__icon mode__icon--gold"><svg viewBox="0 0 24 24"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z" /></svg></span>
+            <h3>Weekly Legends</h3>
+            <p>Five retired greats every week, the same for everyone. Worth 1.3× XP.</p>
+          </div>
+          <div class="mode">
+            <span class="mode__icon mode__icon--green"><svg viewBox="0 0 24 24"><path d="M4 12h3m10 0h3M7 8v8m10-8v8M7 12h10" /></svg></span>
+            <h3>Practice</h3>
+            <p>Unlimited random players with no streak on the line.</p>
+          </div>
+          <div class="mode">
+            <span class="mode__icon mode__icon--red"><svg viewBox="0 0 24 24"><circle cx="12" cy="11" r="7" /><path d="M9 21v-3m6 3v-3M9.5 11h.01M14.5 11h.01" /></svg></span>
+            <h3>Hardcore</h3>
+            <p>One clue, three guesses, no hints. Worth 1.5× XP.</p>
+          </div>
+          <div class="mode">
+            <span class="mode__icon mode__icon--amber"><svg viewBox="0 0 24 24"><circle cx="6" cy="18" r="2" /><circle cx="18" cy="6" r="2" /><path d="M8 18h6a4 4 0 0 0 0-8h-4a4 4 0 0 1 0-8h6" /></svg></span>
+            <h3>Career Detective</h3>
+            <p>Clubs revealed one at a time, from first to last.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Progress + sharing -->
+    <section class="section" id="share">
+      <div class="halfway" aria-hidden="true"></div>
+      <div class="wrap share__grid">
+        <div class="cards" aria-hidden="true">
+          <img class="card card--1" src="/assets/img/card-week.webp" alt="" loading="lazy" width="540" height="960" />
+          <img class="card card--2" src="/assets/img/card-round.webp" alt="" loading="lazy" width="540" height="960" />
+          <img class="card card--3" src="/assets/img/card-run.webp" alt="" loading="lazy" width="540" height="960" />
+        </div>
+        <div class="section__intro">
+          <h2>Post your result. Then dare your friends.</h2>
+          <p>
+            Every case ends with a result card sized for Instagram Stories. It shows your score and how you got there without giving the answer away,
+            unless you want it to.
+          </p>
+          <p>
+            Behind it you are building a record: XP and six detective ranks, 13 trophies to unlock, day streaks and a file of every player you have identified.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Install -->
+    <section class="section" id="install">
+      <div class="halfway" aria-hidden="true"></div>
+      <div class="wrap">
+        <div class="section__intro section__intro--center">
+          <h2>Install in a minute</h2>
+          <p>Football Detective is installed straight from this site, not the Play Store, so Android asks you to allow it once.</p>
+        </div>
+        <ol class="steps">
+          <li>
+            <h3>Download the app</h3>
+            <p>Tap <a href="https://github.com/bala-t31/football-detective/releases/latest/download/football-detective.apk" data-download>Download for Android</a> on your phone. The file is called football-detective.apk.</p>
+          </li>
+          <li>
+            <h3>Open the file</h3>
+            <p>Open it from your notifications or the Downloads folder.</p>
+          </li>
+          <li>
+            <h3>Allow this install</h3>
+            <p>If Android says it can't install unknown apps, tap Settings and turn on “Allow from this source” for your browser, then go back.</p>
+          </li>
+          <li>
+            <h3>Install and play</h3>
+            <p>Tap Install, then Open. To update later, download the new version and install it over the old one. Your progress stays.</p>
+          </li>
+        </ol>
+        <div class="install-cta">
+          <a class="btn btn--primary btn--large" href="https://github.com/bala-t31/football-detective/releases/latest/download/football-detective.apk" data-download>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M5 20h14" /></svg>
+            Download for Android
+          </a>
+          <p class="meta" data-release-meta>Version 1.4 · Free · Android 7 or newer</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section" id="faq">
+      <div class="halfway" aria-hidden="true"></div>
+      <div class="wrap faq__grid">
+        <div class="section__intro">
+          <h2>Questions</h2>
+          <p>Anything else? Ask on <a href="https://www.instagram.com/bala_t31/" target="_blank" rel="noopener">Instagram</a>.</p>
+        </div>
+        <div class="faq">
+          <details>
+            <summary>Is it free?</summary>
+            <p>Yes. No ads, no in-app purchases and no account to create.</p>
+          </details>
+          <details>
+            <summary>Is there an iPhone version?</summary>
+            <p>Not yet. Football Detective is Android only for now.</p>
+          </details>
+          <details>
+            <summary>Why does Android warn me before installing?</summary>
+            <p>Android shows that warning for any app installed outside the Play Store. The app asks for no special permissions, and its full source code is public on <a href="https://github.com/bala-t31/football-detective" target="_blank" rel="noopener">GitHub</a>.</p>
+          </details>
+          <details>
+            <summary>Does it need the internet?</summary>
+            <p>No. Every player and clue is inside the app, so it works offline. Your progress is saved on your phone.</p>
+          </details>
+          <details>
+            <summary>How do I update?</summary>
+            <p>Download the latest version from this page and install it over the old one. Your streak, XP and trophies are kept.</p>
+          </details>
+          <details>
+            <summary>Where do the player facts come from?</summary>
+            <p>Every clue is written by hand from public records. If you spot a wrong fact or want a player added, send a message on Instagram and it will be fixed.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Developer -->
+    <section class="section" id="developer">
+      <div class="halfway" aria-hidden="true"></div>
+      <div class="wrap">
+        <div class="dev">
+          <div class="dev__ring"><img src="/favicon.svg" alt="" width="64" height="64" /></div>
+          <p class="dev__by">Designed and built by</p>
+          <h2>@bala_t31</h2>
+          <p class="dev__text">
+            Football Detective is an independent game made by one developer. Found a bug, spotted a wrong fact or want your favourite player added?
+            Send a message. Every one gets read.
+          </p>
+          <div class="dev__cta">
+            <a class="btn btn--primary" href="https://ig.me/m/bala_t31" target="_blank" rel="noopener">Message on Instagram</a>
+            <a class="btn btn--glass" href="https://www.instagram.com/bala_t31/" target="_blank" rel="noopener">Follow @bala_t31</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer__inner">
+      <a class="brand" href="#top"><img src="/favicon.svg" alt="" width="28" height="28" /><span>Football Detective</span></a>
+      <nav aria-label="Footer">
+        <a href="https://github.com/bala-t31/football-detective/releases/latest/download/football-detective.apk" data-download>Download</a>
+        <a href="https://github.com/bala-t31/football-detective" target="_blank" rel="noopener">Source code</a>
+        <a href="https://www.instagram.com/bala_t31/" target="_blank" rel="noopener">Instagram</a>
+      </nav>
+      <p class="footer__note">A fan-made game. Not affiliated with any club, league or player.</p>
+    </div>
+  </footer>
+
+  <script src="/assets/fd-core.js" defer></script>
+  <script src="/main.js" defer></script>
+</body>
+</html>

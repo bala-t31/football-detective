@@ -63,7 +63,7 @@ export function PlayerAvatar({ player, revealed, size = 'md', scanning = false }
                 <div className={`font-display font-extrabold leading-none tracking-[-0.06em] text-ink ${big ? 'text-[46px] sm:text-[52px]' : 'text-[32px]'}`}>
                   {initials(player.name)}
                 </div>
-                {shirt !== undefined && <div className="mt-1 text-[12px] font-semibold tabular-nums text-lime">No. {shirt}</div>}
+                {shirt !== undefined && size !== 'sm' && <div className="mt-1 text-[12px] font-semibold tabular-nums text-lime">No. {shirt}</div>}
               </div>
             </motion.div>
           ) : (

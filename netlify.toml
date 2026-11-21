@@ -1,0 +1,18 @@
+# Netlify hosts the website in /website. The Android app is built by GitHub Actions instead.
+[build]
+  base = "website"
+  publish = "."
+  command = "echo 'static site, no build'"
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- ."
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "DENY"

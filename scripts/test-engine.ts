@@ -36,7 +36,7 @@ for (const p of PLAYERS) {
   check(`${p.id} has ≥4 clues`, p.clues.length >= 4, String(p.clues.length));
   check(`${p.id} nation known`, p.nationality in NATIONS, p.nationality);
   for (const c of p.careerClubs) check(`${p.id} club mapped: ${c}`, c in CLUB_LEAGUE);
-  check(`${p.id} era sane`, p.from >= 1950 && (p.to === null || p.to >= p.from));
+  check(`${p.id} era sane`, p.from >= 1940 && (p.to === null || p.to >= p.from));
   check(`${p.id} clue mentions no name`, !p.clues.some((c) => c.text.toLowerCase().includes(p.name.toLowerCase())));
   const last = p.name.split(' ').slice(-1)[0];
   if (last.length > 3)
@@ -136,7 +136,7 @@ void h;
 const base: Profile = {
   version: 1, xp: 0, achievements: {}, discovered: {}, history: [],
   daily: { currentStreak: 0, bestStreak: 0, lastWinDate: null, lastCompletedDate: null, completed: {} },
-  settings: { sound: true, reducedMotion: false },
+  settings: { sound: true, haptics: true, reducedMotion: false },
 };
 let p = { ...base, daily: applyDailyResult(base, '2026-11-19', true, 1000) };
 p = { ...p, daily: applyDailyResult(p, '2026-11-20', true, 1000) };

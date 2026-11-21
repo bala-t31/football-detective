@@ -137,6 +137,7 @@ export interface GameRecord {
 
 export interface Settings {
   sound: boolean;
+  haptics: boolean;
   reducedMotion: boolean;
 }
 

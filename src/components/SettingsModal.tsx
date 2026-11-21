@@ -1,15 +1,25 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { RotateCcw, Volume2, Wind } from 'lucide-react';
+import { ChevronRight, Info, RotateCcw, Smartphone, Volume2, Wind } from 'lucide-react';
+import { haptic, hapticsSupported } from '@/utils/haptics';
+import { play } from '@/utils/sound';
 import { useProfile } from '@/hooks/useProfile';
 import { storage } from '@/utils/storage';
-import { PLAYERS } from '@/data';
-import { SCORING } from '@/game/scoring';
 import { Modal } from '@/components/ui/Modal';
 import { Button } from '@/components/ui/Button';
 import { useToast } from '@/components/ui/Toast';
 
-export function SettingsModal({ open, onClose, onReset }: { open: boolean; onClose: () => void; onReset: () => void }) {
+export function SettingsModal({
+  open,
+  onClose,
+  onReset,
+  onOpenAbout,
+}: {
+  open: boolean;
+  onClose: () => void;
+  onReset: () => void;
+  onOpenAbout: () => void;
+}) {
   const { profile, updateSettings, resetProgress } = useProfile();
   const [confirm, setConfirm] = useState(false);
   const toast = useToast();
@@ -21,10 +31,25 @@ export function SettingsModal({ open, onClose, onReset }: { open: boolean; onClo
           <Toggle
             icon={<Volume2 size={16} />}
             label="Sound effects"
-            description="Subtle synthesized cues for guesses and reveals."
+            description="Soft chimes for guesses, clues and wins."
             checked={profile.settings.sound}
-            onChange={(v) => updateSettings({ sound: v })}
+            onChange={(v) => {
+              updateSettings({ sound: v });
+              if (v) window.setTimeout(() => play('reveal'), 30);
+            }}
           />
+          {hapticsSupported() && (
+            <Toggle
+              icon={<Smartphone size={16} />}
+              label="Haptic feedback"
+              description="Gentle vibrations when you guess, reveal and win."
+              checked={profile.settings.haptics}
+              onChange={(v) => {
+                updateSettings({ haptics: v });
+                if (v) window.setTimeout(() => void haptic('medium'), 30);
+              }}
+            />
+          )}
           <Toggle
             icon={<Wind size={16} />}
             label="Reduce animations"
@@ -42,25 +67,25 @@ export function SettingsModal({ open, onClose, onReset }: { open: boolean; onClo
           </Button>
         </div>
 
-        <div className="mt-6 space-y-2 text-[13.5px] leading-relaxed text-ink-muted">
-          <div className="font-display text-[17px] font-bold tracking-[-0.02em] text-ink">About</div>
-          <p>
-            Football Detective is a daily football mystery. Identify the footballer from progressive clues in six attempts. Every
-            incorrect guess reveals how close you were on nationality, position, club, league and era.
-          </p>
-          <p>
-            Scoring: {SCORING.base} for a solve, −{SCORING.wrongGuess} per wrong guess, −{SCORING.extraClue} per extra clue, +
-            {SCORING.firstGuessBonus} first-guess bonus, +{SCORING.noHintBonus} no-hint bonus.
-          </p>
-          <p>
-            {PLAYERS.length} curated players. Career data is correct to the 2025–26 season; club lists show senior clubs with some very
-            short loans omitted. &ldquo;League&rdquo; feedback uses each club&apos;s main division. The Daily Case is the same for every player
-            on the same local date.
-          </p>
-          {!storage.available() && (
-            <p className="text-warn">This device isn’t letting the game save. Progress will be lost when you close it.</p>
-          )}
-        </div>
+        <button
+          onClick={() => {
+            onClose();
+            onOpenAbout();
+          }}
+          className="mt-5 flex w-full items-center gap-3 rounded-[20px] border border-white/[0.08] bg-white/[0.05] p-3.5 text-left transition-colors hover:bg-white/[0.08]"
+        >
+          <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white/[0.08] text-ink">
+            <Info size={16} />
+          </div>
+          <div className="min-w-0 flex-1">
+            <div className="text-[15px] font-semibold text-ink">About and feedback</div>
+            <div className="text-[12.5px] text-ink-muted">How to play, the developer, and send feedback on Instagram</div>
+          </div>
+          <ChevronRight size={18} className="text-ink-faint" />
+        </button>
+        {!storage.available() && (
+          <p className="mt-4 text-[13.5px] text-warn">This device isn’t letting the game save. Progress will be lost when you close it.</p>
+        )}
       </Modal>
 
       <Modal

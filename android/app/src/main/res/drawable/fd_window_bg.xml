@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Matches the app's night-pitch backdrop, so any frame Android shows before the WebView draws
+     (cold start, returning from recents) looks like the app instead of a black flash. -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="270"
+                android:startColor="#050C0A"
+                android:centerColor="#08170F"
+                android:endColor="#0D2A1D"
+                android:type="linear" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="420dp"
+                android:centerX="0.15"
+                android:centerY="0.0"
+                android:startColor="#33E2EEFF"
+                android:endColor="#00E2EEFF" />
+        </shape>
+    </item>
+</layer-list>

@@ -7,6 +7,7 @@ import { nationInfo } from '@/data/nations';
 import { POSITION_LABEL } from '@/data/positions';
 import { normalize, searchPlayers } from '@/game/search';
 import { Button } from '@/components/ui/Button';
+import { haptic } from '@/utils/haptics';
 
 interface Props {
   onSubmit: (playerId: string) => Promise<{ ok: boolean; message?: string }>;
@@ -32,11 +33,13 @@ export function GuessInput({ onSubmit, disabled, busy, guessedIds }: Props) {
   useEffect(() => setActive(0), [query]);
 
   const fail = (msg: string) => {
+    void haptic('error');
     setError(msg);
     setShake((s) => s + 1);
   };
 
   const choose = (p: Player) => {
+    void haptic('selection');
     if (guessedIds.includes(p.id)) {
       fail('You have already guessed this player.');
       return;

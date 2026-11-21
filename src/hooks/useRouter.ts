@@ -5,7 +5,8 @@ export type Route =
   | { name: 'home' }
   | { name: 'play'; mode: GameMode }
   | { name: 'stats' }
-  | { name: 'players' };
+  | { name: 'players' }
+  | { name: 'about' };
 
 const MODES: GameMode[] = ['daily', 'practice', 'hardcore', 'career'];
 
@@ -14,6 +15,7 @@ export function parseHash(hash: string): Route {
   if (parts[0] === 'play' && MODES.includes(parts[1] as GameMode)) return { name: 'play', mode: parts[1] as GameMode };
   if (parts[0] === 'stats') return { name: 'stats' };
   if (parts[0] === 'players') return { name: 'players' };
+  if (parts[0] === 'about') return { name: 'about' };
   return { name: 'home' };
 }
 
@@ -25,6 +27,8 @@ export function routeToHash(r: Route): string {
       return '#/stats';
     case 'players':
       return '#/players';
+    case 'about':
+      return '#/about';
     default:
       return '#/';
   }

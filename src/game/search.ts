@@ -57,12 +57,12 @@ export function searchPlayers(players: Player[], query: string, limit = 8): Play
     let score = 0;
     if (item.full.startsWith(q)) score = 100;
     else if (qWords.every((w) => item.words.some((iw) => iw.startsWith(w)))) score = 80;
-    else if (item.full.includes(q)) score = 60;
+    else if (item.full.includes(q)) score = q.length >= 4 ? 60 : 25;
     else if (q.length >= 3) {
       const fuzzy = qWords.every((w) =>
         item.words.some((iw) => iw.length >= w.length && editDistance(iw.slice(0, w.length), w) <= 1),
       );
-      if (fuzzy) score = 30;
+      if (fuzzy) score = item.words.some((iw) => iw[0] === q[0]) ? 35 : 30;
     }
     if (score > 0) {
       // Prefer well-known players slightly when scores tie.

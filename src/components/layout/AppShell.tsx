@@ -1,11 +1,13 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { motion } from 'framer-motion';
-import { BarChart3, Flame, Home, Settings, Users } from 'lucide-react';
+import { BarChart3, Flame, Home, Info, Settings, Users } from 'lucide-react';
 import type { Route } from '@/hooks/useRouter';
 import { useProfile } from '@/hooks/useProfile';
 import { effectiveStreak } from '@/game/progression';
 import { toDateKey } from '@/utils/date';
 import { Logo } from './Logo';
+import { haptic } from '@/utils/haptics';
+import { play } from '@/utils/sound';
 import { PitchBackdrop } from './PitchBackdrop';
 
 interface Props {
@@ -19,6 +21,7 @@ const NAV: { route: Route; label: string; icon: typeof Home }[] = [
   { route: { name: 'home' }, label: 'Today', icon: Home },
   { route: { name: 'stats' }, label: 'Stats', icon: BarChart3 },
   { route: { name: 'players' }, label: 'Players', icon: Users },
+  { route: { name: 'about' }, label: 'About', icon: Info },
 ];
 
 function useScrolled() {
@@ -61,7 +64,13 @@ export function AppShell({ route, navigate, onOpenSettings, children }: Props) {
               return (
                 <button
                   key={n.label}
-                  onClick={() => navigate(n.route)}
+                  onClick={() => {
+                  if (activeName !== n.route.name) {
+                    void haptic('selection');
+                    play('select');
+                  }
+                  navigate(n.route);
+                }}
                   className={`relative flex h-8 items-center gap-1.5 rounded-full px-3.5 text-[13.5px] font-medium transition-colors ${
                     active ? 'text-ink' : 'text-ink-muted hover:text-ink'
                   }`}
@@ -105,13 +114,19 @@ export function AppShell({ route, navigate, onOpenSettings, children }: Props) {
 
       {/* Phones: floating glass tab bar (hidden during a case so the game gets the whole screen) */}
       <nav hidden={inGame} className="fixed inset-x-0 bottom-0 z-40 px-5 pb-[calc(env(safe-area-inset-bottom)+14px)] md:hidden" aria-label="Main">
-        <div className="glass-strong mx-auto grid h-[62px] max-w-[340px] grid-cols-3 rounded-full p-1.5">
+        <div className="glass-strong mx-auto grid h-[62px] max-w-[380px] grid-cols-4 rounded-full p-1.5">
           {NAV.map((n) => {
             const active = activeName === n.route.name;
             return (
               <button
                 key={n.label}
-                onClick={() => navigate(n.route)}
+                onClick={() => {
+                  if (activeName !== n.route.name) {
+                    void haptic('selection');
+                    play('select');
+                  }
+                  navigate(n.route);
+                }}
                 className={`relative flex flex-col items-center justify-center gap-0.5 rounded-full text-[11px] font-medium transition-colors ${
                   active ? 'text-ink' : 'text-ink-muted'
                 }`}

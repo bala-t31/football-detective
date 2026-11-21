@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { CheckCircle2, AlertCircle, Info } from 'lucide-react';
 import { useProfile } from '@/hooks/useProfile';
 import { play } from '@/utils/sound';
+import { haptic } from '@/utils/haptics';
 import { AchievementIcon } from './AchievementIcon';
 
 type Tone = 'success' | 'error' | 'info';
@@ -68,6 +69,7 @@ function AchievementToasts() {
   useEffect(() => {
     if (!current) return;
     play('unlock');
+    void haptic('success');
     const t = window.setTimeout(dismissAchievement, 3400);
     return () => window.clearTimeout(t);
   }, [current, dismissAchievement]);

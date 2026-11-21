@@ -1,6 +1,8 @@
 import type { Clue, Player, RawPlayer } from '@/types';
 import { LEGENDS } from './players/legends';
 import { MODERN } from './players/modern';
+import { MODERN_2 } from './players/modern2';
+import { LEGENDS_2 } from './players/legends2';
 import { leagueOf } from './clubs';
 
 const DIFFICULTY_BY_ORDER = ['easy', 'easy', 'medium', 'medium', 'hard', 'hard', 'hard'] as const;
@@ -51,7 +53,7 @@ function enrich(raw: RawPlayer): Player {
   };
 }
 
-export const PLAYERS: Player[] = [...MODERN, ...LEGENDS].map(enrich).sort((a, b) => a.name.localeCompare(b.name));
+export const PLAYERS: Player[] = [...MODERN, ...MODERN_2, ...LEGENDS, ...LEGENDS_2].map(enrich).sort((a, b) => a.name.localeCompare(b.name));
 
 export const PLAYER_BY_ID: Record<string, Player> = Object.fromEntries(PLAYERS.map((p) => [p.id, p]));
 

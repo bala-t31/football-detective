@@ -4,6 +4,7 @@ import { getPlayer } from '@/data';
 import { storage } from '@/utils/storage';
 import { toDateKey } from '@/utils/date';
 import { play } from '@/utils/sound';
+import { haptic } from '@/utils/haptics';
 import {
   cluesForRound,
   createRound,
@@ -63,12 +64,20 @@ export function useRound(mode: GameMode) {
       busyRef.current = true;
       setBusy(true);
       play('tap');
+      void haptic('light');
       return new Promise((resolve) => {
         window.setTimeout(() => {
           setRound(check.state);
-          if (check.state.status === 'won') play('win');
-          else if (check.state.status === 'lost') play('lose');
-          else play('wrong');
+          if (check.state.status === 'won') {
+            play('win');
+            void haptic('success');
+          } else if (check.state.status === 'lost') {
+            play('lose');
+            void haptic('error');
+          } else {
+            play('wrong');
+            void haptic('warning');
+          }
           if (check.state.status !== 'playing') setLastUnlocked(recordRound(check.state));
           busyRef.current = false;
           setBusy(false);
@@ -83,7 +92,10 @@ export function useRound(mode: GameMode) {
     if (busyRef.current) return;
     setRound((r) => {
       const next = revealNextClue(r);
-      if (next !== r) play('reveal');
+      if (next !== r) {
+        play('reveal');
+        void haptic('medium');
+      }
       return next;
     });
   }, []);

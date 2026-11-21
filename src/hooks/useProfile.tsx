@@ -3,6 +3,7 @@ import type { Achievement, GameRecord, Profile, RoundState, Settings } from '@/t
 import { storage } from '@/utils/storage';
 import { toDateKey } from '@/utils/date';
 import { setSoundEnabled } from '@/utils/sound';
+import { setHapticsEnabled } from '@/utils/haptics';
 import { applyDailyResult, newlyUnlocked } from '@/game/progression';
 
 const PROFILE_KEY = 'profile.v1';
@@ -16,7 +17,7 @@ export function defaultProfile(): Profile {
     discovered: {},
     history: [],
     daily: { currentStreak: 0, bestStreak: 0, lastWinDate: null, lastCompletedDate: null, completed: {} },
-    settings: { sound: true, reducedMotion: false },
+    settings: { sound: true, haptics: true, reducedMotion: false },
   };
 }
 
@@ -56,6 +57,7 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     storage.set(PROFILE_KEY, profile);
     setSoundEnabled(profile.settings.sound);
+    setHapticsEnabled(profile.settings.haptics);
   }, [profile]);
 
   const recordRound = useCallback((round: RoundState): Achievement[] => {

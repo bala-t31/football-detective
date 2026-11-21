@@ -7,6 +7,21 @@ interface NationInfo {
 }
 
 export const NATIONS: Record<string, NationInfo> = {
+  Australia: { confederation: 'AFC', flag: '🇦🇺', code: 'AUS' },
+  Austria: { confederation: 'UEFA', flag: '🇦🇹', code: 'AUT' },
+  Chile: { confederation: 'CONMEBOL', flag: '🇨🇱', code: 'CHI' },
+  Colombia: { confederation: 'CONMEBOL', flag: '🇨🇴', code: 'COL' },
+  Ghana: { confederation: 'CAF', flag: '🇬🇭', code: 'GHA' },
+  Guinea: { confederation: 'CAF', flag: '🇬🇳', code: 'GUI' },
+  Hungary: { confederation: 'UEFA', flag: '🇭🇺', code: 'HUN' },
+  Morocco: { confederation: 'CAF', flag: '🇲🇦', code: 'MAR' },
+  Nigeria: { confederation: 'CAF', flag: '🇳🇬', code: 'NGA' },
+  Romania: { confederation: 'UEFA', flag: '🇷🇴', code: 'ROU' },
+  'Saudi Arabia': { confederation: 'AFC', flag: '🇸🇦', code: 'KSA' },
+  Scotland: { confederation: 'UEFA', flag: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', code: 'SCO' },
+  Serbia: { confederation: 'UEFA', flag: '🇷🇸', code: 'SRB' },
+  Switzerland: { confederation: 'UEFA', flag: '🇨🇭', code: 'SUI' },
+  Turkey: { confederation: 'UEFA', flag: '🇹🇷', code: 'TUR' },
   Algeria: { confederation: 'CAF', flag: '🇩🇿', code: 'ALG' },
   Argentina: { confederation: 'CONMEBOL', flag: '🇦🇷', code: 'ARG' },
   Belgium: { confederation: 'UEFA', flag: '🇧🇪', code: 'BEL' },

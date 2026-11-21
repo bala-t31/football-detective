@@ -9,6 +9,7 @@ import { HomePage } from '@/pages/HomePage';
 import { GamePage } from '@/pages/GamePage';
 import { StatsPage } from '@/pages/StatsPage';
 import { PlayersPage } from '@/pages/PlayersPage';
+import { AboutPage } from '@/pages/AboutPage';
 
 function Routes() {
   const { route, navigate } = useRouter();
@@ -22,17 +23,25 @@ function Routes() {
       <AppShell route={route} navigate={navigate} onOpenSettings={() => setSettingsOpen(true)}>
         <motion.div
             key={pageKey}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.25, ease: 'easeOut' }}
+            // Never fade fully out: the new screen starts mostly visible and settles in,
+            // so switching tabs doesn't flash the background.
+            initial={{ opacity: 0.55, y: 10, scale: 0.995 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ type: 'spring', stiffness: 380, damping: 34, mass: 0.7 }}
           >
             {route.name === 'home' && <HomePage navigate={navigate} />}
             {route.name === 'play' && <GamePage mode={route.mode} navigate={navigate} />}
             {route.name === 'stats' && <StatsPage />}
             {route.name === 'players' && <PlayersPage />}
+            {route.name === 'about' && <AboutPage />}
           </motion.div>
       </AppShell>
-      <SettingsModal open={settingsOpen} onClose={() => setSettingsOpen(false)} onReset={() => setResetKey((k) => k + 1)} />
+      <SettingsModal
+        open={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
+        onReset={() => setResetKey((k) => k + 1)}
+        onOpenAbout={() => navigate({ name: 'about' })}
+      />
     </MotionConfig>
   );
 }

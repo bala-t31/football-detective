@@ -18,7 +18,7 @@ export const TEAMMATE_PUZZLES: TeammatePuzzle[] = [
       'andres-iniesta', 'xavi', 'carles-puyol', 'gerard-pique', 'sergio-busquets', 'ronaldinho', 'samuel-etoo',
       'deco', 'henrik-larsson', 'rafael-marquez', 'lilian-thuram', 'thierry-henry', 'yaya-toure',
       'zlatan-ibrahimovic', 'david-villa', 'javier-mascherano', 'cesc-fabregas', 'neymar', 'luis-suarez',
-      'ousmane-dembele', 'frenkie-de-jong', 'pedri', 'ronald-araujo',
+      'ousmane-dembele', 'frenkie-de-jong', 'pedri', 'ronald-araujo', 'jordi-alba', 'ivan-rakitic', 'philippe-coutinho', 'antoine-griezmann', 'thiago-alcantara'
     ],
   },
   {
@@ -26,7 +26,7 @@ export const TEAMMATE_PUZZLES: TeammatePuzzle[] = [
     answers: [
       'kaka', 'xabi-alonso', 'raul', 'iker-casillas', 'ruud-van-nistelrooy', 'gonzalo-higuain', 'marcelo',
       'pepe', 'angel-di-maria', 'mesut-ozil', 'raphael-varane', 'luka-modric', 'gareth-bale', 'casemiro',
-      'toni-kroos', 'mateo-kovacic', 'martin-odegaard', 'theo-hernandez', 'achraf-hakimi',
+      'toni-kroos', 'mateo-kovacic', 'martin-odegaard', 'theo-hernandez', 'achraf-hakimi', 'sergio-ramos', 'karim-benzema', 'dani-carvajal'
     ],
   },
   {
@@ -36,14 +36,14 @@ export const TEAMMATE_PUZZLES: TeammatePuzzle[] = [
       'nemanja-vidic', 'edwin-van-der-sar', 'park-ji-sung', 'carlos-tevez', 'dimitar-berbatov',
       'ole-gunnar-solskjaer', 'diego-forlan', 'tim-howard', 'gerard-pique', 'henrik-larsson',
       'bruno-fernandes', 'marcus-rashford', 'harry-maguire', 'raphael-varane', 'scott-mctominay',
-      'edinson-cavani', 'casemiro',
+      'edinson-cavani', 'casemiro', 'michael-carrick', 'gary-neville', 'nani'
     ],
   },
   {
     id: 'gerrard-liverpool', starId: 'steven-gerrard', club: 'Liverpool', years: '1998–2015',
     answers: [
       'michael-owen', 'nicolas-anelka', 'harry-kewell', 'xabi-alonso', 'javier-mascherano', 'fernando-torres',
-      'robbie-keane', 'luis-suarez', 'kolo-toure',
+      'robbie-keane', 'luis-suarez', 'kolo-toure', 'jamie-carragher', 'robbie-fowler', 'peter-crouch', 'dirk-kuyt', 'jordan-henderson', 'philippe-coutinho'
     ],
   },
   {
@@ -57,7 +57,7 @@ export const TEAMMATE_PUZZLES: TeammatePuzzle[] = [
     id: 'henry-arsenal', starId: 'thierry-henry', club: 'Arsenal', years: '1999–2007 and 2012',
     answers: [
       'dennis-bergkamp', 'patrick-vieira', 'robert-pires', 'ashley-cole', 'kolo-toure', 'nwankwo-kanu',
-      'davor-suker', 'cesc-fabregas', 'robin-van-persie', 'tomas-rosicky',
+      'davor-suker', 'cesc-fabregas', 'robin-van-persie', 'tomas-rosicky', 'tony-adams', 'sol-campbell', 'theo-walcott', 'emmanuel-adebayor'
     ],
   },
   {
@@ -65,7 +65,7 @@ export const TEAMMATE_PUZZLES: TeammatePuzzle[] = [
     answers: [
       'john-terry', 'petr-cech', 'ashley-cole', 'didier-drogba', 'claude-makelele', 'marcel-desailly',
       'hernan-crespo', 'arjen-robben', 'andriy-shevchenko', 'michael-ballack', 'deco', 'nicolas-anelka',
-      'fernando-torres', 'eden-hazard', 'romelu-lukaku', 'kevin-de-bruyne', 'mohamed-salah', 'samuel-etoo',
+      'fernando-torres', 'eden-hazard', 'romelu-lukaku', 'kevin-de-bruyne', 'mohamed-salah', 'samuel-etoo', 'michael-essien'
     ],
   },
   {
@@ -73,7 +73,7 @@ export const TEAMMATE_PUZZLES: TeammatePuzzle[] = [
     answers: [
       'alessandro-del-piero', 'pavel-nedved', 'lilian-thuram', 'fabio-cannavaro', 'zlatan-ibrahimovic',
       'patrick-vieira', 'giorgio-chiellini', 'andrea-pirlo', 'carlos-tevez', 'paulo-dybala',
-      'gonzalo-higuain', 'cristiano-ronaldo', 'matthijs-de-ligt', 'federico-chiesa', 'weston-mckennie',
+      'gonzalo-higuain', 'cristiano-ronaldo', 'matthijs-de-ligt', 'federico-chiesa', 'weston-mckennie', 'paul-pogba', 'david-trezeguet', 'mario-mandzukic', 'edgar-davids', 'wojciech-szczesny', 'moise-kean', 'dejan-kulusevski'
     ],
   },
   {
@@ -82,7 +82,7 @@ export const TEAMMATE_PUZZLES: TeammatePuzzle[] = [
       'franco-baresi', 'ruud-gullit', 'marco-van-basten', 'frank-rijkaard', 'marcel-desailly', 'george-weah',
       'roberto-baggio', 'patrick-vieira', 'patrick-kluivert', 'andriy-shevchenko', 'rui-costa',
       'alessandro-nesta', 'andrea-pirlo', 'clarence-seedorf', 'gennaro-gattuso', 'filippo-inzaghi',
-      'cafu', 'hernan-crespo', 'kaka', 'ronaldo-nazario', 'ronaldinho', 'david-beckham',
+      'cafu', 'hernan-crespo', 'kaka', 'ronaldo-nazario', 'ronaldinho', 'david-beckham', 'christian-vieri', 'rivaldo', 'edgar-davids'
     ],
   },
   {
@@ -90,7 +90,7 @@ export const TEAMMATE_PUZZLES: TeammatePuzzle[] = [
     answers: [
       'manuel-neuer', 'thomas-muller', 'philipp-lahm', 'bastian-schweinsteiger', 'xabi-alonso', 'arjen-robben',
       'franck-ribery', 'david-alaba', 'mats-hummels', 'joshua-kimmich', 'alphonso-davies', 'leroy-sane',
-      'jamal-musiala',
+      'jamal-musiala', 'thiago-alcantara', 'leon-goretzka', 'serge-gnabry', 'kingsley-coman', 'mario-gotze', 'philippe-coutinho'
     ],
   },
   {
@@ -106,7 +106,7 @@ export const TEAMMATE_PUZZLES: TeammatePuzzle[] = [
     answers: [
       'kevin-de-bruyne', 'rodri', 'bernardo-silva', 'phil-foden', 'ruben-dias', 'ederson', 'jack-grealish',
       'ilkay-gundogan', 'riyad-mahrez', 'julian-alvarez', 'cole-palmer', 'mateo-kovacic', 'josko-gvardiol',
-      'jeremy-doku', 'omar-marmoush', 'gianluigi-donnarumma',
+      'jeremy-doku', 'omar-marmoush', 'gianluigi-donnarumma', 'kyle-walker', 'john-stones'
     ],
   },
   {

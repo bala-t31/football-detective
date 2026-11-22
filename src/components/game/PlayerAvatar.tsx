@@ -55,8 +55,8 @@ export function PlayerAvatar({ player, revealed, size = 'md', scanning = false }
             <motion.div
               key="revealed"
               className="absolute inset-0 grid place-items-center"
-              initial={{ opacity: 0, scale: 1.25, filter: 'blur(14px)' }}
-              animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+              initial={{ opacity: 0, scale: 1.18 }}
+              animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             >
               <div className="text-center">
@@ -67,7 +67,7 @@ export function PlayerAvatar({ player, revealed, size = 'md', scanning = false }
               </div>
             </motion.div>
           ) : (
-            <motion.div key="mystery" className="absolute inset-0" exit={{ opacity: 0, filter: 'blur(10px)' }}>
+            <motion.div key="mystery" className="absolute inset-0" exit={{ opacity: 0, scale: 0.96 }}>
               <div className="absolute inset-x-0 bottom-0 top-[12%] blur-[1.5px]">
                 <Silhouette />
               </div>
@@ -90,7 +90,7 @@ export function PlayerAvatar({ player, revealed, size = 'md', scanning = false }
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ type: 'spring', stiffness: 420, damping: 18, delay: 0.45 }}
-          className={`absolute grid place-items-center rounded-full border border-white/25 bg-pitch-900/80 shadow-lg backdrop-blur ${big ? '-bottom-0.5 -right-0.5 h-11 w-11 text-[22px]' : 'bottom-0 right-0 h-8 w-8 text-base'}`}
+          className={`absolute grid place-items-center rounded-full border border-white/25 bg-pitch-900 shadow-lg ${big ? '-bottom-0.5 -right-0.5 h-11 w-11 text-[22px]' : 'bottom-0 right-0 h-8 w-8 text-base'}`}
         >
           {nationInfo(player.nationality).flag}
         </motion.div>

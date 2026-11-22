@@ -1,3 +1,4 @@
+import { weekVerdict } from '@/game/levels';
 import { CheckCircle2, Circle, XCircle } from 'lucide-react';
 import { getPlayer } from '@/data';
 import { LEGENDS_PER_WEEK, daysUntilNextWeek, weekNumber, type LegendResult } from '@/game/weekly';
@@ -38,10 +39,10 @@ export function WeekSummary({ weekKey, results }: { weekKey: string; results: Le
             className="mt-3 w-full"
             data={() => ({
               eyebrow: `Weekly Legends · Week ${weekNumber(weekKey)}`,
-              headline: `${solved} of ${LEGENDS_PER_WEEK} legends solved`,
+              headline: weekVerdict(solved),
               won: solved > 0,
               score: total,
-              detail: `${results.reduce((s, r) => s + r.guesses, 0)} guesses across the week`,
+              detail: `${solved} of ${LEGENDS_PER_WEEK} legends solved this week`,
               tiles: results.map((r) => (r.won ? 'hit' : 'miss')),
               cta: 'Can you name all five?',
             })}

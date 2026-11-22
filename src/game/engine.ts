@@ -4,7 +4,9 @@ import { toDateKey } from '@/utils/date';
 import { caseNumberFor, dailyPlayerId } from './daily';
 import { legendsForWeek, legendsProgress, weekKeyFor } from './weekly';
 import { hashString, randomId } from './random';
-import { calculateScore } from './scoring';
+import { calculateScore, REVEAL_ANSWER_COST } from './scoring';
+import type { PracticeLevel } from './levels';
+import { storage } from '@/utils/storage';
 import { compareGuess } from './feedback';
 
 export interface ModeConfig {
@@ -99,8 +101,20 @@ export function cluesForRound(player: Player, mode: GameMode): Clue[] {
   return stops;
 }
 
+const PRACTICE_LEVEL_KEY = 'practice.level';
+
+export function getPracticeLevel(): PracticeLevel {
+  const v = storage.get<PracticeLevel>(PRACTICE_LEVEL_KEY, 'easy');
+  return v === 'easy' || v === 'medium' || v === 'hard' || v === 'all' ? v : 'easy';
+}
+
+export function setPracticeLevel(level: PracticeLevel) {
+  storage.set(PRACTICE_LEVEL_KEY, level);
+}
+
 function pickRandom(mode: GameMode, exclude: string[]): Player {
-  const pool = PLAYERS.filter(MODES[mode].pool);
+  const level = mode === 'practice' ? getPracticeLevel() : 'all';
+  const pool = PLAYERS.filter((p) => MODES[mode].pool(p) && (level === 'all' || p.difficulty === level));
   const fresh = pool.filter((p) => !exclude.includes(p.id));
   const source = fresh.length > 0 ? fresh : pool;
   return source[Math.floor(Math.random() * source.length)];
@@ -177,6 +191,21 @@ export function submitGuess(state: RoundState, guessId: string): GuessResult {
     };
   }
   return { ok: true, state: next, correct };
+}
+
+/** Ends the round by showing the answer. Costs XP from the player's total. */
+export function giveUp(state: RoundState): RoundState {
+  if (state.status !== 'playing') return state;
+  return {
+    ...state,
+    status: 'lost',
+    gaveUp: true,
+    finishedAt: Date.now(),
+    score: {
+      base: 0, wrongGuessPenalty: 0, cluePenalty: 0, firstGuessBonus: 0, noHintBonus: 0,
+      multiplier: 1, revealPenalty: REVEAL_ANSWER_COST, total: -REVEAL_ANSWER_COST,
+    },
+  };
 }
 
 export function totalClues(state: RoundState): number {

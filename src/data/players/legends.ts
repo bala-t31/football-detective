@@ -213,7 +213,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'mesut-ozil', name: 'Mesut Özil', aka: ['Mesut Ozil', 'Ozil'], nationality: 'Germany',
     position: 'AM', secondaryPositions: ['W'], from: 2006, to: 2023,
     careerClubs: ['Schalke 04', 'Werder Bremen', 'Real Madrid', 'Arsenal', 'Fenerbahçe', 'İstanbul Başakşehir'],
-    shirtNumbers: [10, 11, 23], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [10, 11, 23], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A left-footed playmaker known for his vision and assists.'],
       ['nationality', 'Represented Germany at international level.'],
@@ -226,7 +226,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'frank-lampard', name: 'Frank Lampard', aka: ['Lamps'], nationality: 'England',
     position: 'CM', secondaryPositions: ['AM'], from: 1995, to: 2017,
     careerClubs: ['West Ham United', 'Chelsea', 'Manchester City', 'New York City FC'],
-    shirtNumbers: [8], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [8], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A goalscoring central midfielder with perfectly timed late runs.'],
       ['nationality', 'Represented England at international level.'],
@@ -239,7 +239,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'ryan-giggs', name: 'Ryan Giggs', nationality: 'Wales',
     position: 'W', secondaryPositions: ['CM'], from: 1990, to: 2014,
     careerClubs: ['Manchester United'],
-    shirtNumbers: [11], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [11], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A left winger who later reinvented himself as a central midfielder.'],
       ['clubs', 'A one-club man.'],
@@ -252,7 +252,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'paul-scholes', name: 'Paul Scholes', nationality: 'England',
     position: 'CM', secondaryPositions: ['AM'], from: 1993, to: 2013,
     careerClubs: ['Manchester United'],
-    shirtNumbers: [18], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [18], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A central midfielder admired for his passing range and shooting.'],
       ['clubs', 'A one-club man.'],
@@ -265,7 +265,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'didier-drogba', name: 'Didier Drogba', nationality: 'Ivory Coast',
     position: 'ST', from: 1998, to: 2018,
     careerClubs: ['Le Mans', 'Guingamp', 'Marseille', 'Chelsea', 'Shanghai Shenhua', 'Galatasaray', 'Chelsea', 'Montreal Impact', 'Phoenix Rising'],
-    shirtNumbers: [11], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [11], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A physically dominant centre-forward.'],
       ['league', 'Played in France, England, China, Turkey and North America.'],
@@ -278,7 +278,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'samuel-etoo', name: "Samuel Eto'o", aka: ['Samuel Etoo', 'Eto’o'], nationality: 'Cameroon',
     position: 'ST', secondaryPositions: ['W'], from: 1997, to: 2019,
     careerClubs: ['Mallorca', 'Barcelona', 'Inter Milan', 'Anzhi Makhachkala', 'Chelsea', 'Everton', 'Sampdoria', 'Antalyaspor', 'Konyaspor', 'Qatar SC'],
-    shirtNumbers: [9], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [9], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A rapid, clinical striker.'],
       ['nationality', 'Represented Cameroon and is their all-time leading scorer.'],
@@ -291,7 +291,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'andrea-pirlo', name: 'Andrea Pirlo', nationality: 'Italy',
     position: 'DM', secondaryPositions: ['CM'], from: 1995, to: 2017,
     careerClubs: ['Brescia', 'Inter Milan', 'AC Milan', 'Juventus', 'New York City FC'],
-    shirtNumbers: [21], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [21], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A deep-lying playmaker who controlled games from in front of the defence.'],
       ['nationality', 'Represented Italy at international level.'],
@@ -304,7 +304,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'francesco-totti', name: 'Francesco Totti', nationality: 'Italy',
     position: 'AM', secondaryPositions: ['ST'], from: 1992, to: 2017,
     careerClubs: ['Roma'],
-    shirtNumbers: [10], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [10], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A No. 10 who later played as a false nine.'],
       ['clubs', 'A one-club man in Serie A.'],
@@ -317,7 +317,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'alessandro-del-piero', name: 'Alessandro Del Piero', aka: ['Del Piero', 'Pinturicchio'], nationality: 'Italy',
     position: 'ST', secondaryPositions: ['AM'], from: 1991, to: 2014,
     careerClubs: ['Padova', 'Juventus', 'Sydney FC', 'Delhi Dynamos'],
-    shirtNumbers: [10], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [10], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A second striker famous for curling efforts from the left.'],
       ['nationality', 'Represented Italy at international level.'],
@@ -330,7 +330,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'fabio-cannavaro', name: 'Fabio Cannavaro', nationality: 'Italy',
     position: 'CB', from: 1992, to: 2011,
     careerClubs: ['Napoli', 'Parma', 'Inter Milan', 'Juventus', 'Real Madrid', 'Juventus', 'Al-Ahli Dubai'],
-    shirtNumbers: [5], worldCupWinner: true, ballonDorAwards: 1, difficulty: 'medium',
+    shirtNumbers: [5], worldCupWinner: true, ballonDorAwards: 1, difficulty: 'easy',
     clues: [
       ['position', 'A centre-back who excelled despite being shorter than most defenders.'],
       ['nationality', 'Represented Italy at international level.'],
@@ -343,7 +343,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'iker-casillas', name: 'Iker Casillas', nationality: 'Spain',
     position: 'GK', from: 1999, to: 2020,
     careerClubs: ['Real Madrid', 'Porto'],
-    shirtNumbers: [1], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [1], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A goalkeeper renowned for his reflexes.'],
       ['nationality', 'Represented Spain at international level.'],
@@ -356,7 +356,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'carles-puyol', name: 'Carles Puyol', nationality: 'Spain',
     position: 'CB', secondaryPositions: ['FB'], from: 1999, to: 2014,
     careerClubs: ['Barcelona'],
-    shirtNumbers: [5], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [5], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A fearless centre-back who began his career at right-back.'],
       ['clubs', 'A one-club man.'],
@@ -369,7 +369,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'roberto-carlos', name: 'Roberto Carlos', nationality: 'Brazil',
     position: 'FB', from: 1991, to: 2015,
     careerClubs: ['Palmeiras', 'Inter Milan', 'Real Madrid', 'Fenerbahçe', 'Corinthians', 'Anzhi Makhachkala', 'Delhi Dynamos'],
-    shirtNumbers: [3], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [3], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'An attacking left-back with a thunderous shot.'],
       ['nationality', 'Represented Brazil at international level.'],
@@ -382,7 +382,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'cafu', name: 'Cafu', nationality: 'Brazil',
     position: 'FB', from: 1989, to: 2008,
     careerClubs: ['São Paulo', 'Real Zaragoza', 'Juventude', 'Palmeiras', 'Roma', 'AC Milan'],
-    shirtNumbers: [2], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [2], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A tireless attacking right-back.'],
       ['nationality', 'Represented Brazil at international level.'],
@@ -420,7 +420,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'bastian-schweinsteiger', name: 'Bastian Schweinsteiger', aka: ['Schweini'], nationality: 'Germany',
     position: 'CM', secondaryPositions: ['DM', 'W'], from: 2002, to: 2019,
     careerClubs: ['Bayern Munich', 'Manchester United', 'Chicago Fire'],
-    shirtNumbers: [31, 7], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [31, 7], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'Started as a winger before becoming a central midfielder.'],
       ['nationality', 'Represented Germany at international level.'],
@@ -433,7 +433,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'miroslav-klose', name: 'Miroslav Klose', nationality: 'Germany',
     position: 'ST', from: 1998, to: 2016,
     careerClubs: ['Kaiserslautern', 'Werder Bremen', 'Bayern Munich', 'Lazio'],
-    shirtNumbers: [11], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [11], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A penalty-box striker known for heading ability.'],
       ['nationality', 'Represented Germany at international level.'],
@@ -446,7 +446,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'toni-kroos', name: 'Toni Kroos', nationality: 'Germany',
     position: 'CM', from: 2007, to: 2024,
     careerClubs: ['Bayern Munich', 'Bayer Leverkusen', 'Bayern Munich', 'Real Madrid'],
-    shirtNumbers: [39, 8], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [39, 8], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A metronomic central midfielder with superb passing accuracy.'],
       ['nationality', 'Represented Germany at international level.'],
@@ -459,7 +459,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'arjen-robben', name: 'Arjen Robben', nationality: 'Netherlands',
     position: 'W', from: 2000, to: 2021,
     careerClubs: ['Groningen', 'PSV Eindhoven', 'Chelsea', 'Real Madrid', 'Bayern Munich', 'Groningen'],
-    shirtNumbers: [10, 11], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [10, 11], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A left-footed right winger who loved to cut inside.'],
       ['nationality', 'Represented the Netherlands at international level.'],
@@ -472,7 +472,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'robin-van-persie', name: 'Robin van Persie', aka: ['RvP', 'Van Persie'], nationality: 'Netherlands',
     position: 'ST', from: 2001, to: 2019,
     careerClubs: ['Feyenoord', 'Arsenal', 'Manchester United', 'Fenerbahçe', 'Feyenoord'],
-    shirtNumbers: [10, 20, 9], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [10, 20, 9], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A left-footed striker with exceptional volleying technique.'],
       ['nationality', 'Represented the Netherlands at international level.'],
@@ -485,7 +485,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'dennis-bergkamp', name: 'Dennis Bergkamp', nationality: 'Netherlands',
     position: 'ST', secondaryPositions: ['AM'], from: 1986, to: 2006,
     careerClubs: ['Ajax', 'Inter Milan', 'Arsenal'],
-    shirtNumbers: [10], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [10], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A deep-lying forward of exquisite touch.'],
       ['nationality', 'Represented the Netherlands at international level.'],
@@ -498,7 +498,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'ruud-van-nistelrooy', name: 'Ruud van Nistelrooy', aka: ['Van Nistelrooy', 'RVN'], nationality: 'Netherlands',
     position: 'ST', from: 1993, to: 2012,
     careerClubs: ['Heerenveen', 'PSV Eindhoven', 'Manchester United', 'Real Madrid', 'Hamburger SV', 'Málaga'],
-    shirtNumbers: [10, 17], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [10, 17], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A prolific penalty-box poacher.'],
       ['nationality', 'Represented the Netherlands at international level.'],
@@ -535,7 +535,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'luis-figo', name: 'Luís Figo', aka: ['Luis Figo'], nationality: 'Portugal',
     position: 'W', secondaryPositions: ['AM'], from: 1989, to: 2009,
     careerClubs: ['Sporting CP', 'Barcelona', 'Real Madrid', 'Inter Milan'],
-    shirtNumbers: [7, 10], worldCupWinner: false, ballonDorAwards: 1, difficulty: 'medium',
+    shirtNumbers: [7, 10], worldCupWinner: false, ballonDorAwards: 1, difficulty: 'easy',
     clues: [
       ['position', 'A skilful winger who loved to beat full-backs.'],
       ['nationality', 'Represented Portugal at international level.'],
@@ -547,7 +547,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'fernando-torres', name: 'Fernando Torres', aka: ['El Niño', 'El Nino'], nationality: 'Spain',
     position: 'ST', from: 2001, to: 2019,
     careerClubs: ['Atlético Madrid', 'Liverpool', 'Chelsea', 'AC Milan', 'Atlético Madrid', 'Sagan Tosu'],
-    shirtNumbers: [9], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [9], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A fast, direct centre-forward.'],
       ['nationality', 'Represented Spain at international level.'],
@@ -560,7 +560,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'david-villa', name: 'David Villa', nationality: 'Spain',
     position: 'ST', secondaryPositions: ['W'], from: 2000, to: 2019,
     careerClubs: ['Sporting Gijón', 'Real Zaragoza', 'Valencia', 'Barcelona', 'Atlético Madrid', 'New York City FC', 'Vissel Kobe'],
-    shirtNumbers: [7], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [7], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A versatile forward who could lead the line or play wide.'],
       ['nationality', 'Represented Spain at international level.'],
@@ -573,7 +573,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'raul', name: 'Raúl', aka: ['Raul', 'Raúl González'], nationality: 'Spain',
     position: 'ST', from: 1994, to: 2015,
     careerClubs: ['Real Madrid', 'Schalke 04', 'Al Sadd', 'New York Cosmos'],
-    shirtNumbers: [7], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [7], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A clever, instinctive striker.'],
       ['nationality', 'Represented Spain at international level.'],
@@ -585,7 +585,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'petr-cech', name: 'Petr Čech', aka: ['Petr Cech'], nationality: 'Czech Republic',
     position: 'GK', from: 1999, to: 2019,
     careerClubs: ['Chmel Blšany', 'Sparta Prague', 'Rennes', 'Chelsea', 'Arsenal'],
-    shirtNumbers: [1, 33], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [1, 33], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A tall, composed goalkeeper.'],
       ['nationality', 'Represented the Czech Republic at international level.'],
@@ -597,7 +597,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'john-terry', name: 'John Terry', nationality: 'England',
     position: 'CB', from: 1998, to: 2018,
     careerClubs: ['Chelsea', 'Aston Villa'],
-    shirtNumbers: [26], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [26], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A commanding centre-back and long-time captain.'],
       ['nationality', 'Represented England at international level.'],
@@ -609,7 +609,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'rio-ferdinand', name: 'Rio Ferdinand', nationality: 'England',
     position: 'CB', from: 1995, to: 2015,
     careerClubs: ['West Ham United', 'Leeds United', 'Manchester United', 'Queens Park Rangers'],
-    shirtNumbers: [5], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [5], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A ball-playing centre-back with great pace.'],
       ['nationality', 'Represented England at international level.'],
@@ -633,7 +633,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'xabi-alonso', name: 'Xabi Alonso', nationality: 'Spain',
     position: 'DM', secondaryPositions: ['CM'], from: 1999, to: 2017,
     careerClubs: ['Real Sociedad', 'Liverpool', 'Real Madrid', 'Bayern Munich'],
-    shirtNumbers: [14], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [14], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A deep-lying midfielder with a superb long-range passing game.'],
       ['nationality', 'Represented Spain at international level.'],
@@ -646,7 +646,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'sergio-busquets', name: 'Sergio Busquets', nationality: 'Spain',
     position: 'DM', from: 2008, to: 2025,
     careerClubs: ['Barcelona', 'Inter Miami'],
-    shirtNumbers: [5], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [5], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A defensive midfielder known for press-resistance and positioning.'],
       ['nationality', 'Represented Spain at international level.'],
@@ -658,7 +658,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'gerard-pique', name: 'Gerard Piqué', aka: ['Gerard Pique'], nationality: 'Spain',
     position: 'CB', from: 2004, to: 2022,
     careerClubs: ['Manchester United', 'Real Zaragoza', 'Barcelona'],
-    shirtNumbers: [3], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [3], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A tall, ball-playing centre-back.'],
       ['nationality', 'Represented Spain at international level.'],
@@ -671,7 +671,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'yaya-toure', name: 'Yaya Touré', aka: ['Yaya Toure'], nationality: 'Ivory Coast',
     position: 'CM', secondaryPositions: ['DM'], from: 2001, to: 2020,
     careerClubs: ['Beveren', 'Metalurh Donetsk', 'Olympiacos', 'Monaco', 'Barcelona', 'Manchester City', 'Olympiacos', 'Qingdao Huanghai'],
-    shirtNumbers: [42], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [42], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A powerful box-to-box midfielder.'],
       ['league', 'Played in Belgium, Ukraine, Greece, France, Spain, England and China.'],
@@ -736,7 +736,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'marcelo', name: 'Marcelo', aka: ['Marcelo Vieira'], nationality: 'Brazil',
     position: 'FB', from: 2005, to: 2025,
     careerClubs: ['Fluminense', 'Real Madrid', 'Olympiacos', 'Fluminense'],
-    shirtNumbers: [12], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [12], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'An attacking left-back with outstanding technique.'],
       ['nationality', 'Represented Brazil at international level.'],
@@ -749,7 +749,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'franck-ribery', name: 'Franck Ribéry', aka: ['Franck Ribery'], nationality: 'France',
     position: 'W', from: 2000, to: 2022,
     careerClubs: ['Metz', 'Galatasaray', 'Marseille', 'Bayern Munich', 'Fiorentina', 'Salernitana'],
-    shirtNumbers: [7], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [7], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A dynamic, dribbling left winger.'],
       ['nationality', 'Represented France at international level.'],
@@ -788,7 +788,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'andriy-shevchenko', name: 'Andriy Shevchenko', aka: ['Sheva'], nationality: 'Ukraine',
     position: 'ST', from: 1994, to: 2012,
     careerClubs: ['Dynamo Kyiv', 'AC Milan', 'Chelsea', 'AC Milan', 'Dynamo Kyiv'],
-    shirtNumbers: [7], worldCupWinner: false, ballonDorAwards: 1, difficulty: 'medium',
+    shirtNumbers: [7], worldCupWinner: false, ballonDorAwards: 1, difficulty: 'easy',
     clues: [
       ['position', 'A complete, clinical centre-forward.'],
       ['nationality', 'Represented Ukraine at international level.'],
@@ -814,7 +814,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'cesc-fabregas', name: 'Cesc Fàbregas', aka: ['Cesc Fabregas', 'Fabregas'], nationality: 'Spain',
     position: 'CM', secondaryPositions: ['AM'], from: 2003, to: 2023,
     careerClubs: ['Arsenal', 'Barcelona', 'Chelsea', 'Monaco', 'Como'],
-    shirtNumbers: [4], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [4], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A creative central midfielder with an eye for a through ball.'],
       ['nationality', 'Represented Spain at international level.'],
@@ -827,7 +827,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'david-silva', name: 'David Silva', nationality: 'Spain',
     position: 'AM', secondaryPositions: ['W'], from: 2003, to: 2023,
     careerClubs: ['Eibar', 'Celta Vigo', 'Valencia', 'Manchester City', 'Real Sociedad'],
-    shirtNumbers: [21], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [21], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A left-footed playmaker who operated between the lines.'],
       ['nationality', 'Represented Spain at international level.'],
@@ -853,7 +853,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'michael-owen', name: 'Michael Owen', nationality: 'England',
     position: 'ST', from: 1996, to: 2013,
     careerClubs: ['Liverpool', 'Real Madrid', 'Newcastle United', 'Manchester United', 'Stoke City'],
-    shirtNumbers: [10], worldCupWinner: false, ballonDorAwards: 1, difficulty: 'medium',
+    shirtNumbers: [10], worldCupWinner: false, ballonDorAwards: 1, difficulty: 'easy',
     clues: [
       ['position', 'A rapid striker who broke through as a teenager.'],
       ['nationality', 'Represented England at international level.'],
@@ -866,7 +866,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'roberto-baggio', name: 'Roberto Baggio', aka: ['Il Divin Codino'], nationality: 'Italy',
     position: 'AM', secondaryPositions: ['ST'], from: 1982, to: 2004,
     careerClubs: ['Vicenza', 'Fiorentina', 'Juventus', 'AC Milan', 'Bologna', 'Inter Milan', 'Brescia'],
-    shirtNumbers: [10], worldCupWinner: false, ballonDorAwards: 1, difficulty: 'medium',
+    shirtNumbers: [10], worldCupWinner: false, ballonDorAwards: 1, difficulty: 'easy',
     clues: [
       ['position', 'A No. 10 known for his elegance and ponytail.'],
       ['nationality', 'Represented Italy at international level.'],
@@ -879,7 +879,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'paolo-maldini', name: 'Paolo Maldini', nationality: 'Italy',
     position: 'CB', secondaryPositions: ['FB'], from: 1985, to: 2009,
     careerClubs: ['AC Milan'],
-    shirtNumbers: [3], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [3], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A defender equally at home at left-back or centre-back.'],
       ['clubs', 'A one-club man over 24 seasons.'],
@@ -892,7 +892,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'franco-baresi', name: 'Franco Baresi', nationality: 'Italy',
     position: 'CB', from: 1977, to: 1997,
     careerClubs: ['AC Milan'],
-    shirtNumbers: [6], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'hard',
+    shirtNumbers: [6], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'medium',
     clues: [
       ['position', 'A sweeper who organised one of history\'s great defences.'],
       ['clubs', 'A one-club man.'],
@@ -905,7 +905,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'roy-keane', name: 'Roy Keane', nationality: 'Republic of Ireland',
     position: 'DM', secondaryPositions: ['CM'], from: 1989, to: 2006,
     careerClubs: ['Cobh Ramblers', 'Nottingham Forest', 'Manchester United', 'Celtic'],
-    shirtNumbers: [16], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'hard',
+    shirtNumbers: [16], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
     clues: [
       ['position', 'A combative midfield leader.'],
       ['nationality', 'Represented the Republic of Ireland at international level.'],
@@ -918,7 +918,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'javier-zanetti', name: 'Javier Zanetti', aka: ['Pupi'], nationality: 'Argentina',
     position: 'FB', secondaryPositions: ['DM'], from: 1992, to: 2014,
     careerClubs: ['Banfield', 'Inter Milan'],
-    shirtNumbers: [4], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'hard',
+    shirtNumbers: [4], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
     clues: [
       ['position', 'A durable right-back who also played in midfield.'],
       ['nationality', 'Represented Argentina at international level.'],
@@ -931,7 +931,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'juan-roman-riquelme', name: 'Juan Román Riquelme', aka: ['Riquelme', 'Juan Roman Riquelme'], nationality: 'Argentina',
     position: 'AM', from: 1996, to: 2014,
     careerClubs: ['Boca Juniors', 'Barcelona', 'Villarreal', 'Boca Juniors', 'Argentinos Juniors'],
-    shirtNumbers: [10], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'hard',
+    shirtNumbers: [10], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
     clues: [
       ['position', 'A classic, unhurried No. 10.'],
       ['nationality', 'Represented Argentina at international level.'],
@@ -944,7 +944,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'lilian-thuram', name: 'Lilian Thuram', nationality: 'France',
     position: 'FB', secondaryPositions: ['CB'], from: 1991, to: 2008,
     careerClubs: ['Monaco', 'Parma', 'Juventus', 'Barcelona'],
-    worldCupWinner: true, ballonDorAwards: 0, difficulty: 'hard',
+    worldCupWinner: true, ballonDorAwards: 0, difficulty: 'medium',
     clues: [
       ['position', 'A defender who played right-back and centre-back.'],
       ['nationality', 'Represented France at international level.'],
@@ -957,7 +957,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'michel-platini', name: 'Michel Platini', nationality: 'France',
     position: 'AM', from: 1972, to: 1987,
     careerClubs: ['Nancy', 'Saint-Étienne', 'Juventus'],
-    shirtNumbers: [10], worldCupWinner: false, ballonDorAwards: 3, difficulty: 'hard',
+    shirtNumbers: [10], worldCupWinner: false, ballonDorAwards: 3, difficulty: 'medium',
     clues: [
       ['position', 'A goalscoring No. 10 of the 1970s and 1980s.'],
       ['nationality', 'Represented France at international level.'],
@@ -970,7 +970,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'marco-van-basten', name: 'Marco van Basten', aka: ['Van Basten'], nationality: 'Netherlands',
     position: 'ST', from: 1981, to: 1995,
     careerClubs: ['Ajax', 'AC Milan'],
-    worldCupWinner: false, ballonDorAwards: 3, difficulty: 'hard',
+    worldCupWinner: false, ballonDorAwards: 3, difficulty: 'medium',
     clues: [
       ['position', 'An elegant striker whose career was cut short by injury.'],
       ['nationality', 'Represented the Netherlands at international level.'],
@@ -983,7 +983,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'alessandro-nesta', name: 'Alessandro Nesta', nationality: 'Italy',
     position: 'CB', from: 1993, to: 2014,
     careerClubs: ['Lazio', 'AC Milan', 'Montreal Impact', 'Chennaiyin FC'],
-    shirtNumbers: [13], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'hard',
+    shirtNumbers: [13], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'medium',
     clues: [
       ['position', 'A graceful centre-back famed for his tackling.'],
       ['nationality', 'Represented Italy at international level.'],
@@ -996,7 +996,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'giorgio-chiellini', name: 'Giorgio Chiellini', nationality: 'Italy',
     position: 'CB', secondaryPositions: ['FB'], from: 2000, to: 2023,
     careerClubs: ['Livorno', 'Fiorentina', 'Juventus', 'Los Angeles FC'],
-    shirtNumbers: [3], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'hard',
+    shirtNumbers: [3], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
     clues: [
       ['position', 'An uncompromising centre-back.'],
       ['nationality', 'Represented Italy at international level.'],
@@ -1009,7 +1009,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'peter-schmeichel', name: 'Peter Schmeichel', nationality: 'Denmark',
     position: 'GK', from: 1981, to: 2003,
     careerClubs: ['Hvidovre', 'Brøndby', 'Manchester United', 'Sporting CP', 'Aston Villa', 'Manchester City'],
-    shirtNumbers: [1], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'hard',
+    shirtNumbers: [1], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
     clues: [
       ['position', 'An imposing goalkeeper famous for star-jump saves.'],
       ['nationality', 'Represented Denmark at international level.'],
@@ -1022,7 +1022,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'henrik-larsson', name: 'Henrik Larsson', nationality: 'Sweden',
     position: 'ST', from: 1992, to: 2009,
     careerClubs: ['Helsingborgs IF', 'Feyenoord', 'Celtic', 'Barcelona', 'Manchester United', 'Helsingborgs IF'],
-    shirtNumbers: [7], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'hard',
+    shirtNumbers: [7], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
     clues: [
       ['position', 'A clinical striker of the 1990s and 2000s.'],
       ['nationality', 'Represented Sweden at international level.'],
@@ -1035,7 +1035,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'vincent-kompany', name: 'Vincent Kompany', nationality: 'Belgium',
     position: 'CB', secondaryPositions: ['DM'], from: 2003, to: 2020,
     careerClubs: ['Anderlecht', 'Hamburger SV', 'Manchester City', 'Anderlecht'],
-    shirtNumbers: [4], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'hard',
+    shirtNumbers: [4], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
     clues: [
       ['position', 'A commanding centre-back and captain.'],
       ['nationality', 'Represented Belgium at international level.'],
@@ -1048,7 +1048,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'dimitar-berbatov', name: 'Dimitar Berbatov', nationality: 'Bulgaria',
     position: 'ST', from: 1998, to: 2018,
     careerClubs: ['CSKA Sofia', 'Bayer Leverkusen', 'Tottenham Hotspur', 'Manchester United', 'Fulham', 'Monaco', 'PAOK', 'Kerala Blasters'],
-    shirtNumbers: [9], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'hard',
+    shirtNumbers: [9], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
     clues: [
       ['position', 'A languid, technically gifted striker.'],
       ['nationality', 'Represented Bulgaria at international level.'],
@@ -1061,7 +1061,7 @@ export const LEGENDS: RawPlayer[] = [
     id: 'park-ji-sung', name: 'Park Ji-sung', aka: ['Ji-sung Park'], nationality: 'South Korea',
     position: 'W', secondaryPositions: ['CM'], from: 2000, to: 2014,
     careerClubs: ['Kyoto Purple Sanga', 'PSV Eindhoven', 'Manchester United', 'Queens Park Rangers', 'PSV Eindhoven'],
-    shirtNumbers: [13, 7], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'hard',
+    shirtNumbers: [13, 7], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
     clues: [
       ['position', 'A tireless wide midfielder known for big-game discipline.'],
       ['nationality', 'Represented South Korea at international level.'],

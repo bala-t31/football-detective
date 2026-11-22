@@ -147,14 +147,14 @@
     render();
   }
 
-  function finish(won) {
+  function finish(won, gaveUp) {
     state.done = true;
     state.won = won;
     els.form.hidden = true;
     const t = state.target;
     const n = state.guesses.length;
     els.result.innerHTML = `
-      <p class="result__verdict ${won ? 'is-win' : 'is-loss'}">${won ? (n === 1 ? 'First guess. Brilliant.' : `Solved in ${n} guesses`) : 'Not this time. The answer was'}</p>
+      <p class="result__verdict ${won ? 'is-win' : 'is-loss'}">${gaveUp ? 'Revealed. In the app that costs 150 XP. The player was' : won ? (n === 1 ? 'First guess. Elite ball knowledge.' : `Solved in ${n} guesses`) : 'Zero ball knowledge. The answer was'}</p>
       <h4>${esc(t.name)}</h4>
       <p>${esc(FD.POSITION_LABEL[t.position])}, ${esc(t.nationality)}. ${esc(t.careerClubs.filter((c, i, a) => i === 0 || a[i - 1] !== c).join(' → '))}</p>
       <div class="result__cta">
@@ -183,6 +183,9 @@
     if (li) submit(results[Number(li.dataset.i)]);
   });
   document.addEventListener('click', (e) => { if (!els.form.contains(e.target)) closeSuggest(); });
+  root.querySelector('[data-giveup]').addEventListener('click', () => {
+    if (!state.done) { finish(false, true); render(); }
+  });
   els.reveal.addEventListener('click', () => {
     if (state.revealed < state.target.clues.length) { state.revealed++; render(); }
   });

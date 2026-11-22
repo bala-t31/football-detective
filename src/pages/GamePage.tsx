@@ -1,10 +1,12 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronLeft, Lightbulb } from 'lucide-react';
+import { ChevronLeft, Eye, Lightbulb } from 'lucide-react';
 import type { Difficulty, GameMode } from '@/types';
 import { useRound } from '@/hooks/useRound';
 import { useProfile } from '@/hooks/useProfile';
-import { MODES } from '@/game/engine';
+import { MODES, getPracticeLevel, setPracticeLevel } from '@/game/engine';
+import { PRACTICE_LEVELS } from '@/game/levels';
+import { REVEAL_ANSWER_COST } from '@/game/scoring';
 import { useToast } from '@/components/ui/Toast';
 import { Button } from '@/components/ui/Button';
 import { PlayerAvatar } from '@/components/game/PlayerAvatar';
@@ -17,9 +19,9 @@ import { WeekSummary } from '@/components/game/WeekSummary';
 import { LEGENDS_PER_WEEK, weekNumber } from '@/game/weekly';
 
 const DIFFICULTY: Record<Difficulty, { label: string; style: string }> = {
-  easy: { label: 'Easy', style: 'border-ok/30 bg-ok/10 text-ok' },
-  medium: { label: 'Medium', style: 'border-warn/30 bg-warn/10 text-warn' },
-  hard: { label: 'Hard', style: 'border-bad/30 bg-bad/10 text-bad' },
+  easy: { label: 'Casual', style: 'border-ok/30 bg-ok/10 text-ok' },
+  medium: { label: 'Ball Knower', style: 'border-warn/30 bg-warn/10 text-warn' },
+  hard: { label: 'Elite', style: 'border-bad/30 bg-bad/10 text-bad' },
 };
 
 const MODE_TITLE: Record<GameMode, string> = {
@@ -38,7 +40,14 @@ interface Props {
 }
 
 export function GamePage({ mode, navigate }: Props) {
-  const { round, player, clues, feedback, busy, hintsLeft, attemptsLeft, submit, reveal, newRound, lastUnlocked, legends } = useRound(mode);
+  const { round, player, clues, feedback, busy, hintsLeft, attemptsLeft, submit, reveal, revealAnswer, newRound, lastUnlocked, legends } = useRound(mode);
+  const [confirmReveal, setConfirmReveal] = useState(false);
+  const [practiceLevel, setPracticeLevelState] = useState(getPracticeLevel);
+  useEffect(() => {
+    if (!confirmReveal) return;
+    const t = window.setTimeout(() => setConfirmReveal(false), 4000);
+    return () => window.clearTimeout(t);
+  }, [confirmReveal]);
   const toast = useToast();
   const { profile } = useProfile();
   const cfg = MODES[mode];
@@ -74,7 +83,7 @@ export function GamePage({ mode, navigate }: Props) {
       <div className="mb-4 flex items-center gap-3 sm:mb-6">
         <button
           onClick={() => navigate({ name: 'home' })}
-          className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/[0.1] bg-white/[0.07] text-ink backdrop-blur-xl transition-colors hover:bg-white/[0.12]"
+          className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/[0.1] bg-white/[0.07] text-ink transition-colors hover:bg-white/[0.12]"
           aria-label="Back to dashboard"
         >
           <ChevronLeft size={20} />
@@ -90,6 +99,32 @@ export function GamePage({ mode, navigate }: Props) {
         </div>
         <span className={`rounded-full border px-3 py-1 text-[12.5px] font-semibold ${diff.style}`}>{diff.label}</span>
       </div>
+
+      {mode === 'practice' && !finished && (
+        <div className="mb-4 sm:mb-5">
+          <div role="radiogroup" aria-label="Practice level" className="grid grid-cols-4 gap-1 rounded-full border border-white/[0.08] bg-white/[0.04] p-1">
+            {PRACTICE_LEVELS.map((l) => {
+              const on = practiceLevel === l.id;
+              return (
+                <button
+                  key={l.id}
+                  role="radio"
+                  aria-checked={on}
+                  onClick={() => {
+                    if (on) return;
+                    setPracticeLevel(l.id);
+                    setPracticeLevelState(l.id);
+                    newRound();
+                  }}
+                  className={`whitespace-nowrap rounded-full px-1 py-2 text-[12.5px] font-semibold transition-colors ${on ? 'bg-white/[0.14] text-ink shadow-[inset_0_1px_0_rgb(255_255_255/0.15)]' : 'text-ink-muted hover:text-ink'}`}
+                >
+                  {l.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {weekLocked && round.date ? (
         <div className="card mx-auto max-w-md p-6 text-center">
@@ -159,13 +194,26 @@ export function GamePage({ mode, navigate }: Props) {
 
           {/* Guessing */}
           <section className="space-y-4">
-            <motion.div layout className="card relative z-20 p-4 sm:p-5">
+            <motion.div className="card relative z-20 p-4 sm:p-5">
               <h2 className="mb-3 font-display text-[18px] font-bold tracking-[-0.02em]">Make a guess</h2>
               <GuessInput onSubmit={handleSubmit} disabled={finished} busy={busy} guessedIds={round.guesses} />
               <p className="mt-2.5 text-[12.5px] text-ink-faint">
                 <span className="hidden sm:inline">Use ↑ ↓ and Enter to pick from the list. </span>
                 A wrong guess costs 100 XP.
               </p>
+              {!finished && (
+                <button
+                  type="button"
+                  disabled={busy}
+                  onClick={() => (confirmReveal ? (setConfirmReveal(false), revealAnswer()) : setConfirmReveal(true))}
+                  className={`mt-3 flex w-full items-center justify-center gap-2 rounded-full border px-4 py-2.5 text-[14px] font-semibold transition-colors ${
+                    confirmReveal ? 'border-bad/40 bg-bad/15 text-bad' : 'border-white/[0.08] bg-white/[0.03] text-ink-muted hover:text-ink'
+                  }`}
+                >
+                  <Eye size={16} />
+                  {confirmReveal ? `Tap again to reveal (−${REVEAL_ANSWER_COST} XP from your total)` : `Reveal the player (−${REVEAL_ANSWER_COST} XP)`}
+                </button>
+              )}
             </motion.div>
             <div className="card p-4 sm:p-5">
               <div className="mb-3 flex items-baseline justify-between">

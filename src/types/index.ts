@@ -37,6 +37,8 @@ export interface RawPlayer {
   worldCupWinner?: boolean;
   ballonDorAwards?: number;
   difficulty: Difficulty;
+  /** Major trophies, one short sentence each, e.g. "Won the 2022 World Cup with Argentina." */
+  honours?: string[];
   /** Ordered least → most specific. */
   clues: [ClueCategory, string][];
 }
@@ -105,6 +107,8 @@ export interface ScoreBreakdown {
   firstGuessBonus: number;
   noHintBonus: number;
   multiplier: number;
+  /** XP taken away for revealing the answer (shown as a negative total). */
+  revealPenalty?: number;
   total: number;
 }
 
@@ -122,6 +126,8 @@ export interface RoundState {
   startedAt: number;
   finishedAt?: number;
   score?: ScoreBreakdown;
+  /** The player asked to see the answer instead of guessing. */
+  gaveUp?: boolean;
 }
 
 export interface GameRecord {
@@ -135,6 +141,7 @@ export interface GameRecord {
   cluesRevealed: number;
   score: number;
   finishedAt: number;
+  gaveUp?: boolean;
 }
 
 export interface Settings {

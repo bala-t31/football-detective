@@ -43,13 +43,13 @@ export function AppShell({ route, navigate, onOpenSettings, children }: Props) {
   const activeName = route.name === 'play' ? 'home' : route.name;
 
   return (
-    <div className="grain relative min-h-dvh">
+    <div className="relative min-h-dvh">
       <PitchBackdrop />
 
       {/* Top bar: transparent at rest, frosted once content scrolls under it */}
       <header
         className={`sticky top-0 z-40 transition-[background,border-color,backdrop-filter] duration-300 ${
-          scrolled ? 'border-b border-white/[0.07] bg-pitch-950/55 backdrop-blur-2xl backdrop-saturate-150' : 'border-b border-transparent'
+          scrolled ? 'border-b border-white/[0.07] bg-pitch-950/70 backdrop-blur-lg' : 'border-b border-transparent'
         }`}
       >
         <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4 sm:px-6">
@@ -91,7 +91,7 @@ export function AppShell({ route, navigate, onOpenSettings, children }: Props) {
 
           <div className="ml-auto flex items-center gap-2">
             <div
-              className={`flex h-10 items-center gap-1.5 rounded-full border px-3 text-[14px] font-semibold tabular-nums backdrop-blur-xl ${
+              className={`flex h-10 items-center gap-1.5 rounded-full border px-3 text-[14px] font-semibold tabular-nums ${
                 streak > 0 ? 'border-warn/30 bg-warn/[0.1] text-warn' : 'border-white/[0.1] bg-white/[0.06] text-ink-muted'
               }`}
               title="Daily streak"
@@ -101,7 +101,7 @@ export function AppShell({ route, navigate, onOpenSettings, children }: Props) {
             </div>
             <button
               onClick={onOpenSettings}
-              className="grid h-10 w-10 place-items-center rounded-full border border-white/[0.1] bg-white/[0.06] text-ink-muted backdrop-blur-xl transition-colors hover:text-ink"
+              className="grid h-10 w-10 place-items-center rounded-full border border-white/[0.1] bg-white/[0.06] text-ink-muted transition-colors hover:text-ink"
               aria-label="Settings"
             >
               <Settings size={17} />

@@ -16,7 +16,7 @@ import { RankCard } from '@/components/RankCard';
 import { PlayerAvatar } from '@/components/game/PlayerAvatar';
 
 const MODE_META: Record<Exclude<GameMode, 'daily' | 'legends'>, { icon: typeof Dumbbell; tint: string; blurb: string; isNew?: boolean }> = {
-  practice: { icon: Dumbbell, tint: 'from-[#7ff0bf] to-[#2fc785] text-[#052016]', blurb: 'Endless random players. No streak on the line.' },
+  practice: { icon: Dumbbell, tint: 'from-[#7ff0bf] to-[#2fc785] text-[#052016]', blurb: 'Pick your level, from Casual to Elite Ball Knowledge.' },
   hardcore: { icon: Skull, tint: 'from-[#ff9d9d] to-[#e0525a] text-[#2a0507]', blurb: 'One clue, three guesses, no hints. 1.5× XP.' },
   career: { icon: RouteIcon, tint: 'from-[#f8dc8a] to-[#e0ac35] text-[#3a2600]', blurb: 'Clubs revealed one at a time, with hints.' },
   clubpath: { icon: Waypoints, tint: 'from-[#9fd8ff] to-[#3d8fe0] text-[#03182c]', blurb: 'Every club at once. One miss ends the run.', isNew: true },
@@ -103,7 +103,7 @@ export function HomePage({ navigate }: { navigate: (r: Route) => void }) {
             onClick={() => navigate({ name: 'play', mode: 'legends' })}
             className="card relative flex w-full items-center gap-4 overflow-hidden p-5 text-left"
           >
-            <span className="pointer-events-none absolute -right-10 -top-12 h-40 w-40 rounded-full bg-warn/20 blur-3xl" aria-hidden />
+            <span className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full bg-[radial-gradient(closest-side,rgb(244_201_93/0.22),transparent)]" aria-hidden />
             <span className="grid h-14 w-14 shrink-0 place-items-center rounded-[18px] bg-[linear-gradient(180deg,#f8dc8a,#e0ac35)] text-[#3a2600] shadow-[inset_0_1px_0_rgb(255_255_255/0.6),0_10px_24px_-10px_rgb(224_172_53/0.8)]">
               <Crown size={24} strokeWidth={2.2} />
             </span>

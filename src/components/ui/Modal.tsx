@@ -57,7 +57,7 @@ export function Modal({ open, onClose, title, children, footer, size = 'md' }: M
           animate={{ opacity: 1 }}
           exit={{ opacity: 0, transition: { duration: 0.18 } }}
         >
-          <div className="absolute inset-0 bg-black/55 backdrop-blur-[6px]" onClick={onClose} aria-hidden />
+          <div className="absolute inset-0 bg-black/65" onClick={onClose} aria-hidden />
           <motion.div
             ref={panelRef}
             role="dialog"

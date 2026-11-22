@@ -6,7 +6,7 @@ export const LEGENDS_2: RawPlayer[] = [
     id: 'eric-cantona', name: 'Eric Cantona', aka: ['King Eric'], nationality: 'France',
     position: 'ST', secondaryPositions: ['AM'], from: 1983, to: 1997,
     careerClubs: ['Auxerre', 'Marseille', 'Bordeaux', 'Montpellier', 'Marseille', 'Nîmes', 'Leeds United', 'Manchester United'],
-    shirtNumbers: [7], difficulty: 'medium',
+    shirtNumbers: [7], difficulty: 'easy',
     clues: [
       ['position', 'A forward famous for his upturned collar.'],
       ['nationality', 'Represented France at international level.'],
@@ -98,7 +98,7 @@ export const LEGENDS_2: RawPlayer[] = [
     id: 'johan-cruyff', name: 'Johan Cruyff', aka: ['Cruyff', 'Johan Cruijff'], nationality: 'Netherlands',
     position: 'ST', secondaryPositions: ['AM', 'W'], from: 1964, to: 1984,
     careerClubs: ['Ajax', 'Barcelona', 'Los Angeles Aztecs', 'Washington Diplomats', 'Levante', 'Ajax', 'Feyenoord'],
-    shirtNumbers: [14], ballonDorAwards: 3, difficulty: 'medium',
+    shirtNumbers: [14], ballonDorAwards: 3, difficulty: 'easy',
     clues: [
       ['position', 'A roaming forward at the heart of "Total Football".'],
       ['nationality', 'Represented the Netherlands and reached the 1974 World Cup final.'],

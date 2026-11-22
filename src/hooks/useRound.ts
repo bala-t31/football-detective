@@ -12,6 +12,7 @@ import {
   hintsRemaining,
   isValidRound,
   revealNextClue,
+  giveUp,
   submitGuess,
   type GuessResult,
 } from '@/game/engine';
@@ -117,6 +118,16 @@ export function useRound(mode: GameMode) {
     });
   }, []);
 
+  const revealAnswer = useCallback(() => {
+    if (busyRef.current) return;
+    const next = giveUp(round);
+    if (next === round) return;
+    play('lose');
+    void haptic('error');
+    setRound(next);
+    setLastUnlocked(recordRound(next));
+  }, [round, recordRound]);
+
   const newRound = useCallback(() => {
     if (mode === 'daily') return;
     if (mode === 'legends') {
@@ -140,6 +151,7 @@ export function useRound(mode: GameMode) {
     attemptsLeft: round.maxAttempts - round.guesses.length,
     submit,
     reveal,
+    revealAnswer,
     newRound,
     lastUnlocked,
     legends,

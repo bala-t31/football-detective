@@ -50,7 +50,7 @@ This is a debug-signed APK, which is fine for sideloading and sharing. Publishin
 | Mode | Attempts | Hints | XP | Pool |
 |---|---|---|---|---|
 | Daily Case | 6 | yes | ×1 | easy + medium, same player for everyone on a local date |
-| Practice | 6 | yes | ×1 | all players, avoids recent repeats |
+| Practice | 6 | yes | ×1 | pick a level: Casual, Ball Knower, Elite or Mixed |
 | Hardcore | 3 | no | ×1.5 | medium + hard |
 | Career Detective | 6 | club-by-club | ×1.2 | players with 3+ clubs |
 
@@ -60,7 +60,7 @@ Scoring: 1000 for a solve, −100 per wrong guess, −75 per extra clue, +300 fo
 
 ```
 src/
-  data/        players (legends.ts, modern.ts), club→league map, nations, positions
+  data/        players (players/*.ts), honours (trophy hints), club→league map, nations, positions, teammates
   game/        engine, feedback, scoring, daily selection, search, share, progression (ranks/achievements/streaks)
   hooks/       useProfile (persistent profile context), useRound, useRouter, useCountdown
   components/  ui/, game/, layout/
@@ -68,12 +68,17 @@ src/
   utils/       storage (safe LocalStorage), date, sound (Web Audio), native (Capacitor: share sheet, status bar)
   types/
 scripts/test-engine.ts
-android/       Capacitor Android project (generated; icons from assets/)
+android/       Capacitor Android project. The icon, themed (monochrome) icon and splash are vector drawables
+               generated from one artwork; don't regenerate them with capacitor-assets.
 assets/        source app icon + splash images
 ```
 
 ## Adding players
 
-Add an entry to `src/data/players/legends.ts` (retired) or `modern.ts` (active). Clues go from vague to specific, and none should contain the player's name. Every club must exist in `src/data/clubs.ts`. Run `npm test` to catch missing clubs and nations, clues that give away the name, and duplicate IDs.
+Add an entry to one of the files in `src/data/players/`. Give famous players an `honours` line so the first hint says what they won. Clues go from vague to specific, and none should contain the player's name. Every club must exist in `src/data/clubs.ts`. Run `npm test` to catch missing clubs and nations, clues that give away the name, and duplicate IDs.
 
 Daily picks come from a seeded shuffle of the player pool, so adding players changes which player falls on which future date.
+
+## Website
+
+`website/` is the static site at https://football-detective.netlify.app (Netlify publishes it on every push). Its playable demo uses the real game data: run `npm run website:core` after changing players.

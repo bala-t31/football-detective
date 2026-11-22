@@ -5,6 +5,7 @@ import type { Achievement, Clue, Player, RoundState } from '@/types';
 import { POSITION_LABEL } from '@/data/positions';
 import { MODES, wrongGuessCount } from '@/game/engine';
 import { caseExplanation } from '@/game/dossier';
+import { roundVerdict } from '@/game/levels';
 import { buildShareText, cardForRound, copyText, shareCard, shareText } from '@/game/share';
 import { formatCountdown } from '@/utils/date';
 import { useMidnightCountdown } from '@/hooks/useCountdown';
@@ -48,11 +49,14 @@ export function ResultsPanel({ round, player, clues, unlocked, onPlayAgain, play
   const uniqueClubs = player.careerClubs.filter((c, i, arr) => i === 0 || arr[i - 1] !== c);
   const n = round.guesses.length;
 
-  const verdict = won
-    ? n === 1
-      ? 'First guess. Brilliant.'
-      : `Solved in ${n} guesses`
-    : 'Not this time';
+  const verdict = round.gaveUp
+    ? 'You revealed the answer'
+    : won
+      ? n === 1
+        ? 'First guess. Brilliant.'
+        : `Solved in ${n} guesses`
+      : 'Not this time';
+  const vibe = roundVerdict(round);
 
   const doShare = async () => {
     const text = buildShareText(round, { includeName, url: shareUrl() });
@@ -92,14 +96,22 @@ export function ResultsPanel({ round, player, clues, unlocked, onPlayAgain, play
         >
           {verdict}
         </motion.p>
+        <motion.p
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ ...spring, delay: 0.5 }}
+          className="mx-auto mt-2 w-fit rounded-full border border-white/[0.1] bg-white/[0.06] px-3 py-1 text-[13px] font-semibold text-ink"
+        >
+          {vibe}
+        </motion.p>
 
         <div className="mt-5 flex justify-center">
           <PlayerAvatar player={player} revealed size="lg" />
         </div>
 
         <motion.h2
-          initial={{ opacity: 0, y: 10, filter: 'blur(8px)' }}
-          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          initial={{ opacity: 0, y: 12, scale: 0.98 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ ...spring, delay: 0.3 }}
           className="heading mt-5 text-[32px] leading-[1.05] sm:text-[40px]"
         >
@@ -130,7 +142,9 @@ export function ResultsPanel({ round, player, clues, unlocked, onPlayAgain, play
             <span className="ml-1.5 text-[20px] font-bold tracking-normal text-lime">XP</span>
           </div>
           <p className="mt-1.5 text-[13px] text-ink-muted">
-            {n} of {round.maxAttempts} guesses, {round.revealed} clue{round.revealed === 1 ? '' : 's'}
+            {round.gaveUp
+              ? 'Taken from your total for revealing the answer'
+              : `${n} of ${round.maxAttempts} guesses, ${round.revealed} clue${round.revealed === 1 ? '' : 's'}`}
           </p>
         </div>
 

@@ -42,7 +42,7 @@ export function SettingsModal({
             <Toggle
               icon={<Smartphone size={16} />}
               label="Haptic feedback"
-              description="Gentle vibrations when you guess, reveal and win."
+              description="Crisp taps from your phone’s haptic motor when you guess, reveal and win."
               checked={profile.settings.haptics}
               onChange={(v) => {
                 updateSettings({ haptics: v });
@@ -153,7 +153,6 @@ function Toggle({
         } shadow-[inset_0_1px_2px_rgb(0_0_0/0.3)]`}
       >
         <motion.span
-          layout
           transition={{ type: 'spring', stiffness: 600, damping: 32 }}
           className={`absolute top-[2px] h-[27px] w-[27px] rounded-full bg-white shadow-[0_3px_8px_rgb(0_0_0/0.35)] ${checked ? 'right-[2px]' : 'left-[2px]'}`}
         />

@@ -1,24 +1,24 @@
 /**
- * Haptic feedback. Uses the phone's haptic engine through Capacitor inside the Android app,
- * and falls back to very short vibrations in mobile browsers that support it.
+ * Haptic feedback, off by default.
+ * In the Android app this uses the CrispHaptics native plugin: short, tuned clicks and ticks
+ * from the phone's haptic motor rather than buzzy vibrations. Browsers only get a single
+ * very short pulse, because longer web vibrations feel cheap.
  */
-import { Capacitor } from '@capacitor/core';
+import { Capacitor, registerPlugin } from '@capacitor/core';
 
 export type Haptic = 'light' | 'medium' | 'selection' | 'success' | 'warning' | 'error';
 
-let enabled = true;
+interface CrispHapticsPlugin {
+  play(opts: { kind: Haptic }): Promise<void>;
+}
+const CrispHaptics = registerPlugin<CrispHapticsPlugin>('CrispHaptics');
+
+let enabled = false;
 export function setHapticsEnabled(on: boolean) {
   enabled = on;
 }
 
-const WEB_PATTERN: Record<Haptic, number | number[]> = {
-  light: 8,
-  medium: 14,
-  selection: 5,
-  success: [10, 60, 18],
-  warning: [16, 50, 16],
-  error: [24, 40, 24, 40, 24],
-};
+const WEB_PULSE: Record<Haptic, number> = { light: 6, medium: 10, selection: 4, success: 12, warning: 10, error: 16 };
 
 export function hapticsSupported(): boolean {
   return Capacitor.isNativePlatform() || (typeof navigator !== 'undefined' && 'vibrate' in navigator);
@@ -28,25 +28,10 @@ export async function haptic(kind: Haptic): Promise<void> {
   if (!enabled) return;
   try {
     if (Capacitor.isNativePlatform()) {
-      const { Haptics, ImpactStyle, NotificationType } = await import('@capacitor/haptics');
-      switch (kind) {
-        case 'light':
-          return Haptics.impact({ style: ImpactStyle.Light });
-        case 'medium':
-          return Haptics.impact({ style: ImpactStyle.Medium });
-        case 'selection':
-          await Haptics.selectionStart();
-          await Haptics.selectionChanged();
-          return Haptics.selectionEnd();
-        case 'success':
-          return Haptics.notification({ type: NotificationType.Success });
-        case 'warning':
-          return Haptics.notification({ type: NotificationType.Warning });
-        case 'error':
-          return Haptics.notification({ type: NotificationType.Error });
-      }
+      await CrispHaptics.play({ kind });
+      return;
     }
-    if (typeof navigator !== 'undefined' && 'vibrate' in navigator) navigator.vibrate(WEB_PATTERN[kind]);
+    if (typeof navigator !== 'undefined' && 'vibrate' in navigator) navigator.vibrate(WEB_PULSE[kind]);
   } catch {
     /* haptics are a nicety; never let them break a tap */
   }

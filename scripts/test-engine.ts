@@ -16,6 +16,9 @@ import { buildShareText } from '../src/game/share';
 import { addDays } from '../src/utils/date';
 import type { Profile } from '../src/types';
 import { TEAMMATE_PUZZLES } from '../src/data/teammates';
+import { giveUp } from '../src/game/engine';
+import { REVEAL_ANSWER_COST } from '../src/game/scoring';
+import { roundVerdict } from '../src/game/levels';
 import { LEGENDS_POOL, legendsForWeek, weekKeyFor, weekNumber, LEGENDS_PER_WEEK } from '../src/game/weekly';
 import { CLUB_PATH_POOL, clubPath, isPathMatch, pointsFor } from '../src/game/clubpath';
 
@@ -154,8 +157,26 @@ p = { ...p, daily: applyDailyResult(p, '2026-11-23', false, 0) };
 check('loss resets to 0', p.daily.currentStreak === 0);
 
 // ── Ranks
-check('rank 0', rankFor(0).current.name === 'Rookie Scout');
-check('rank max', rankFor(1e9).current.name === 'Football Genius' && rankFor(1e9).progress === 1);
+check('rank 0', rankFor(0).current.name === 'Zero Ball Knowledge');
+check('rank max', rankFor(1e9).current.name === 'Ball Knowledge GOAT' && rankFor(1e9).progress === 1);
+
+// ── v1.5: reveal answer, trophy hints, levels
+{
+  const r0 = createRound('practice');
+  const g = giveUp(r0);
+  check('give up ends round', g.status === 'lost' && g.gaveUp === true);
+  check('give up costs XP', g.score?.total === -REVEAL_ANSWER_COST);
+  check('give up idempotent on finished', giveUp(g) === g);
+  check('verdict negative', roundVerdict(g) === 'Negative ball knowledge');
+  check('verdict elite', roundVerdict({ status: 'won', guesses: ['x'] }) === 'Elite ball knowledge');
+  check('verdict zero', roundVerdict({ status: 'lost', guesses: ['a', 'b'] }) === 'Zero ball knowledge');
+  const trophy = /World Cup|Champions League|European Cup|Ballon d'Or|Premier League|Euro |European Championship|Copa|Africa Cup|Europa League|La Liga|Serie A|Bundesliga|Ligue 1|FA Cup|treble|League Cup|Conference League|MLS Cup|Eredivisie|Portuguese title|league titles|Coppa Italia|Club World Cup|Cup Winners/;
+  const easyWithout = PLAYERS.filter((p) => p.difficulty === 'easy' && !trophy.test(p.clues[1]?.text ?? ''));
+  check('every Casual player has a trophy as the first hint', easyWithout.length === 0, easyWithout.map((p) => p.id).join(', '));
+  check('messi first hint is the World Cup', /World Cup/.test(getPlayer('lionel-messi')!.clues[1].text));
+  check('ramos first hint is the World Cup', /World Cup/.test(getPlayer('sergio-ramos')!.clues[1].text));
+  check('daily pool is Casual only', Array.from({ length: 60 }, (_, i) => dailyPlayerId(addDays('2026-11-22', i))).every((id) => getPlayer(id)!.difficulty === 'easy'));
+}
 
 // ── Name the Teammate data
 for (const pz of TEAMMATE_PUZZLES) {

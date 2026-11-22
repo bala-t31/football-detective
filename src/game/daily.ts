@@ -6,8 +6,8 @@ import { seededShuffle } from './random';
 export const DAILY_EPOCH = '2026-11-01';
 const DAILY_SEED = 0x5eed_f00d;
 
-/** Daily pool: easy + medium players, in a stable id order so every device agrees. */
-const DAILY_POOL: string[] = PLAYER_IDS_STABLE.filter((id) => PLAYER_BY_ID[id].difficulty !== 'hard');
+/** Daily pool: the most famous (Casual level) players, in a stable id order so every device agrees. */
+const DAILY_POOL: string[] = PLAYER_IDS_STABLE.filter((id) => PLAYER_BY_ID[id].difficulty === 'easy');
 
 function cycleOrder(cycle: number): string[] {
   return seededShuffle(DAILY_POOL, DAILY_SEED + cycle * 7919);

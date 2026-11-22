@@ -4,12 +4,13 @@ import { addDays } from '@/utils/date';
 // ─── Ranks ──────────────────────────────────────────────────────────
 
 export const RANKS: Rank[] = [
-  { name: 'Rookie Scout', minXp: 0 },
-  { name: 'Amateur Detective', minXp: 2_000 },
-  { name: 'Football Analyst', minXp: 6_000 },
-  { name: 'Elite Scout', minXp: 14_000 },
-  { name: 'Master Detective', minXp: 28_000 },
-  { name: 'Football Genius', minXp: 50_000 },
+  { name: 'Zero Ball Knowledge', minXp: 0 },
+  { name: 'Casual Fan', minXp: 1_500 },
+  { name: 'Highlights Merchant', minXp: 4_000 },
+  { name: 'Ball Knower', minXp: 9_000 },
+  { name: 'Certified Ball Knower', minXp: 18_000 },
+  { name: 'Elite Ball Knowledge', minXp: 32_000 },
+  { name: 'Ball Knowledge GOAT', minXp: 55_000 },
 ];
 
 export function rankFor(xp: number) {

@@ -1,3 +1,4 @@
+import { runVerdict } from '@/game/levels';
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowDown, Flame, Play, RotateCcw } from 'lucide-react';
@@ -159,10 +160,10 @@ export function ClubPathPage({ navigate }: { navigate: (r: Route) => void }) {
             <ShareImageButton
               data={() => ({
                 eyebrow: 'Club Path Run',
-                headline: `${run.solved.length} in a row`,
+                headline: runVerdict(run.solved.length),
                 won: run.solved.length > 0,
                 score,
-                detail: `Named ${run.solved.length} player${run.solved.length === 1 ? '' : 's'} from their clubs alone`,
+                detail: `${run.solved.length} in a row from club paths alone`,
                 tiles: [...run.solved.map(() => 'hit' as const), 'miss' as const],
                 cta: 'How far can you go?',
               })}

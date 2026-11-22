@@ -18,6 +18,9 @@ export const MODE_MULTIPLIER: Record<GameMode, number> = {
   teammate: 1,
 };
 
+/** XP taken from your total when you reveal the answer instead of solving it. */
+export const REVEAL_ANSWER_COST = 150;
+
 export function calculateScore(opts: {
   won: boolean;
   wrongGuesses: number;

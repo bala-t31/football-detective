@@ -11,7 +11,7 @@ const VARIANTS: Record<Variant, string> = {
     'text-[#052016] bg-[linear-gradient(180deg,#7ff0bf_0%,#4be3a0_45%,#2fc785_100%)] shadow-[inset_0_1px_0_rgb(255_255_255/0.6),inset_0_-1px_0_rgb(0_0_0/0.15),0_10px_30px_-10px_rgb(75_227_160/0.7)] hover:brightness-110 disabled:bg-none disabled:bg-white/[0.08] disabled:text-ink-faint disabled:shadow-none',
   // Frosted glass capsule
   secondary:
-    'text-ink bg-white/[0.08] border border-white/[0.12] backdrop-blur-xl shadow-[inset_0_1px_0_rgb(255_255_255/0.14)] hover:bg-white/[0.12] disabled:text-ink-faint disabled:hover:bg-white/[0.08]',
+    'text-ink bg-white/[0.08] border border-white/[0.12] shadow-[inset_0_1px_0_rgb(255_255_255/0.14)] hover:bg-white/[0.12] disabled:text-ink-faint disabled:hover:bg-white/[0.08]',
   ghost: 'text-ink-muted hover:text-ink hover:bg-white/[0.06] disabled:text-ink-faint',
   danger: 'text-bad bg-bad/10 border border-bad/25 hover:bg-bad/15',
 };

@@ -339,3 +339,5 @@ h3 { font-size: 24px; letter-spacing: -0.025em; }
 .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.8s cubic-bezier(.2,.8,.2,1), transform 0.8s cubic-bezier(.2,.8,.2,1); }
 .reveal.is-in { opacity: 1; transform: none; }
 main { overflow-x: clip; }
+.giveup { display: block; margin: 12px auto 0; background: none; border: 0; color: var(--muted); font: 500 14px var(--sans); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; padding: 6px; }
+.giveup:hover { color: var(--ink); }

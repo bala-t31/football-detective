@@ -35,7 +35,7 @@ export function AboutPage() {
         <motion.section custom={1} variants={rise} initial="hidden" animate="show" className="card overflow-hidden p-6 text-center">
           <div className="mx-auto grid h-[104px] w-[104px] place-items-center rounded-full bg-[conic-gradient(from_210deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5,#feda75)] p-[3px] shadow-[0_16px_40px_-14px_rgb(214_41_118/0.6)]">
             <div className="grid h-full w-full place-items-center rounded-full border-[3px] border-pitch-950 bg-pitch-900">
-              <LogoMark size={58} plate={false} />
+              <LogoMark size={88} plate={false} />
             </div>
           </div>
           <p className="mt-4 text-[13px] font-medium text-ink-muted">Designed and built by</p>

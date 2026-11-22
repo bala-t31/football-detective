@@ -84,7 +84,7 @@ export const MODERN_2: RawPlayer[] = [
     id: "kai-havertz", name: "Kai Havertz", aka: ["Havertz"], nationality: "Germany",
     position: 'AM', secondaryPositions: ["ST"], from: 2016, to: null,
     careerClubs: ["Bayer Leverkusen", "Chelsea", "Arsenal"],
-    difficulty: 'medium',
+    difficulty: 'easy',
     clues: [
       ["position", "A versatile attacker who plays midfield or up front."],
       ["nationality", "Represents Germany at international level."],
@@ -233,7 +233,7 @@ export const MODERN_2: RawPlayer[] = [
     id: "victor-osimhen", name: "Victor Osimhen", aka: ["Osimhen"], nationality: "Nigeria",
     position: 'ST', from: 2016, to: null,
     careerClubs: ["Wolfsburg", "Charleroi", "Lille", "Napoli", "Galatasaray"],
-    difficulty: 'medium',
+    difficulty: 'easy',
     clues: [
       ["position", "An explosive striker who is dangerous in the air."],
       ["nationality", "Represents Nigeria at international level."],
@@ -527,7 +527,7 @@ export const MODERN_2: RawPlayer[] = [
     id: "gavi", name: "Gavi", aka: ["Pablo Gavira"], nationality: "Spain",
     position: 'CM', from: 2021, to: null,
     careerClubs: ["Barcelona"],
-    difficulty: 'medium',
+    difficulty: 'easy',
     clues: [
       ["position", "A combative, technical central midfielder."],
       ["nationality", "Debuted for Spain aged 17 in 2021."],
@@ -953,7 +953,7 @@ export const MODERN_2: RawPlayer[] = [
     id: "paulo-dybala", name: "Paulo Dybala", aka: ["Dybala", "La Joya"], nationality: "Argentina",
     position: 'AM', secondaryPositions: ["ST"], from: 2011, to: null,
     careerClubs: ["Instituto", "Palermo", "Juventus", "Roma"],
-    difficulty: 'medium',
+    difficulty: 'easy',
     clues: [
       ["position", "A left-footed forward nicknamed \"La Joya\"."],
       ["nationality", "Represents Argentina and won the 2022 World Cup."],

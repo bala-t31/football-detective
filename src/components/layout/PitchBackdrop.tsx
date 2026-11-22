@@ -42,14 +42,13 @@ export const PitchBackdrop = memo(function PitchBackdrop() {
       {LIGHTS.map((l, i) => (
         <motion.div
           key={i}
-          className="absolute rounded-full animate-drift"
+          className="absolute rounded-full"
           style={{
             left: l.left,
             top: l.top,
             width: l.size,
             height: l.size,
             background: `radial-gradient(closest-side, ${l.color}, transparent 72%)`,
-            animationDelay: `${i * -4}s`,
           }}
           initial={firstLoad ? { opacity: 0 } : false}
           animate={{ opacity: firstLoad ? [0, 0.55, 0.25, 1] : 1 }}

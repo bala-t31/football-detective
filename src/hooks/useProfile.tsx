@@ -17,19 +17,28 @@ export function defaultProfile(): Profile {
     discovered: {},
     history: [],
     daily: { currentStreak: 0, bestStreak: 0, lastWinDate: null, lastCompletedDate: null, completed: {} },
-    settings: { sound: true, haptics: true, reducedMotion: false },
+    settings: { sound: true, haptics: false, reducedMotion: false },
   };
 }
 
 function loadProfile(): Profile {
   const raw = storage.get<Partial<Profile> | null>(PROFILE_KEY, null);
   const base = defaultProfile();
-  if (!raw || raw.version !== 1) return base;
+  if (!raw || raw.version !== 1) {
+    storage.set('haptics.v2', true);
+    return base;
+  }
+  // v1.5 replaced buzzy vibrations with crisp haptics and made them opt-in: switch them off once.
+  const settings = { ...base.settings, ...(raw.settings ?? {}) };
+  if (!storage.get<boolean>('haptics.v2', false)) {
+    settings.haptics = false;
+    storage.set('haptics.v2', true);
+  }
   return {
     ...base,
     ...raw,
     daily: { ...base.daily, ...(raw.daily ?? {}) },
-    settings: { ...base.settings, ...(raw.settings ?? {}) },
+    settings,
     history: Array.isArray(raw.history) ? raw.history : [],
     achievements: raw.achievements ?? {},
     discovered: raw.discovered ?? {},
@@ -79,11 +88,12 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
       cluesRevealed: round.revealed,
       score,
       finishedAt: round.finishedAt ?? Date.now(),
+      ...(round.gaveUp ? { gaveUp: true } : {}),
     };
 
     let next: Profile = {
       ...prev,
-      xp: prev.xp + score,
+      xp: Math.max(0, prev.xp + score),
       history: [record, ...prev.history].slice(0, HISTORY_CAP),
       discovered: won && round.mode !== 'teammate' && !prev.discovered[round.playerId] ? { ...prev.discovered, [round.playerId]: record.finishedAt } : prev.discovered,
     };

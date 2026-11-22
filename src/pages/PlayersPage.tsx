@@ -7,6 +7,8 @@ import { GROUP_LABEL, POSITION_GROUP, POSITION_LABEL } from '@/data/positions';
 import { normalize } from '@/game/search';
 import { useProfile } from '@/hooks/useProfile';
 
+const LEVEL_SHORT: Record<Difficulty, string> = { easy: 'Casual', medium: 'Ball Knower', hard: 'Elite' };
+
 type DiscFilter = 'all' | 'found' | 'unknown';
 
 const DIFF_STYLE: Record<Difficulty, string> = {
@@ -60,7 +62,7 @@ export function PlayersPage() {
         <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 scrollbar-thin">
           <Seg value={disc} onChange={setDisc} options={[['all', 'All'], ['found', 'Identified'], ['unknown', 'Unidentified']]} />
           <Seg value={group} onChange={setGroup} options={[['all', 'Any position'], ...(['GK', 'DEF', 'MID', 'FWD'] as const).map((g) => [g, GROUP_LABEL[g]] as [PositionGroup, string])]} />
-          <Seg value={diff} onChange={setDiff} options={[['all', 'Any level'], ['easy', 'Easy'], ['medium', 'Medium'], ['hard', 'Hard']]} />
+          <Seg value={diff} onChange={setDiff} options={[['all', 'Any level'], ['easy', 'Casual'], ['medium', 'Ball Knower'], ['hard', 'Elite']]} />
         </div>
       </div>
 
@@ -84,7 +86,7 @@ export function PlayersPage() {
                   <div className="flex items-center gap-2">
                     <h3 className="truncate text-[15.5px] font-semibold tracking-[-0.01em] text-ink">{p.name}</h3>
                     <span className={`ml-auto shrink-0 rounded-full border px-2 py-0.5 text-[11px] font-semibold ${DIFF_STYLE[p.difficulty]}`}>
-                      {p.difficulty[0].toUpperCase() + p.difficulty.slice(1)}
+                      {LEVEL_SHORT[p.difficulty]}
                     </span>
                   </div>
                   <div className="text-[13px] text-ink-muted">
@@ -110,7 +112,7 @@ export function PlayersPage() {
 
 function Seg<T extends string>({ value, onChange, options }: { value: T; onChange: (v: T) => void; options: [T, string][] }) {
   return (
-    <div className="flex shrink-0 rounded-full border border-white/[0.1] bg-white/[0.06] p-1 backdrop-blur-xl">
+    <div className="flex shrink-0 rounded-full border border-white/[0.1] bg-white/[0.06] p-1">
       {options.map(([v, label]) => (
         <button
           key={v}

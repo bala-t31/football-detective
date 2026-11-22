@@ -1,3 +1,4 @@
+import { teammateVerdict } from '@/game/levels';
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Check, Heart, RotateCcw, X } from 'lucide-react';
@@ -132,10 +133,10 @@ export function TeammatePage({ navigate }: { navigate: (r: Route) => void }) {
             <ShareImageButton
               data={() => ({
                 eyebrow: `Name the Teammate · ${puzzle.club}`,
-                headline: `${game.found.length} of ${star.name}'s teammates`,
+                headline: teammateVerdict(game.found.length),
                 won,
                 score,
-                detail: `${game.found.length} named · ${game.wrong.length} wrong`,
+                detail: `Named ${game.found.length} of ${star.name}'s teammates at ${puzzle.club}`,
                 tiles: [...game.found.map(() => 'hit' as const), ...game.wrong.map(() => 'miss' as const)],
                 cta: 'How many can you name?',
               })}

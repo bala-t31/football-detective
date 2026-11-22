@@ -1,6 +1,7 @@
 import type { FeedbackStatus, RoundState } from '@/types';
 import { renderShareCard, type ShareCardData } from './shareCard';
 import { weekNumber } from './weekly';
+import { roundVerdict } from './levels';
 import { getPlayer } from '@/data';
 import { FEEDBACK_EMOJI } from './feedback';
 import { MODES, feedbackFor } from './engine';
@@ -10,14 +11,18 @@ export function buildShareText(state: RoundState, opts: { includeName: boolean; 
   const mode = MODES[state.mode];
   const title =
     state.mode === 'daily' ? `Daily Case #${String(state.caseNumber).padStart(3, '0')}` : `${mode.name} Case #${state.caseNumber}`;
-  const result =
-    state.status === 'won' ? `Solved in ${state.guesses.length}/${state.maxAttempts} guesses` : `Case unsolved (X/${state.maxAttempts})`;
+  const result = state.gaveUp
+    ? `Revealed the answer after ${state.guesses.length} guess${state.guesses.length === 1 ? '' : 'es'}`
+    : state.status === 'won'
+      ? `Solved in ${state.guesses.length}/${state.maxAttempts} guesses`
+      : `Case unsolved (X/${state.maxAttempts})`;
   const rows = feedbackFor(state).map((f) => (f.correct ? '🟩🟩🟩🟩🟩 ✅' : f.cells.map((c) => FEEDBACK_EMOJI[c.status]).join('')));
 
   const lines = [
     'FOOTBALL DETECTIVE 🔎',
     title,
     '',
+    `${roundVerdict(state)} 🧠`,
     result,
     `Clues revealed: ${state.revealed}`,
     `Score: ${state.score?.total ?? 0} XP`,
@@ -122,15 +127,21 @@ export function cardForRound(state: RoundState, includeName: boolean): ShareCard
         ? `Weekly Legends · Week ${weekNumber(state.date)} · Legend ${state.caseNumber}`
         : `${MODES[state.mode].name} · Case ${state.caseNumber}`;
   const rows = feedbackFor(state).map((f) => (f.correct ? (['correct', 'correct', 'correct', 'correct', 'correct'] as FeedbackStatus[]) : f.cells.map((c) => c.status)));
+  const g = state.guesses.length;
+  const detail = state.gaveUp
+    ? `Revealed the answer · ${state.score?.total ?? 0} XP`
+    : won
+      ? `${g === 1 ? 'First guess' : `Solved in ${g}/${state.maxAttempts}`} · ${state.revealed} clue${state.revealed === 1 ? '' : 's'}`
+      : `Unsolved in ${state.maxAttempts} guesses · ${state.revealed} clue${state.revealed === 1 ? '' : 's'}`;
   return {
     eyebrow,
-    headline: won ? (state.guesses.length === 1 ? 'Solved first guess' : `Solved in ${state.guesses.length}/${state.maxAttempts}`) : 'Case unsolved',
+    headline: roundVerdict(state),
     won,
-    score: state.score?.total ?? 0,
-    detail: `${state.guesses.length} guess${state.guesses.length === 1 ? '' : 'es'} · ${state.revealed} clue${state.revealed === 1 ? '' : 's'}`,
+    score: Math.max(0, state.score?.total ?? 0),
+    detail,
     rows,
     reveal: includeName ? getPlayer(state.playerId)?.name : undefined,
-    cta: state.mode === 'daily' ? "Can you solve today's mystery?" : 'Can you crack the case?',
+    cta: state.mode === 'daily' ? "Can you solve today's mystery?" : 'Think you know ball?',
   };
 }
 

@@ -42,7 +42,7 @@ export function ClueList({ clues, revealed, mode, showAll = false }: Props) {
           return (
             <li key={clue.id} className="relative flex h-11 items-center gap-3 overflow-hidden rounded-2xl border border-white/[0.07] bg-white/[0.03] px-3">
               <Lock size={14} className="shrink-0 text-ink-faint" />
-              <span className="select-none truncate text-[14px] text-ink/70 blur-[5px]" aria-hidden>
+              <span className="select-none truncate text-[14px] text-transparent [text-shadow:0_0_7px_rgb(242_251_246/0.55)]" aria-hidden>
                 {REDACTED[i % REDACTED.length]}
               </span>
               <span className="sr-only">Locked clue {i + 1}</span>
@@ -52,8 +52,8 @@ export function ClueList({ clues, revealed, mode, showAll = false }: Props) {
         return (
           <motion.li
             key={clue.id}
-            initial={showAll ? false : { opacity: 0, filter: 'blur(10px)', scale: 0.97 }}
-            animate={{ opacity: 1, filter: 'blur(0px)', scale: 1 }}
+            initial={showAll ? false : { opacity: 0, y: 8, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
             className={`flex gap-3 rounded-2xl border p-3 ${
               newest ? 'border-lime/30 bg-lime/[0.07] shadow-[inset_0_1px_0_rgb(255_255_255/0.08)]' : 'border-white/[0.08] bg-white/[0.045]'
@@ -93,8 +93,8 @@ function CareerTimeline({ clues, revealed }: { clues: Clue[]; revealed: number }
             />
             {open ? (
               <motion.div
-                initial={{ opacity: 0, x: -10, filter: 'blur(8px)' }}
-                animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
                 className={`flex items-center gap-3 rounded-2xl border px-3.5 py-3 ${
                   i === revealed - 1 ? 'border-lime/30 bg-lime/[0.07]' : 'border-white/[0.08] bg-white/[0.045]'

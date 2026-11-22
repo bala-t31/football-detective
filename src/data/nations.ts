@@ -7,6 +7,13 @@ interface NationInfo {
 }
 
 export const NATIONS: Record<string, NationInfo> = {
+  'Iran': { confederation: 'AFC', flag: '🇮🇷', code: 'IRN' },
+  'Togo': { confederation: 'CAF', flag: '🇹🇬', code: 'TOG' },
+  'Trinidad and Tobago': { confederation: 'CONCACAF', flag: '🇹🇹', code: 'TRI' },
+  'Bosnia and Herzegovina': { confederation: 'UEFA', flag: '🇧🇦', code: 'BIH' },
+  'Gabon': { confederation: 'CAF', flag: '🇬🇦', code: 'GAB' },
+  'Northern Ireland': { confederation: 'UEFA', flag: '🇬🇧', code: 'NIR' },
+  'Soviet Union': { confederation: 'UEFA', flag: '🇷🇺', code: 'URS' },
   Australia: { confederation: 'AFC', flag: '🇦🇺', code: 'AUS' },
   Austria: { confederation: 'UEFA', flag: '🇦🇹', code: 'AUT' },
   Chile: { confederation: 'CONMEBOL', flag: '🇨🇱', code: 'CHI' },

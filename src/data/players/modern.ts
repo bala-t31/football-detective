@@ -209,7 +209,7 @@ export const MODERN: RawPlayer[] = [
     id: 'manuel-neuer', name: 'Manuel Neuer', aka: ['Neuer'], nationality: 'Germany',
     position: 'GK', from: 2006, to: null,
     careerClubs: ['Schalke 04', 'Bayern Munich'],
-    shirtNumbers: [1], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [1], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A goalkeeper who redefined the "sweeper-keeper" role.'],
       ['nationality', 'Represents Germany at international level.'],
@@ -221,7 +221,7 @@ export const MODERN: RawPlayer[] = [
     id: 'thomas-muller', name: 'Thomas Müller', aka: ['Thomas Muller', 'Thomas Mueller', 'Muller'], nationality: 'Germany',
     position: 'AM', secondaryPositions: ['ST'], from: 2008, to: null,
     careerClubs: ['Bayern Munich', 'Vancouver Whitecaps'],
-    shirtNumbers: [25, 13], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [25, 13], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A forward who called himself the "Raumdeuter" — interpreter of space.'],
       ['nationality', 'Represents Germany at international level.'],
@@ -234,7 +234,7 @@ export const MODERN: RawPlayer[] = [
     id: 'emiliano-martinez', name: 'Emiliano Martínez', aka: ['Emi Martinez', 'Dibu Martínez', 'Emiliano Martinez'], nationality: 'Argentina',
     position: 'GK', from: 2012, to: null,
     careerClubs: ['Arsenal', 'Aston Villa'],
-    shirtNumbers: [23], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [23], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A goalkeeper known for his penalty-shootout mind games.'],
       ['nationality', 'Represents Argentina at international level.'],
@@ -247,7 +247,7 @@ export const MODERN: RawPlayer[] = [
     id: 'julian-alvarez', name: 'Julián Álvarez', aka: ['Julian Alvarez', 'La Araña'], nationality: 'Argentina',
     position: 'ST', secondaryPositions: ['W'], from: 2018, to: null,
     careerClubs: ['River Plate', 'Manchester City', 'Atlético Madrid'],
-    shirtNumbers: [19, 9], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [19, 9], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A hard-working forward with a relentless press.'],
       ['nationality', 'Represents Argentina at international level.'],
@@ -260,7 +260,7 @@ export const MODERN: RawPlayer[] = [
     id: 'lautaro-martinez', name: 'Lautaro Martínez', aka: ['Lautaro Martinez', 'Lautaro'], nationality: 'Argentina',
     position: 'ST', from: 2015, to: null,
     careerClubs: ['Racing Club', 'Inter Milan'],
-    shirtNumbers: [10, 22], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [10, 22], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A strong, aggressive centre-forward.'],
       ['nationality', 'Represents Argentina at international level.'],
@@ -273,7 +273,7 @@ export const MODERN: RawPlayer[] = [
     id: 'enzo-fernandez', name: 'Enzo Fernández', aka: ['Enzo Fernandez'], nationality: 'Argentina',
     position: 'CM', secondaryPositions: ['DM'], from: 2019, to: null,
     careerClubs: ['River Plate', 'Defensa y Justicia', 'Benfica', 'Chelsea'],
-    shirtNumbers: [8, 24], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'hard',
+    shirtNumbers: [8, 24], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'medium',
     clues: [
       ['position', 'A central midfielder with a calm passing game.'],
       ['nationality', 'Represents Argentina at international level.'],
@@ -286,7 +286,7 @@ export const MODERN: RawPlayer[] = [
     id: 'angel-di-maria', name: 'Ángel Di María', aka: ['Angel Di Maria', 'Di Maria'], nationality: 'Argentina',
     position: 'W', secondaryPositions: ['AM'], from: 2005, to: null,
     careerClubs: ['Rosario Central', 'Benfica', 'Real Madrid', 'Manchester United', 'Paris Saint-Germain', 'Juventus', 'Benfica', 'Rosario Central'],
-    shirtNumbers: [7, 11, 22], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [7, 11, 22], worldCupWinner: true, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A left-footed winger with a wand of a left foot.'],
       ['nationality', 'Represents Argentina at international level.'],
@@ -299,7 +299,7 @@ export const MODERN: RawPlayer[] = [
     id: 'luis-suarez', name: 'Luis Suárez', aka: ['Luis Suarez', 'Suarez', 'El Pistolero'], nationality: 'Uruguay',
     position: 'ST', from: 2005, to: null,
     careerClubs: ['Nacional', 'Groningen', 'Ajax', 'Liverpool', 'Barcelona', 'Atlético Madrid', 'Nacional', 'Grêmio', 'Inter Miami'],
-    shirtNumbers: [9, 7], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [9, 7], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A relentless, clinical striker.'],
       ['nationality', 'Represents Uruguay and is their all-time leading scorer.'],
@@ -312,7 +312,7 @@ export const MODERN: RawPlayer[] = [
     id: 'edinson-cavani', name: 'Edinson Cavani', aka: ['Cavani', 'El Matador'], nationality: 'Uruguay',
     position: 'ST', from: 2006, to: null,
     careerClubs: ['Danubio', 'Palermo', 'Napoli', 'Paris Saint-Germain', 'Manchester United', 'Valencia', 'Boca Juniors'],
-    shirtNumbers: [9, 21, 7], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [9, 21, 7], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A tireless centre-forward famed for his work rate.'],
       ['nationality', 'Represents Uruguay at international level.'],
@@ -325,7 +325,7 @@ export const MODERN: RawPlayer[] = [
     id: 'alisson-becker', name: 'Alisson Becker', aka: ['Alisson'], nationality: 'Brazil',
     position: 'GK', from: 2013, to: null,
     careerClubs: ['Internacional', 'Roma', 'Liverpool'],
-    shirtNumbers: [1], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [1], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A calm goalkeeper excellent with his feet.'],
       ['nationality', 'Represents Brazil at international level.'],
@@ -338,7 +338,7 @@ export const MODERN: RawPlayer[] = [
     id: 'casemiro', name: 'Casemiro', nationality: 'Brazil',
     position: 'DM', from: 2010, to: null,
     careerClubs: ['São Paulo', 'Real Madrid', 'Porto', 'Real Madrid', 'Manchester United'],
-    shirtNumbers: [14, 18], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [14, 18], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A tough-tackling defensive midfielder.'],
       ['nationality', 'Represents Brazil at international level.'],
@@ -364,7 +364,7 @@ export const MODERN: RawPlayer[] = [
     id: 'thibaut-courtois', name: 'Thibaut Courtois', aka: ['Courtois'], nationality: 'Belgium',
     position: 'GK', from: 2009, to: null,
     careerClubs: ['Genk', 'Atlético Madrid', 'Chelsea', 'Real Madrid'],
-    shirtNumbers: [1, 13], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [1, 13], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A very tall, imposing goalkeeper.'],
       ['nationality', 'Represents Belgium at international level.'],
@@ -377,7 +377,7 @@ export const MODERN: RawPlayer[] = [
     id: 'romelu-lukaku', name: 'Romelu Lukaku', aka: ['Lukaku', 'Big Rom'], nationality: 'Belgium',
     position: 'ST', from: 2009, to: null,
     careerClubs: ['Anderlecht', 'Chelsea', 'West Bromwich Albion', 'Everton', 'Manchester United', 'Inter Milan', 'Chelsea', 'Inter Milan', 'Roma', 'Napoli'],
-    shirtNumbers: [9, 10], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [9, 10], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A powerful, physical centre-forward.'],
       ['nationality', 'Represents Belgium at international level.'],
@@ -390,7 +390,7 @@ export const MODERN: RawPlayer[] = [
     id: 'bukayo-saka', name: 'Bukayo Saka', aka: ['Saka'], nationality: 'England',
     position: 'W', secondaryPositions: ['FB'], from: 2018, to: null,
     careerClubs: ['Arsenal'],
-    shirtNumbers: [7], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [7], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A left-footed right winger who once played left-back.'],
       ['nationality', 'Represents England at international level.'],
@@ -402,7 +402,7 @@ export const MODERN: RawPlayer[] = [
     id: 'phil-foden', name: 'Phil Foden', aka: ['Foden'], nationality: 'England',
     position: 'AM', secondaryPositions: ['W'], from: 2017, to: null,
     careerClubs: ['Manchester City'],
-    shirtNumbers: [47], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [47], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A left-footed attacking midfielder who often plays wide.'],
       ['nationality', 'Represents England at international level.'],
@@ -415,7 +415,7 @@ export const MODERN: RawPlayer[] = [
     id: 'declan-rice', name: 'Declan Rice', aka: ['Rice'], nationality: 'England',
     position: 'DM', secondaryPositions: ['CM'], from: 2017, to: null,
     careerClubs: ['West Ham United', 'Arsenal'],
-    shirtNumbers: [41], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [41], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A ball-winning midfielder with a strong engine.'],
       ['nationality', 'Represents England, having previously played for the Republic of Ireland.'],
@@ -428,7 +428,7 @@ export const MODERN: RawPlayer[] = [
     id: 'rodri', name: 'Rodri', aka: ['Rodrigo Hernández'], nationality: 'Spain',
     position: 'DM', from: 2015, to: null,
     careerClubs: ['Villarreal', 'Atlético Madrid', 'Manchester City'],
-    shirtNumbers: [16], worldCupWinner: false, ballonDorAwards: 1, difficulty: 'medium',
+    shirtNumbers: [16], worldCupWinner: false, ballonDorAwards: 1, difficulty: 'easy',
     clues: [
       ['position', 'A dominant holding midfielder.'],
       ['nationality', 'Represents Spain at international level.'],
@@ -441,7 +441,7 @@ export const MODERN: RawPlayer[] = [
     id: 'pedri', name: 'Pedri', aka: ['Pedro González'], nationality: 'Spain',
     position: 'CM', secondaryPositions: ['AM'], from: 2019, to: null,
     careerClubs: ['Las Palmas', 'Barcelona'],
-    shirtNumbers: [16, 8], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [16, 8], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A silky central midfielder with excellent close control.'],
       ['nationality', 'Represents Spain at international level.'],
@@ -453,7 +453,7 @@ export const MODERN: RawPlayer[] = [
     id: 'bruno-fernandes', name: 'Bruno Fernandes', aka: ['Bruno'], nationality: 'Portugal',
     position: 'AM', secondaryPositions: ['CM'], from: 2012, to: null,
     careerClubs: ['Novara', 'Udinese', 'Sampdoria', 'Sporting CP', 'Manchester United'],
-    shirtNumbers: [18, 8], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [18, 8], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'An attacking midfielder with a high goal and assist output.'],
       ['nationality', 'Represents Portugal at international level.'],
@@ -478,7 +478,7 @@ export const MODERN: RawPlayer[] = [
     id: 'ruben-dias', name: 'Rúben Dias', aka: ['Ruben Dias'], nationality: 'Portugal',
     position: 'CB', from: 2017, to: null,
     careerClubs: ['Benfica', 'Manchester City'],
-    shirtNumbers: [3], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'hard',
+    shirtNumbers: [3], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
     clues: [
       ['position', 'A vocal, commanding centre-back.'],
       ['nationality', 'Represents Portugal at international level.'],
@@ -490,7 +490,7 @@ export const MODERN: RawPlayer[] = [
     id: 'heung-min-son', name: 'Son Heung-min', aka: ['Heung-min Son', 'Sonny', 'Son'], nationality: 'South Korea',
     position: 'W', secondaryPositions: ['ST'], from: 2010, to: null,
     careerClubs: ['Hamburger SV', 'Bayer Leverkusen', 'Tottenham Hotspur', 'Los Angeles FC'],
-    shirtNumbers: [7], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [7], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A two-footed forward equally dangerous on either side.'],
       ['nationality', 'Represents South Korea, as captain.'],
@@ -503,7 +503,7 @@ export const MODERN: RawPlayer[] = [
     id: 'ousmane-dembele', name: 'Ousmane Dembélé', aka: ['Ousmane Dembele', 'Dembele'], nationality: 'France',
     position: 'W', secondaryPositions: ['ST'], from: 2015, to: null,
     careerClubs: ['Rennes', 'Borussia Dortmund', 'Barcelona', 'Paris Saint-Germain'],
-    shirtNumbers: [7, 11, 10], worldCupWinner: true, ballonDorAwards: 1, difficulty: 'medium',
+    shirtNumbers: [7, 11, 10], worldCupWinner: true, ballonDorAwards: 1, difficulty: 'easy',
     clues: [
       ['position', 'A two-footed winger who was reinvented as a central forward.'],
       ['nationality', 'Represents France at international level.'],
@@ -516,7 +516,7 @@ export const MODERN: RawPlayer[] = [
     id: 'cole-palmer', name: 'Cole Palmer', aka: ['Palmer'], nationality: 'England',
     position: 'AM', secondaryPositions: ['W'], from: 2020, to: null,
     careerClubs: ['Manchester City', 'Chelsea'],
-    shirtNumbers: [20], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [20], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A left-footed attacking midfielder known for his composure.'],
       ['nationality', 'Represents England at international level.'],
@@ -529,7 +529,7 @@ export const MODERN: RawPlayer[] = [
     id: 'sadio-mane', name: 'Sadio Mané', aka: ['Sadio Mane', 'Mane'], nationality: 'Senegal',
     position: 'W', secondaryPositions: ['ST'], from: 2011, to: null,
     careerClubs: ['Metz', 'Red Bull Salzburg', 'Southampton', 'Liverpool', 'Bayern Munich', 'Al Nassr'],
-    shirtNumbers: [10], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [10], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A rapid forward who usually attacks from the left.'],
       ['nationality', 'Represents Senegal at international level.'],
@@ -541,7 +541,7 @@ export const MODERN: RawPlayer[] = [
     id: 'riyad-mahrez', name: 'Riyad Mahrez', aka: ['Mahrez'], nationality: 'Algeria',
     position: 'W', from: 2009, to: null,
     careerClubs: ['Le Havre', 'Leicester City', 'Manchester City', 'Al-Ahli'],
-    shirtNumbers: [26, 7], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [26, 7], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A left-footed right winger with silky dribbling.'],
       ['nationality', 'Represents Algeria at international level.'],
@@ -554,7 +554,7 @@ export const MODERN: RawPlayer[] = [
     id: 'khvicha-kvaratskhelia', name: 'Khvicha Kvaratskhelia', aka: ['Kvara', 'Kvaradona'], nationality: 'Georgia',
     position: 'W', from: 2017, to: null,
     careerClubs: ['Dinamo Tbilisi', 'Rubin Kazan', 'Dinamo Batumi', 'Napoli', 'Paris Saint-Germain'],
-    shirtNumbers: [77, 7], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [77, 7], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'An unpredictable dribbler who plays off the left.'],
       ['nationality', 'Represents Georgia at international level.'],
@@ -567,7 +567,7 @@ export const MODERN: RawPlayer[] = [
     id: 'florian-wirtz', name: 'Florian Wirtz', aka: ['Wirtz'], nationality: 'Germany',
     position: 'AM', from: 2020, to: null,
     careerClubs: ['Bayer Leverkusen', 'Liverpool'],
-    shirtNumbers: [10, 7], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [10, 7], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'An inventive attacking midfielder.'],
       ['nationality', 'Represents Germany at international level.'],
@@ -579,7 +579,7 @@ export const MODERN: RawPlayer[] = [
     id: 'jamal-musiala', name: 'Jamal Musiala', aka: ['Musiala'], nationality: 'Germany',
     position: 'AM', secondaryPositions: ['W'], from: 2020, to: null,
     careerClubs: ['Bayern Munich'],
-    shirtNumbers: [42, 10], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [42, 10], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A slaloming dribbler who plays as a No. 10.'],
       ['nationality', 'Represents Germany, having played for England at youth level.'],
@@ -591,7 +591,7 @@ export const MODERN: RawPlayer[] = [
     id: 'gianluigi-donnarumma', name: 'Gianluigi Donnarumma', aka: ['Gigio Donnarumma', 'Donnarumma'], nationality: 'Italy',
     position: 'GK', from: 2015, to: null,
     careerClubs: ['AC Milan', 'Paris Saint-Germain', 'Manchester City'],
-    shirtNumbers: [99, 1], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
+    shirtNumbers: [99, 1], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'easy',
     clues: [
       ['position', 'A giant goalkeeper who debuted in Serie A at 16.'],
       ['nationality', 'Represents Italy at international level.'],
@@ -615,7 +615,7 @@ export const MODERN: RawPlayer[] = [
     id: 'jan-oblak', name: 'Jan Oblak', aka: ['Oblak'], nationality: 'Slovenia',
     position: 'GK', from: 2010, to: null,
     careerClubs: ['Olimpija Ljubljana', 'Benfica', 'Atlético Madrid'],
-    shirtNumbers: [13], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'hard',
+    shirtNumbers: [13], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
     clues: [
       ['position', 'A tall, reliable shot-stopper.'],
       ['nationality', 'Represents Slovenia at international level.'],
@@ -627,7 +627,7 @@ export const MODERN: RawPlayer[] = [
     id: 'christian-pulisic', name: 'Christian Pulisic', aka: ['Pulisic', 'Captain America'], nationality: 'USA',
     position: 'W', secondaryPositions: ['AM'], from: 2016, to: null,
     careerClubs: ['Borussia Dortmund', 'Chelsea', 'AC Milan'],
-    shirtNumbers: [10, 11], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'hard',
+    shirtNumbers: [10, 11], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
     clues: [
       ['position', 'A direct winger who can also play centrally.'],
       ['nationality', 'Represents the USA at international level.'],
@@ -639,7 +639,7 @@ export const MODERN: RawPlayer[] = [
     id: 'alphonso-davies', name: 'Alphonso Davies', aka: ['Davies'], nationality: 'Canada',
     position: 'FB', secondaryPositions: ['W'], from: 2016, to: null,
     careerClubs: ['Vancouver Whitecaps', 'Bayern Munich'],
-    shirtNumbers: [19], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'hard',
+    shirtNumbers: [19], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
     clues: [
       ['position', 'A blisteringly fast left-back who started as a winger.'],
       ['nationality', 'Represents Canada at international level.'],
@@ -652,7 +652,7 @@ export const MODERN: RawPlayer[] = [
     id: 'moises-caicedo', name: 'Moisés Caicedo', aka: ['Moises Caicedo', 'Caicedo'], nationality: 'Ecuador',
     position: 'DM', secondaryPositions: ['CM'], from: 2019, to: null,
     careerClubs: ['Independiente del Valle', 'Brighton & Hove Albion', 'Beerschot', 'Chelsea'],
-    shirtNumbers: [25], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'hard',
+    shirtNumbers: [25], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
     clues: [
       ['position', 'A tireless, ball-winning midfielder.'],
       ['nationality', 'Represents Ecuador at international level.'],
@@ -676,7 +676,7 @@ export const MODERN: RawPlayer[] = [
     id: 'federico-valverde', name: 'Federico Valverde', aka: ['Fede Valverde', 'Valverde'], nationality: 'Uruguay',
     position: 'CM', secondaryPositions: ['W', 'FB'], from: 2016, to: null,
     careerClubs: ['Peñarol', 'Deportivo La Coruña', 'Real Madrid'],
-    shirtNumbers: [15, 8], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'hard',
+    shirtNumbers: [15, 8], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
     clues: [
       ['position', 'A versatile, athletic midfielder with a powerful shot.'],
       ['nationality', 'Represents Uruguay at international level.'],
@@ -688,7 +688,7 @@ export const MODERN: RawPlayer[] = [
     id: 'joshua-kimmich', name: 'Joshua Kimmich', aka: ['Kimmich'], nationality: 'Germany',
     position: 'DM', secondaryPositions: ['FB', 'CM'], from: 2013, to: null,
     careerClubs: ['RB Leipzig', 'Bayern Munich'],
-    shirtNumbers: [32, 6], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'hard',
+    shirtNumbers: [32, 6], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
     clues: [
       ['position', 'A midfielder who has also excelled at right-back.'],
       ['nationality', 'Represents Germany at international level.'],
@@ -700,7 +700,7 @@ export const MODERN: RawPlayer[] = [
     id: 'william-saliba', name: 'William Saliba', aka: ['Saliba'], nationality: 'France',
     position: 'CB', from: 2018, to: null,
     careerClubs: ['Saint-Étienne', 'Nice', 'Marseille', 'Arsenal'],
-    shirtNumbers: [2], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'hard',
+    shirtNumbers: [2], worldCupWinner: false, ballonDorAwards: 0, difficulty: 'medium',
     clues: [
       ['position', 'A calm, quick centre-back.'],
       ['nationality', 'Represents France at international level.'],

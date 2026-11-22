@@ -321,7 +321,9 @@ h3 { font-size: 24px; letter-spacing: -0.025em; }
 .dev { max-width: 640px; margin: 0 auto; text-align: center; padding: 48px 28px; border-radius: 36px; background: var(--glass); border: 1px solid var(--glass-edge); position: relative; overflow: hidden; }
 .dev::before { content: ''; position: absolute; width: 360px; height: 360px; left: 50%; top: -220px; transform: translateX(-50%); background: radial-gradient(closest-side, rgb(214 41 118 / 0.3), transparent); pointer-events: none; }
 .dev__ring { width: 104px; height: 104px; margin: 0 auto; padding: 4px; border-radius: 50%; background: conic-gradient(from 210deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5, #feda75); }
-.dev__ring img { width: 100%; height: 100%; border-radius: 50%; border: 4px solid var(--pitch); background: var(--pitch); padding: 12px; }
+.dev__ring { position: relative; width: 120px; height: 120px; }
+.dev__ring img:first-child { width: 100%; height: 100%; border-radius: 50%; border: 4px solid var(--pitch); background: var(--pitch); object-fit: cover; }
+.dev__badge { position: absolute; right: -4px; bottom: -4px; width: 36px; height: 36px; border-radius: 10px; box-shadow: 0 0 0 3px var(--pitch); }
 .dev__by { color: var(--muted); margin: 22px 0 6px; font-size: 15px; }
 .dev h2 { font-size: clamp(36px, 5vw, 52px); }
 .dev__text { color: var(--muted); margin: 16px auto 0; max-width: 30em; }

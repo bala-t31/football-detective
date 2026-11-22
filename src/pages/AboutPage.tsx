@@ -6,6 +6,7 @@ import { SCORING } from '@/game/scoring';
 import { APP_VERSION, DEVELOPER, openExternal } from '@/utils/external';
 import { Button } from '@/components/ui/Button';
 import { LogoMark } from '@/components/layout/Logo';
+import developerPhoto from '@/assets/developer.webp';
 import { FeedbackSheet } from '@/components/FeedbackSheet';
 
 const rise = {
@@ -33,10 +34,20 @@ export function AboutPage() {
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
         {/* Developer */}
         <motion.section custom={1} variants={rise} initial="hidden" animate="show" className="card overflow-hidden p-6 text-center">
-          <div className="mx-auto grid h-[104px] w-[104px] place-items-center rounded-full bg-[conic-gradient(from_210deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5,#feda75)] p-[3px] shadow-[0_16px_40px_-14px_rgb(214_41_118/0.6)]">
-            <div className="grid h-full w-full place-items-center rounded-full border-[3px] border-pitch-950 bg-pitch-900">
-              <LogoMark size={88} plate={false} />
+          <div className="relative mx-auto h-[116px] w-[116px]">
+            <div className="h-full w-full rounded-full bg-[conic-gradient(from_210deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5,#feda75)] p-[3px] shadow-[0_16px_40px_-14px_rgb(214_41_118/0.6)]">
+              <img
+                src={developerPhoto}
+                alt={`Photo of @${DEVELOPER.handle}`}
+                width={110}
+                height={110}
+                decoding="async"
+                className="h-full w-full rounded-full border-[3px] border-pitch-950 bg-pitch-900 object-cover"
+              />
             </div>
+            <span className="absolute -bottom-1 -right-1 rounded-[12px] shadow-lg ring-[3px] ring-pitch-950" aria-hidden>
+              <LogoMark size={34} />
+            </span>
           </div>
           <p className="mt-4 text-[13px] font-medium text-ink-muted">Designed and built by</p>
           <h2 className="heading mt-0.5 text-[28px] leading-tight">@{DEVELOPER.handle}</h2>

@@ -5,6 +5,7 @@ import { useProfile } from '@/hooks/useProfile';
 import { play } from '@/utils/sound';
 import { haptic } from '@/utils/haptics';
 import { AchievementIcon } from './AchievementIcon';
+import { MOTION, ease } from '@/ui/motion';
 
 type Tone = 'success' | 'error' | 'info';
 interface ToastItem {
@@ -42,11 +43,10 @@ export function ToastProvider({ children }: { children: ReactNode }) {
           {current && (
             <motion.div
               key={current.id}
-              layout
-              initial={{ opacity: 0, y: -24, scale: 0.6 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -16, scale: 0.7, transition: { duration: 0.18 } }}
-              transition={{ type: 'spring', stiffness: 520, damping: 32 }}
+              initial={{ opacity: 0, y: -MOTION.rise }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8, transition: ease(MOTION.fadeOut) }}
+              transition={ease(MOTION.enter)}
               className={`pointer-events-auto flex max-w-md items-center gap-2.5 rounded-full py-2.5 pl-3 pr-5 text-[14px] font-medium ${ISLAND}`}
             >
               {current.tone === 'success' && <CheckCircle2 size={18} className="shrink-0 text-ok" />}
@@ -81,20 +81,15 @@ function AchievementToasts() {
           <motion.button
             key={current.id}
             onClick={dismissAchievement}
-            initial={{ opacity: 0, y: -30, scale: 0.5, borderRadius: 999 }}
-            animate={{ opacity: 1, y: 0, scale: 1, borderRadius: 28 }}
-            exit={{ opacity: 0, y: -20, scale: 0.7, transition: { duration: 0.2 } }}
-            transition={{ type: 'spring', stiffness: 420, damping: 30 }}
-            className={`pointer-events-auto flex w-full max-w-[360px] items-center gap-3 py-3 pl-3 pr-5 text-left ${ISLAND}`}
+            initial={{ opacity: 0, y: -MOTION.rise }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8, transition: ease(MOTION.fadeOut) }}
+            transition={ease(MOTION.enter)}
+            className={`pointer-events-auto flex w-full max-w-[360px] items-center gap-3 rounded-[28px] py-3 pl-3 pr-5 text-left ${ISLAND}`}
           >
-            <motion.div
-              initial={{ rotate: -20, scale: 0.6 }}
-              animate={{ rotate: 0, scale: 1 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 14, delay: 0.1 }}
-              className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-[linear-gradient(180deg,#f8dc8a,#e0ac35)] text-[#3a2600] shadow-[inset_0_1px_0_rgb(255_255_255/0.6)]"
-            >
+            <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-[linear-gradient(180deg,#f8dc8a,#e0ac35)] text-[#3a2600] shadow-[inset_0_1px_0_rgb(255_255_255/0.6)]">
               <AchievementIcon icon={current.icon} size={20} />
-            </motion.div>
+            </div>
             <div className="min-w-0">
               <div className="text-[12px] font-medium text-warn">Achievement unlocked</div>
               <div className="font-display text-[16px] font-bold tracking-[-0.02em]">{current.title}</div>

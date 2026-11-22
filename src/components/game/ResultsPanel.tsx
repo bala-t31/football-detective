@@ -1,11 +1,12 @@
 import { useState, type ReactNode } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronDown, Copy, Crown, Image as ImageIcon, RotateCcw, Share2, Trophy } from 'lucide-react';
+import { ChevronDown, Copy, Crown, Image as ImageIcon, RotateCcw, Share2, Swords, Trophy } from 'lucide-react';
 import type { Achievement, Clue, Player, RoundState } from '@/types';
 import { POSITION_LABEL } from '@/data/positions';
 import { MODES, wrongGuessCount } from '@/game/engine';
 import { caseExplanation } from '@/game/dossier';
 import { roundVerdict } from '@/game/levels';
+import { challengeFromRound, challengeOutcome, challengeText, challengeUrl } from '@/game/challenge';
 import { buildShareText, cardForRound, copyText, shareCard, shareText } from '@/game/share';
 import { formatCountdown } from '@/utils/date';
 import { useMidnightCountdown } from '@/hooks/useCountdown';
@@ -17,6 +18,7 @@ import { AchievementIcon } from '@/components/ui/AchievementIcon';
 import { PlayerAvatar } from './PlayerAvatar';
 import { ClueList } from './ClueList';
 import { Confetti } from './Celebration';
+import { MOTION, ease, reveal } from '@/ui/motion';
 
 interface Props {
   round: RoundState;
@@ -36,7 +38,6 @@ function shareUrl(): string | undefined {
   return isNative() ? undefined : window.location.origin + window.location.pathname;
 }
 
-const spring = { type: 'spring', stiffness: 260, damping: 26 } as const;
 
 export function ResultsPanel({ round, player, clues, unlocked, onPlayAgain, playAgainLabel = 'Next case', footer, onHome, onPractice }: Props) {
   const won = round.status === 'won';
@@ -77,6 +78,14 @@ export function ResultsPanel({ round, player, clues, unlocked, onPlayAgain, play
       setImageBusy(false);
     }
   };
+  const outcome = challengeOutcome(round);
+  const canChallenge = round.mode !== 'daily';
+  const doChallenge = async () => {
+    const c = challengeFromRound(round);
+    const res = await shareText(`${challengeText(c)}\n${challengeUrl(c)}`);
+    if (res === 'copied') toast('Challenge link copied. Send it to a friend', 'success');
+    else if (res === 'failed') toast('Couldn’t share the challenge', 'error');
+  };
   const doCopy = async () => {
     const res = await copyText(buildShareText(round, { includeName, url: shareUrl() }));
     toast(res === 'copied' ? 'Result copied' : 'Couldn’t copy the result', res === 'copied' ? 'success' : 'error');
@@ -87,36 +96,27 @@ export function ResultsPanel({ round, player, clues, unlocked, onPlayAgain, play
       {won && <Confetti />}
 
       {/* Reveal */}
-      <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={spring} className="card overflow-hidden p-5 text-center sm:p-7">
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={won ? { opacity: 1 } : { opacity: 1, x: [0, -8, 8, -4, 4, 0] }}
-          transition={{ duration: 0.5 }}
-          className={`text-[14px] font-semibold ${won ? 'text-ok' : 'text-bad'}`}
-        >
-          {verdict}
-        </motion.p>
-        <motion.p
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ ...spring, delay: 0.5 }}
-          className="mx-auto mt-2 w-fit rounded-full border border-white/[0.1] bg-white/[0.06] px-3 py-1 text-[13px] font-semibold text-ink"
-        >
-          {vibe}
-        </motion.p>
+      {/* One moment: the card rises and the portrait comes into focus. Everything else is already in place. */}
+      <motion.div variants={reveal} custom={0} initial="hidden" animate="show" className="card overflow-hidden p-5 text-center sm:p-7">
+        {outcome && round.challenge && (
+          <p
+            className={`mx-auto mb-3 flex w-fit items-center gap-2 rounded-full px-3.5 py-1.5 text-[13.5px] font-semibold ${
+              outcome === 'won' ? 'bg-ok/[0.12] text-ok' : outcome === 'lost' ? 'bg-bad/[0.12] text-bad' : 'bg-white/[0.07] text-ink'
+            }`}
+          >
+            <Swords size={15} />
+            {outcome === 'won' ? 'You won the challenge' : outcome === 'lost' ? 'Your friend wins this one' : 'Challenge drawn'}
+            {round.challenge.won && <span className="font-medium opacity-75">· they took {round.challenge.guesses}</span>}
+          </p>
+        )}
+        <p className={`text-[14px] font-semibold ${won ? 'text-ok' : 'text-bad'}`}>{verdict}</p>
+        <p className="mx-auto mt-2 w-fit rounded-full border border-white/[0.1] bg-white/[0.06] px-3 py-1 text-[13px] font-semibold text-ink">{vibe}</p>
 
         <div className="mt-5 flex justify-center">
           <PlayerAvatar player={player} revealed size="lg" />
         </div>
 
-        <motion.h2
-          initial={{ opacity: 0, y: 12, scale: 0.98 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ ...spring, delay: 0.3 }}
-          className="heading mt-5 text-[32px] leading-[1.05] sm:text-[40px]"
-        >
-          {player.name}
-        </motion.h2>
+        <h2 className="heading mt-5 text-[32px] leading-[1.05] sm:text-[40px]">{player.name}</h2>
         <p className="mt-2 text-[15px] text-ink-muted">
           {POSITION_LABEL[player.position]}, {player.nationality}, {player.to ? `${player.from}–${player.to}` : `since ${player.from}`}
         </p>
@@ -164,9 +164,9 @@ export function ResultsPanel({ round, player, clues, unlocked, onPlayAgain, play
             {unlocked.map((a, i) => (
               <motion.span
                 key={a.id}
-                initial={{ opacity: 0, scale: 0.6 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ type: 'spring', stiffness: 400, damping: 16, delay: 0.6 + i * 0.12 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={ease(MOTION.quick, 0.3 + i * MOTION.stagger)}
                 className="flex items-center gap-2 rounded-full border border-warn/30 bg-warn/10 py-1.5 pl-1.5 pr-3.5 text-[13.5px] font-medium text-ink"
               >
                 <span className="grid h-7 w-7 place-items-center rounded-full bg-[linear-gradient(180deg,#f8dc8a,#e0ac35)] text-[#3a2600]">
@@ -191,6 +191,11 @@ export function ResultsPanel({ round, player, clues, unlocked, onPlayAgain, play
               <span className="sr-only">Copy</span>
             </Button>
           </div>
+          {canChallenge && (
+            <Button size="lg" onClick={doChallenge} icon={<Swords size={18} />}>
+              {round.challenge ? 'Challenge someone else' : 'Challenge a friend on this player'}
+            </Button>
+          )}
           <label className="flex cursor-pointer items-center justify-center gap-2.5 py-1 text-[13.5px] text-ink-muted">
             <input type="checkbox" checked={includeName} onChange={(e) => setIncludeName(e.target.checked)} className="h-4 w-4 accent-[#4be3a0]" />
             Include the player&apos;s name when sharing (spoiler)
@@ -219,7 +224,7 @@ export function ResultsPanel({ round, player, clues, unlocked, onPlayAgain, play
       </motion.div>
 
       {/* Career + why */}
-      <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ ...spring, delay: 0.15 }} className="card mt-4 p-5">
+      <motion.div variants={reveal} custom={1} initial="hidden" animate="show" className="card mt-4 p-5">
         <h3 className="font-display text-[18px] font-bold tracking-[-0.02em]">Career</h3>
         <ol className="mt-3 flex flex-wrap items-center gap-1.5">
           {uniqueClubs.map((c, i) => (

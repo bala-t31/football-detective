@@ -77,7 +77,9 @@ export interface Player {
 
 // ─── Game types ─────────────────────────────────────────────────────
 
-export type GameMode = 'daily' | 'practice' | 'hardcore' | 'career' | 'legends' | 'clubpath' | 'teammate';
+export type GameMode =
+  | 'daily' | 'practice' | 'hardcore' | 'career' | 'legends' | 'clubpath' | 'teammate'
+  | 'higherlower' | 'emoji' | 'transfer' | 'xi';
 /** Modes played as a classic clue-and-guess round on the game screen. */
 export type RoundMode = 'daily' | 'practice' | 'hardcore' | 'career' | 'legends';
 export type RoundStatus = 'playing' | 'won' | 'lost';
@@ -128,6 +130,16 @@ export interface RoundState {
   score?: ScoreBreakdown;
   /** The player asked to see the answer instead of guessing. */
   gaveUp?: boolean;
+  /** Set when this round came from a friend's challenge link. */
+  challenge?: ChallengeTarget;
+}
+
+/** A friend's result on the same player, carried in a challenge link. */
+export interface ChallengeTarget {
+  won: boolean;
+  guesses: number;
+  clues: number;
+  score: number;
 }
 
 export interface GameRecord {
@@ -162,6 +174,10 @@ export interface Profile {
     lastWinDate: string | null;
     lastCompletedDate: string | null;
     completed: Record<string, { won: boolean; score: number }>;
+    /** Streak freezes in hand (earned every 7 wins in a row, max 2). */
+    freezes?: number;
+    /** Days a freeze covered. */
+    frozen?: string[];
   };
   settings: Settings;
 }

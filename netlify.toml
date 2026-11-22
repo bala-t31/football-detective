@@ -10,6 +10,13 @@
   [headers.values]
     Cache-Control = "public, max-age=604800"
 
+# Online data the app reads: always fresh, readable from the app (it runs on https://localhost).
+[[headers]]
+  for = "/data/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Cache-Control = "no-cache"
+
 [[headers]]
   for = "/*"
   [headers.values]

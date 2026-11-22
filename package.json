@@ -1,18 +1,19 @@
 {
   "name": "football-detective",
   "private": true,
-  "version": "1.5.1",
+  "version": "1.6.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "typecheck": "tsc -b --noEmit",
     "preview": "vite preview",
-    "test": "tsx scripts/test-engine.ts",
+    "test": "tsx scripts/test-engine.ts && tsx scripts/test-v16.ts",
     "android:sync": "npm run build && npx cap sync android",
     "android:open": "npx cap open android",
     "android:apk": "npm run android:sync && cd android && ./gradlew assembleDebug",
-    "website:core": "sh scripts/build-website-core.sh"
+    "website:core": "sh scripts/build-website-core.sh",
+    "content:check": "tsx scripts/content-check.ts"
   },
   "dependencies": {
     "@capacitor/android": "^8.6.2",

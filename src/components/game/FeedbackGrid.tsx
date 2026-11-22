@@ -6,6 +6,7 @@ import { nationInfo } from '@/data/nations';
 import { shortClub, shortLeague } from '@/data/clubs';
 import { POSITION_LABEL, POSITION_SHORT } from '@/data/positions';
 import type { PositionCode } from '@/types';
+import { MOTION, ease, isReducedMotion } from '@/ui/motion';
 
 const STATUS_STYLE: Record<FeedbackStatus, string> = {
   correct:
@@ -122,10 +123,10 @@ function GuessRow({ feedback, index }: { feedback: GuessFeedback; index: number 
           return (
             <motion.div
               key={cell.key}
-              initial={{ rotateX: 90, opacity: 0 }}
-              animate={{ rotateX: 0, opacity: 1 }}
-              transition={{ delay: i * 0.09, duration: 0.35, ease: 'easeOut' }}
-              style={{ transformPerspective: 600 }}
+              // Cells settle in left to right, so the eye reads the result in order.
+              initial={isReducedMotion() ? false : { opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={ease(MOTION.quick, Math.min(i, 6) * MOTION.stagger)}
               className={`flex min-h-[48px] min-w-0 flex-col items-center justify-center rounded-[14px] border px-0.5 py-1 text-center sm:min-h-[52px] sm:px-1 ${STATUS_STYLE[cell.status]}`}
               title={`${cell.label}: ${cell.value}${cell.shared ? ' (shared)' : ''}`}
               aria-label={`${cell.label}: ${cell.value}, ${cell.status}${cell.direction ? `, mystery player is ${cell.direction}` : ''}`}

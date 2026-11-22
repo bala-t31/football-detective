@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>You've been challenged · Football Detective</title>
+  <meta name="description" content="A friend challenged you to find the same footballer in fewer guesses.">
+  <meta property="og:title" content="⚔️ You've been challenged on Football Detective">
+  <meta property="og:description" content="Same mystery footballer. Fewer guesses wins.">
+  <meta property="og:image" content="https://football-detective.netlify.app/assets/img/og.jpg">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#06110c">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#06110c;color:#f2fbf6;font:16px/1.5 system-ui,sans-serif}a{color:#4be3a0}</style>
+  <script>
+    // The challenge travels in the #fragment, so it never reaches a server log.
+    (function () {
+      var code = (location.hash || '').replace(/^#/, '');
+      location.replace('/' + (code ? '?c=' + encodeURIComponent(code) : '') + '#try');
+    })();
+  </script>
+</head>
+<body>
+  <p>Opening the challenge… <a href="/#try">Continue</a></p>
+</body>
+</html>

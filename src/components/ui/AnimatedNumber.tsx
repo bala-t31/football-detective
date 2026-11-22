@@ -1,18 +1,31 @@
-import { useEffect, useState } from 'react';
-import { animate, useReducedMotion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import { animate } from 'framer-motion';
+import { EASE_OUT, MOTION, isReducedMotion } from '@/ui/motion';
 
-export function AnimatedNumber({ value, duration = 1.1, className }: { value: number; duration?: number; className?: string }) {
-  const reduce = useReducedMotion();
-  const [display, setDisplay] = useState(reduce ? value : 0);
+/**
+ * A headline number that rolls from its previous value to the new one. Use it for the one number
+ * that matters on a screen; small figures elsewhere change instantly.
+ */
+export function AnimatedNumber({ value, duration = MOTION.number, className }: { value: number; duration?: number; className?: string }) {
+  const [display, setDisplay] = useState(() => (isReducedMotion() ? value : 0));
+  const from = useRef(display);
 
   useEffect(() => {
-    if (reduce) {
+    if (isReducedMotion()) {
+      from.current = value;
       setDisplay(value);
       return;
     }
-    const controls = animate(0, value, { duration, ease: [0.16, 1, 0.3, 1], onUpdate: (v) => setDisplay(Math.round(v)) });
+    const controls = animate(from.current, value, {
+      duration,
+      ease: EASE_OUT,
+      onUpdate: (v) => {
+        from.current = v;
+        setDisplay(Math.round(v));
+      },
+    });
     return () => controls.stop();
-  }, [value, duration, reduce]);
+  }, [value, duration]);
 
   return <span className={className}>{display.toLocaleString()}</span>;
 }

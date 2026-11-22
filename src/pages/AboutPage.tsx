@@ -8,11 +8,9 @@ import { Button } from '@/components/ui/Button';
 import { LogoMark } from '@/components/layout/Logo';
 import developerPhoto from '@/assets/developer.webp';
 import { FeedbackSheet } from '@/components/FeedbackSheet';
+import { reveal } from '@/ui/motion';
 
-const rise = {
-  hidden: { opacity: 0, y: 14 },
-  show: (i: number) => ({ opacity: 1, y: 0, transition: { delay: 0.05 + i * 0.06, type: 'spring', stiffness: 260, damping: 28 } }),
-};
+const rise = reveal;
 
 const STEPS = [
   { title: 'Read the first clue', body: 'Every case starts with one clue about a mystery footballer.' },

@@ -38,14 +38,14 @@ export default {
       },
       keyframes: {
         scan: { '0%': { transform: 'translateY(-100%)' }, '100%': { transform: 'translateY(100%)' } },
-        sheen: { '0%': { transform: 'translateX(-120%)' }, '60%, 100%': { transform: 'translateX(120%)' } },
-        drift: { '0%, 100%': { transform: 'translate3d(0,0,0)' }, '50%': { transform: 'translate3d(2%,1.5%,0)' } },
       },
       animation: {
-        scan: 'scan 3.5s linear infinite',
-        sheen: 'sheen 4.5s ease-in-out infinite',
-        drift: 'drift 18s ease-in-out infinite',
+        // Only while a guess is being checked (well under a second).
+        scan: 'scan 1.2s cubic-bezier(0.65, 0, 0.35, 1) infinite',
       },
+      // CSS transitions (colours, borders) use the same ease-out curve as everything else.
+      transitionTimingFunction: { DEFAULT: 'cubic-bezier(0.22, 0.7, 0.2, 1)' },
+      transitionDuration: { DEFAULT: '260ms' },
     },
   },
   plugins: [],

@@ -1,23 +1,23 @@
 import { memo } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { EASE_OUT, isReducedMotion } from '@/ui/motion';
 
 /**
  * A night pitch under floodlights: deep turf with mowing stripes receding into the distance,
- * and four floodlight blooms that switch on, one after another, the first time the app opens.
+ * and four floodlight blooms that fade up together, once, the first time the app opens.
  * Everything is gradients + transforms (no filters), so it stays cheap on Android WebViews.
  */
 const LIGHTS = [
-  { left: '-18%', top: '-22%', size: '78vmax', color: 'rgb(226 238 255 / 0.30)', delay: 0.1 },
-  { left: '62%', top: '-26%', size: '72vmax', color: 'rgb(226 238 255 / 0.24)', delay: 0.35 },
-  { left: '18%', top: '-38%', size: '60vmax', color: 'rgb(120 240 190 / 0.16)', delay: 0.6 },
-  { left: '70%', top: '55%', size: '70vmax', color: 'rgb(75 227 160 / 0.12)', delay: 0.85 },
+  { left: '-18%', top: '-22%', size: '78vmax', color: 'rgb(226 238 255 / 0.30)' },
+  { left: '62%', top: '-26%', size: '72vmax', color: 'rgb(226 238 255 / 0.24)' },
+  { left: '18%', top: '-38%', size: '60vmax', color: 'rgb(120 240 190 / 0.16)' },
+  { left: '70%', top: '55%', size: '70vmax', color: 'rgb(75 227 160 / 0.12)' },
 ];
 
 let switchedOn = false;
 
 export const PitchBackdrop = memo(function PitchBackdrop() {
-  const reduce = useReducedMotion();
-  const firstLoad = !switchedOn && !reduce;
+  const firstLoad = !switchedOn && !isReducedMotion();
   switchedOn = true;
 
   return (
@@ -51,8 +51,8 @@ export const PitchBackdrop = memo(function PitchBackdrop() {
             background: `radial-gradient(closest-side, ${l.color}, transparent 72%)`,
           }}
           initial={firstLoad ? { opacity: 0 } : false}
-          animate={{ opacity: firstLoad ? [0, 0.55, 0.25, 1] : 1 }}
-          transition={{ delay: l.delay, duration: 0.9, times: [0, 0.25, 0.4, 1], ease: 'easeOut' }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, ease: EASE_OUT }}
         />
       ))}
 

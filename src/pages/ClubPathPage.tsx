@@ -31,6 +31,7 @@ import {
 } from '@/game/clubpath';
 import { play } from '@/utils/sound';
 import { haptic } from '@/utils/haptics';
+import { enter, isReducedMotion } from '@/ui/motion';
 
 function newRun(): PathRun {
   return { id: randomId(), startedAt: Date.now(), solved: [], current: nextPathPlayer([], 0), guesses: [], status: 'playing' };
@@ -228,9 +229,9 @@ export function ClubPathPage({ navigate }: { navigate: (r: Route) => void }) {
           {path.map((club, i) => (
             <motion.li
               key={`${club}-${i}`}
-              initial={{ opacity: 0, x: -8 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.05 * i, type: 'spring', stiffness: 400, damping: 30 }}
+              initial={isReducedMotion() ? false : { opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={enter(i)}
             >
               <div className="flex items-center gap-3 rounded-2xl border border-white/[0.08] bg-white/[0.05] px-4 py-3">
                 <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-lime/15 text-[13px] font-bold tabular-nums text-lime">{i + 1}</span>

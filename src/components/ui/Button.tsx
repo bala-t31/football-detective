@@ -1,5 +1,6 @@
 import { forwardRef, type ReactNode } from 'react';
 import { motion, type HTMLMotionProps } from 'framer-motion';
+import { press, pressScale } from '@/ui/motion';
 import { haptic } from '@/utils/haptics';
 
 type Variant = 'primary' | 'secondary' | 'ghost' | 'danger';
@@ -38,21 +39,15 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       ref={ref}
       type={type}
       disabled={disabled}
-      whileTap={disabled ? undefined : { scale: 0.96 }}
+      whileTap={disabled ? undefined : { scale: pressScale }}
       onTapStart={(e, info) => {
         if (!disabled && variant !== 'ghost') void haptic('light');
         onTapStart?.(e, info);
       }}
-      transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+      transition={press()}
       className={`relative inline-flex select-none items-center justify-center overflow-hidden rounded-full font-semibold tracking-[-0.01em] transition-[background,filter,color] duration-200 disabled:cursor-not-allowed ${VARIANTS[variant]} ${SIZES[size]} ${className}`}
       {...rest}
     >
-      {variant === 'primary' && !disabled && (
-        <span
-          className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 animate-sheen bg-gradient-to-r from-transparent via-white/40 to-transparent"
-          aria-hidden
-        />
-      )}
       {icon}
       {children}
     </motion.button>

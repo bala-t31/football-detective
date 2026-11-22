@@ -1,0 +1,20 @@
+{
+  "rev": 1,
+  "minApp": "1.6",
+  "players": [],
+  "daily": {
+    "2026-11-24": { "playerId": "pierre-emerick-aubameyang", "theme": "Champions League night: Arsenal vs Dortmund" },
+    "2026-11-28": { "playerId": "emmanuel-adebayor", "theme": "Big game: Arsenal vs Man City" },
+    "2026-12-05": { "playerId": "sol-campbell", "theme": "North London derby weekend" },
+    "2026-12-08": { "playerId": "yaya-toure", "theme": "Champions League: Barcelona vs Man City" },
+    "2026-12-12": { "playerId": "frank-lampard", "theme": "Big game: Man City vs Chelsea" },
+    "2026-12-13": { "playerId": "francesco-totti", "theme": "Rome derby day: Lazio vs Roma" },
+    "2026-12-19": { "playerId": "robin-van-persie", "theme": "Big game: Arsenal vs Man Utd" },
+    "2026-12-25": { "playerId": "ronaldinho", "theme": "Merry Christmas! A festive legend" },
+    "2026-12-26": { "playerId": "steven-gerrard", "theme": "Boxing Day football" },
+    "2027-01-01": { "playerId": "zinedine-zidane", "theme": "Happy New Year! The first case of 2027" },
+    "2027-01-10": { "playerId": "zlatan-ibrahimovic", "theme": "Derby d'Italia weekend: Inter vs Juventus" },
+    "2027-01-20": { "playerId": "bastian-schweinsteiger", "theme": "Champions League: Man Utd vs Bayern" },
+    "2027-01-27": { "playerId": "cesc-fabregas", "theme": "Champions League: Barcelona vs Como" }
+  }
+}

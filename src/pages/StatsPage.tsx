@@ -8,11 +8,9 @@ import { getPlayer, PLAYERS } from '@/data';
 import { toDateKey } from '@/utils/date';
 import { RankCard } from '@/components/RankCard';
 import { AchievementIcon } from '@/components/ui/AchievementIcon';
+import { MOTION, ease, reveal } from '@/ui/motion';
 
-const rise = {
-  hidden: { opacity: 0, y: 14 },
-  show: (i: number) => ({ opacity: 1, y: 0, transition: { delay: 0.05 + i * 0.06, type: 'spring', stiffness: 260, damping: 28 } }),
-};
+const rise = reveal;
 
 export function StatsPage() {
   const { profile } = useProfile();
@@ -134,6 +132,14 @@ export function StatsPage() {
                       {MODES[g.mode].name},{' '}
                       {g.mode === 'teammate'
                         ? `${g.caseNumber} teammate${g.caseNumber === 1 ? '' : 's'} named`
+                        : g.mode === 'higherlower'
+                          ? `${g.caseNumber} right in a row`
+                          : g.mode === 'transfer'
+                            ? `${g.caseNumber} of 8 fees right`
+                            : g.mode === 'xi'
+                              ? `${g.caseNumber} of 11 starters named`
+                              : g.mode === 'emoji'
+                                ? `${g.guesses} guess${g.guesses === 1 ? '' : 'es'} from emojis`
                         : g.mode === 'clubpath'
                           ? `player ${g.caseNumber} of a run`
                           : `${g.guesses} guess${g.guesses === 1 ? '' : 'es'}, ${g.cluesRevealed} clue${g.cluesRevealed === 1 ? '' : 's'}`}
@@ -177,7 +183,7 @@ function Bar({ label, count, max, delay, bad }: { label: string; count: number; 
           <motion.div
             initial={{ width: 0 }}
             animate={{ width: `${Math.max(12, (count / max) * 100)}%` }}
-            transition={{ type: 'spring', stiffness: 120, damping: 20, delay }}
+            transition={ease(MOTION.chart, delay)}
             className={`flex h-full items-center justify-end rounded-full px-3 text-[13px] font-bold tabular-nums ${
               bad
                 ? 'bg-[linear-gradient(90deg,#c94848,#ff7a7a)] text-[#2a0507]'

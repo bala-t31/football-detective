@@ -1,5 +1,5 @@
 import type { GameMode, Achievement, GameRecord, Profile, Rank } from '@/types';
-import { addDays } from '@/utils/date';
+import { addDays, daysBetween } from '@/utils/date';
 
 // ─── Ranks ──────────────────────────────────────────────────────────
 
@@ -78,6 +78,18 @@ export const ACHIEVEMENTS: Achievement[] = [
     id: 'hall-of-fame', title: 'Hall of Fame', description: 'Solve 5 Weekly Legends.', icon: 'crown',
     check: (p) => wins(p).filter((h) => h.mode === 'legends').length >= 5,
   },
+  {
+    id: 'team-sheet', title: 'Team Sheet', description: 'Name a full XI in Guess the XI.', icon: 'shirt',
+    check: (p) => p.history.some((h) => h.mode === 'xi' && h.caseNumber >= 11),
+  },
+  {
+    id: 'transfer-guru', title: 'Transfer Guru', description: 'Get 7 of 8 fees right in Transfer Fee.', icon: 'banknote',
+    check: (p) => p.history.some((h) => h.mode === 'transfer' && h.caseNumber >= 7),
+  },
+  {
+    id: 'time-keeper', title: 'Time Keeper', description: 'Get 10 in a row in Higher or Lower.', icon: 'arrow-up-down',
+    check: (p) => p.history.some((h) => h.mode === 'higherlower' && h.caseNumber >= 10),
+  },
 ];
 
 export const ACHIEVEMENT_BY_ID = Object.fromEntries(ACHIEVEMENTS.map((a) => [a.id, a]));
@@ -88,22 +100,51 @@ export function newlyUnlocked(profile: Profile, last?: GameRecord): Achievement[
 
 // ─── Streaks ────────────────────────────────────────────────────────
 
-/** The streak as it stands today: it lapses if the last win was before yesterday. */
+export const MAX_FREEZES = 2;
+export const FREEZE_EVERY = 7;
+
+/** Days missed between the last win and `date` (not counting either end). */
+function missedSince(last: string, date: string): number {
+  return Math.max(0, daysBetween(last, date) - 1);
+}
+
+/**
+ * The streak as it stands today. It lapses if the last win was before yesterday, unless there are
+ * enough streak freezes to cover the missed days (they are used up when the next case is solved).
+ */
 export function effectiveStreak(profile: Profile, today: string): number {
   const last = profile.daily.lastWinDate;
-  if (!last) return 0;
-  if (last === today || last === addDays(today, -1)) return profile.daily.currentStreak;
-  return 0;
+  if (!last || profile.daily.currentStreak === 0) return 0;
+  if (last === today) return profile.daily.currentStreak;
+  const missed = missedSince(last, today);
+  return missed <= (profile.daily.freezes ?? 0) ? profile.daily.currentStreak : 0;
+}
+
+/** Freezes that today's case would use if solved (0 when nothing was missed). */
+export function freezesNeeded(profile: Profile, today: string): number {
+  const last = profile.daily.lastWinDate;
+  if (!last || profile.daily.currentStreak === 0 || last === today) return 0;
+  const missed = missedSince(last, today);
+  return missed <= (profile.daily.freezes ?? 0) ? missed : 0;
 }
 
 /** Returns updated daily stats after finishing the daily case for `date`. Idempotent per date. */
 export function applyDailyResult(profile: Profile, date: string, won: boolean, score: number): Profile['daily'] {
   const d = profile.daily;
   if (d.completed[date]) return d;
+  let freezes = d.freezes ?? 0;
+  let frozen = d.frozen ?? [];
   let currentStreak: number;
   if (won) {
-    const continuing = d.lastWinDate === addDays(date, -1);
-    currentStreak = continuing ? d.currentStreak + 1 : 1;
+    const missed = d.lastWinDate && d.currentStreak > 0 ? missedSince(d.lastWinDate, date) : Infinity;
+    if (missed === 0) currentStreak = d.currentStreak + 1;
+    else if (missed <= freezes) {
+      // Freezes cover the missed days, so the streak carries on.
+      for (let i = 1; i <= missed; i++) frozen = [...frozen, addDays(d.lastWinDate!, i)];
+      freezes -= missed;
+      currentStreak = d.currentStreak + 1;
+    } else currentStreak = 1;
+    if (currentStreak % FREEZE_EVERY === 0) freezes = Math.min(MAX_FREEZES, freezes + 1);
   } else {
     currentStreak = 0;
   }
@@ -113,5 +154,7 @@ export function applyDailyResult(profile: Profile, date: string, won: boolean, s
     lastWinDate: won ? date : d.lastWinDate,
     lastCompletedDate: date,
     completed: { ...d.completed, [date]: { won, score } },
+    freezes,
+    frozen: frozen.slice(-30),
   };
 }

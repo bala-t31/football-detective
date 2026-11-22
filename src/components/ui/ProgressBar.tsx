@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { MOTION, ease } from '@/ui/motion';
 
 export function ProgressBar({ value, className = '' }: { value: number; className?: string }) {
   return (
@@ -13,7 +14,7 @@ export function ProgressBar({ value, className = '' }: { value: number; classNam
         className="h-full rounded-full bg-[linear-gradient(90deg,#2fc785,#7ff0bf)] shadow-[0_0_12px_rgb(75_227_160/0.6),inset_0_1px_0_rgb(255_255_255/0.5)]"
         initial={{ width: 0 }}
         animate={{ width: `${Math.max(3, value * 100)}%` }}
-        transition={{ type: 'spring', stiffness: 90, damping: 20, delay: 0.2 }}
+        transition={ease(MOTION.chart, 0.1)}
       />
     </div>
   );

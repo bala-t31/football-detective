@@ -1,5 +1,5 @@
 import type { Clue, GameMode, Player, RoundState } from '@/types';
-import { PLAYERS, getPlayer } from '@/data';
+import { PLAYERS, PLAYER_BY_ID, getPlayer } from '@/data';
 import { toDateKey } from '@/utils/date';
 import { caseNumberFor, dailyPlayerId } from './daily';
 import { legendsForWeek, legendsProgress, weekKeyFor } from './weekly';
@@ -79,7 +79,42 @@ export const MODES: Record<GameMode, ModeConfig> = {
     hintsAllowed: false,
     pool: () => true,
   },
+  higherlower: {
+    id: 'higherlower',
+    name: 'Higher or Lower',
+    tagline: 'Who started their career first? One miss ends the run.',
+    maxAttempts: 1,
+    hintsAllowed: false,
+    pool: (p) => p.difficulty !== 'hard',
+  },
+  emoji: {
+    id: 'emoji',
+    name: 'Emoji Clue',
+    tagline: 'A career told in emojis. Three guesses.',
+    maxAttempts: 3,
+    hintsAllowed: false,
+    pool: (p) => p.difficulty !== 'hard',
+  },
+  transfer: {
+    id: 'transfer',
+    name: 'Transfer Fee',
+    tagline: 'Pick the reported fee for famous transfers.',
+    maxAttempts: 1,
+    hintsAllowed: false,
+    pool: () => true,
+  },
+  xi: {
+    id: 'xi',
+    name: 'Guess the XI',
+    tagline: 'Name every starter of a famous line-up.',
+    maxAttempts: 11,
+    hintsAllowed: false,
+    pool: () => true,
+  },
 };
+
+/** Modes where a win doesn't mean you identified the player, so it doesn't count as "discovered". */
+export const NON_DISCOVERY_MODES: GameMode[] = ['teammate', 'higherlower', 'transfer', 'xi'];
 
 /** Clues shown for a round. Career mode builds a progressive club timeline instead. */
 export function cluesForRound(player: Player, mode: GameMode): Clue[] {
@@ -121,7 +156,7 @@ function pickRandom(mode: GameMode, exclude: string[]): Player {
 }
 
 
-export function createRound(mode: GameMode, opts: { date?: string; exclude?: string[]; caseNumber?: number } = {}): RoundState {
+export function createRound(mode: GameMode, opts: { date?: string; exclude?: string[]; caseNumber?: number; playerId?: string } = {}): RoundState {
   const cfg = MODES[mode];
   let playerId: string;
   let caseNumber: number;
@@ -139,6 +174,9 @@ export function createRound(mode: GameMode, opts: { date?: string; exclude?: str
     const nextIdx = Math.max(0, list.findIndex((id) => !done.includes(id)));
     playerId = list[nextIdx];
     caseNumber = nextIdx + 1;
+  } else if (opts.playerId && PLAYER_BY_ID[opts.playerId]) {
+    playerId = opts.playerId;
+    caseNumber = opts.caseNumber ?? 100 + (hashString(`${playerId}:${Date.now()}`) % 900);
   } else {
     playerId = pickRandom(mode, opts.exclude ?? []).id;
     caseNumber = opts.caseNumber ?? 100 + (hashString(`${playerId}:${Date.now()}`) % 900);

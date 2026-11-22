@@ -28,6 +28,7 @@ import {
 } from '@/game/teammate';
 import { play } from '@/utils/sound';
 import { haptic } from '@/utils/haptics';
+import { MOTION, ease } from '@/ui/motion';
 
 function newGame(current?: string): TeammateGame {
   return { id: randomId(), puzzleId: nextPuzzleId(current), found: [], wrong: [], status: 'playing', startedAt: Date.now() };
@@ -193,7 +194,7 @@ export function TeammatePage({ navigate }: { navigate: (r: Route) => void }) {
             <motion.div
               className="h-full rounded-full bg-[linear-gradient(90deg,#2fc785,#7ff0bf)]"
               animate={{ width: `${Math.min(100, (game.found.length / puzzle.answers.length) * 100)}%` }}
-              transition={{ type: 'spring', stiffness: 200, damping: 26 }}
+              transition={ease(MOTION.chart)}
             />
           </div>
           <p className="mt-1.5 text-[12.5px] text-ink-faint">

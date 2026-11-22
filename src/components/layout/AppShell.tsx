@@ -9,6 +9,7 @@ import { Logo } from './Logo';
 import { haptic } from '@/utils/haptics';
 import { play } from '@/utils/sound';
 import { PitchBackdrop } from './PitchBackdrop';
+import { glide } from '@/ui/motion';
 
 interface Props {
   route: Route;
@@ -79,7 +80,7 @@ export function AppShell({ route, navigate, onOpenSettings, children }: Props) {
                     <motion.span
                       layoutId="desk-pill"
                       className="absolute inset-0 rounded-full bg-white/[0.13] shadow-[inset_0_1px_0_rgb(255_255_255/0.2)]"
-                      transition={{ type: 'spring', stiffness: 420, damping: 34 }}
+                      transition={glide()}
                     />
                   )}
                   <n.icon size={15} className="relative" />
@@ -136,7 +137,7 @@ export function AppShell({ route, navigate, onOpenSettings, children }: Props) {
                   <motion.span
                     layoutId="tab-pill"
                     className="absolute inset-0 rounded-full bg-white/[0.12] shadow-[inset_0_1px_0_rgb(255_255_255/0.22)]"
-                    transition={{ type: 'spring', stiffness: 420, damping: 34 }}
+                    transition={glide()}
                   />
                 )}
                 <n.icon size={20} className={`relative ${active ? 'text-lime' : ''}`} strokeWidth={active ? 2.3 : 2} />

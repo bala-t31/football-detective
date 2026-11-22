@@ -1,6 +1,6 @@
 export type Confederation = 'UEFA' | 'CONMEBOL' | 'CAF' | 'AFC' | 'CONCACAF' | 'OFC';
 
-interface NationInfo {
+export interface NationInfo {
   confederation: Confederation;
   flag: string;
   code: string;

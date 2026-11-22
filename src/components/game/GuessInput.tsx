@@ -8,6 +8,7 @@ import { POSITION_LABEL } from '@/data/positions';
 import { normalize, searchPlayers } from '@/game/search';
 import { Button } from '@/components/ui/Button';
 import { haptic } from '@/utils/haptics';
+import { EASE_OUT, MOTION, ease, isReducedMotion } from '@/ui/motion';
 
 interface Props {
   onSubmit: (playerId: string) => Promise<{ ok: boolean; message?: string }>;
@@ -115,8 +116,9 @@ export function GuessInput({ onSubmit, disabled, busy, guessedIds }: Props) {
     <div ref={rootRef} className="relative scroll-mt-20">
       <motion.div
         key={shake}
-        animate={shake ? { x: [0, -8, 8, -5, 5, 0] } : undefined}
-        transition={{ duration: 0.35 }}
+        // A short, damped nudge says "that guess didn't work". No nudge with reduced motion.
+        animate={shake && !isReducedMotion() ? { x: [0, -6, 5, -3, 0] } : undefined}
+        transition={{ duration: 0.32, ease: EASE_OUT }}
         className="flex gap-2"
       >
         <div
@@ -193,10 +195,10 @@ export function GuessInput({ onSubmit, disabled, busy, guessedIds }: Props) {
           <motion.ul
             id={listId}
             role="listbox"
-            initial={{ opacity: 0, y: -6, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -6, scale: 0.98 }}
-            transition={{ type: 'spring', stiffness: 520, damping: 34 }}
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4, transition: ease(MOTION.fadeOut) }}
+            transition={ease(MOTION.quick)}
             className="glass-strong absolute left-0 right-0 top-[64px] z-30 max-h-[min(380px,52dvh)] origin-top overflow-y-auto overscroll-contain rounded-[26px] p-1.5 scrollbar-thin"
           >
             {results.length === 0 ? (

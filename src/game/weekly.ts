@@ -1,4 +1,5 @@
-import { PLAYER_BY_ID, PLAYER_IDS_STABLE } from '@/data';
+import { PLAYER_BY_ID } from '@/data';
+import { LEGENDS_POOL_IDS } from '@/data/legendsPool';
 import { storage } from '@/utils/storage';
 import { addDays, daysBetween, fromDateKey, toDateKey } from '@/utils/date';
 import { hashString, seededShuffle } from './random';
@@ -8,10 +9,7 @@ export const LEGENDS_PER_WEEK = 5;
 const WEEK_EPOCH = '2026-11-16'; // a Monday; week 1
 const SEED = 0x1e9e_4d5;
 
-export const LEGENDS_POOL: string[] = PLAYER_IDS_STABLE.filter((id) => {
-  const p = PLAYER_BY_ID[id];
-  return p.retired && p.difficulty !== 'hard';
-});
+export const LEGENDS_POOL: string[] = LEGENDS_POOL_IDS.filter((id) => PLAYER_BY_ID[id]);
 
 /** Monday (local) of the week containing the date. */
 export function weekKeyFor(dateKey: string = toDateKey()): string {

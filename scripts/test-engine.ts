@@ -3,7 +3,7 @@
  * Covers: data consistency, daily determinism & no consecutive repeats, search, feedback, scoring,
  * guess validation, streak rules.
  */
-import { PLAYERS, getPlayer } from '../src/data';
+import { PLAYERS, getPlayer, SCHEDULED_DAYS } from '../src/data';
 import { CLUB_LEAGUE } from '../src/data/clubs';
 import { NATIONS } from '../src/data/nations';
 import { dailyPlayerId, caseNumberFor, DAILY_POOL_SIZE } from '../src/game/daily';
@@ -66,8 +66,14 @@ for (let i = 1; i < 1500; i++) {
 }
 check('no consecutive daily repeats over ~4 years', consecutive === 0, String(consecutive));
 const firstCycle = new Set<string>();
-for (let i = 0; i < DAILY_POOL_SIZE; i++) firstCycle.add(dailyPlayerId(addDays('2026-11-01', i)));
-check('daily cycle covers pool without repeats', firstCycle.size === DAILY_POOL_SIZE, `${firstCycle.size}/${DAILY_POOL_SIZE}`);
+// Match-day themes (online content) replace single days, so they are left out of the cycle checks.
+let scheduledInCycle = 0;
+for (let i = 0; i < DAILY_POOL_SIZE; i++) {
+  const day = addDays('2026-11-01', i);
+  if (SCHEDULED_DAYS[day]) scheduledInCycle++;
+  else firstCycle.add(dailyPlayerId(day));
+}
+check('daily cycle covers pool without repeats', firstCycle.size === DAILY_POOL_SIZE - scheduledInCycle, `${firstCycle.size}/${DAILY_POOL_SIZE - scheduledInCycle}`);
 void seenInCycle;
 
 // ── Search
@@ -175,7 +181,7 @@ check('rank max', rankFor(1e9).current.name === 'Ball Knowledge GOAT' && rankFor
   check('every Casual player has a trophy as the first hint', easyWithout.length === 0, easyWithout.map((p) => p.id).join(', '));
   check('messi first hint is the World Cup', /World Cup/.test(getPlayer('lionel-messi')!.clues[1].text));
   check('ramos first hint is the World Cup', /World Cup/.test(getPlayer('sergio-ramos')!.clues[1].text));
-  check('daily pool is Casual only', Array.from({ length: 60 }, (_, i) => dailyPlayerId(addDays('2026-11-22', i))).every((id) => getPlayer(id)!.difficulty === 'easy'));
+  check('daily pool is Casual only', Array.from({ length: 60 }, (_, i) => addDays('2026-11-22', i)).filter((d) => !SCHEDULED_DAYS[d]).map((d) => dailyPlayerId(d)).every((id) => getPlayer(id)!.difficulty === 'easy'));
 }
 
 // ── Name the Teammate data

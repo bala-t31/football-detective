@@ -5,6 +5,7 @@ import { toDateKey } from '@/utils/date';
 import { setSoundEnabled } from '@/utils/sound';
 import { setHapticsEnabled } from '@/utils/haptics';
 import { applyDailyResult, newlyUnlocked } from '@/game/progression';
+import { NON_DISCOVERY_MODES } from '@/game/engine';
 
 const PROFILE_KEY = 'profile.v1';
 const HISTORY_CAP = 300;
@@ -95,7 +96,7 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
       ...prev,
       xp: Math.max(0, prev.xp + score),
       history: [record, ...prev.history].slice(0, HISTORY_CAP),
-      discovered: won && round.mode !== 'teammate' && !prev.discovered[round.playerId] ? { ...prev.discovered, [round.playerId]: record.finishedAt } : prev.discovered,
+      discovered: won && !NON_DISCOVERY_MODES.includes(round.mode) && !prev.discovered[round.playerId] ? { ...prev.discovered, [round.playerId]: record.finishedAt } : prev.discovered,
     };
     if (round.mode === 'daily' && round.date) next = { ...next, daily: applyDailyResult(next, round.date, won, score) };
 

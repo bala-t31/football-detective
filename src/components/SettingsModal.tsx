@@ -8,6 +8,7 @@ import { storage } from '@/utils/storage';
 import { Modal } from '@/components/ui/Modal';
 import { Button } from '@/components/ui/Button';
 import { useToast } from '@/components/ui/Toast';
+import { glide } from '@/ui/motion';
 
 export function SettingsModal({
   open,
@@ -153,7 +154,8 @@ function Toggle({
         } shadow-[inset_0_1px_2px_rgb(0_0_0/0.3)]`}
       >
         <motion.span
-          transition={{ type: 'spring', stiffness: 600, damping: 32 }}
+          layout
+          transition={glide()}
           className={`absolute top-[2px] h-[27px] w-[27px] rounded-full bg-white shadow-[0_3px_8px_rgb(0_0_0/0.35)] ${checked ? 'right-[2px]' : 'left-[2px]'}`}
         />
       </span>

@@ -6,9 +6,10 @@ import { nationInfo } from '../src/data/nations';
 import { shortClub, shortLeague } from '../src/data/clubs';
 import { POSITION_LABEL } from '../src/data/positions';
 import { TEAMMATE_PUZZLES } from '../src/data/teammates';
+import { decodeChallenge } from '../src/game/challenge';
 
 (window as unknown as { FD: unknown }).FD = {
-  PLAYERS, getPlayer, compareGuess, searchPlayers, nationInfo, shortClub, shortLeague, POSITION_LABEL,
-  modes: 7,
+  PLAYERS, getPlayer, compareGuess, decodeChallenge, searchPlayers, nationInfo, shortClub, shortLeague, POSITION_LABEL,
+  modes: 11,
   teammatePuzzles: TEAMMATE_PUZZLES.length,
 };

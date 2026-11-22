@@ -38,8 +38,35 @@
   };
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 
+  // ── Challenge links (/c/#code → /?c=code#try): play the friend's player right here.
+  let challenge = null;
+  try {
+    const code = new URLSearchParams(window.location.search).get('c');
+    challenge = code && FD.decodeChallenge ? FD.decodeChallenge(code) : null;
+    if (challenge) {
+      const isAndroid = /Android/i.test(navigator.userAgent);
+      const banner = document.createElement('div');
+      banner.className = 'challenge';
+      const their = challenge.won
+        ? `They found this player in ${challenge.guesses} guess${challenge.guesses === 1 ? '' : 'es'}. Take fewer to win.`
+        : 'This player beat them. Find him to win.';
+      banner.innerHTML = `<p class="challenge__title">⚔️ A friend challenged you</p><p>${their}</p>${
+        isAndroid
+          ? `<div class="challenge__cta"><a class="btn btn--primary" href="intent://challenge/${encodeURIComponent(code)}#Intent;scheme=footballdetective;package=com.footballdetective.app;S.browser_fallback_url=${encodeURIComponent('https://football-detective.netlify.app/#install')};end">Open in the app</a><span>or play below</span></div>`
+          : ''
+      }`;
+      root.parentNode.insertBefore(banner, root);
+      const label = root.querySelector('.demo__label');
+      if (label) label.textContent = 'Challenge case';
+      window.requestAnimationFrame(() => banner.scrollIntoView({ block: 'center' }));
+    }
+  } catch (e) {
+    challenge = null;
+  }
+
   let state;
   function pickMystery() {
+    if (challenge && FD.getPlayer(challenge.playerId)) return FD.getPlayer(challenge.playerId);
     let last = null;
     try { last = sessionStorage.getItem('fd-demo-last'); } catch (e) {}
     const pool = MYSTERIES.filter((id) => id !== last && FD.getPlayer(id));
@@ -153,7 +180,15 @@
     els.form.hidden = true;
     const t = state.target;
     const n = state.guesses.length;
-    els.result.innerHTML = `
+    let duel = '';
+    if (challenge) {
+      const youWon = won && !gaveUp;
+      const beat = !challenge.won ? youWon : youWon && n < challenge.guesses;
+      const draw = challenge.won ? youWon && n === challenge.guesses : !youWon;
+      duel = `<p class="result__duel ${beat ? 'is-win' : draw ? '' : 'is-loss'}">⚔️ ${beat ? 'You won the challenge' : draw ? 'Challenge drawn' : 'Your friend wins this one'}${challenge.won ? ` · they took ${challenge.guesses}` : ''}</p>`;
+      challenge = null; // the next case is a normal one
+    }
+    els.result.innerHTML = `${duel}
       <p class="result__verdict ${won ? 'is-win' : 'is-loss'}">${gaveUp ? 'Revealed. In the app that costs 150 XP. The player was' : won ? (n === 1 ? 'First guess. Elite ball knowledge.' : `Solved in ${n} guesses`) : 'Zero ball knowledge. The answer was'}</p>
       <h4>${esc(t.name)}</h4>
       <p>${esc(FD.POSITION_LABEL[t.position])}, ${esc(t.nationality)}. ${esc(t.careerClubs.filter((c, i, a) => i === 0 || a[i - 1] !== c).join(' → '))}</p>

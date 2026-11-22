@@ -2,6 +2,7 @@ import { useEffect, useRef, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion, useDragControls } from 'framer-motion';
 import { X } from 'lucide-react';
+import { EASE_IN_OUT, MOTION, ease, isReducedMotion } from '@/ui/motion';
 
 interface ModalProps {
   open: boolean;
@@ -55,7 +56,8 @@ export function Modal({ open, onClose, title, children, footer, size = 'md' }: M
           className="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          exit={{ opacity: 0, transition: { duration: 0.18 } }}
+          transition={ease(MOTION.fadeIn)}
+          exit={{ opacity: 0, transition: ease(MOTION.sheetOut) }}
         >
           <div className="absolute inset-0 bg-black/65" onClick={onClose} aria-hidden />
           <motion.div
@@ -66,8 +68,8 @@ export function Modal({ open, onClose, title, children, footer, size = 'md' }: M
             className={`glass-strong relative flex max-h-[88dvh] w-full flex-col overflow-hidden rounded-t-[32px] ${size === 'sm' ? 'sm:max-w-sm' : 'sm:max-w-lg'} sm:rounded-[32px]`}
             initial={{ y: '100%' }}
             animate={{ y: 0 }}
-            exit={{ y: '100%', transition: { duration: 0.22, ease: [0.4, 0, 1, 1] } }}
-            transition={{ type: 'spring', stiffness: 380, damping: 36 }}
+            exit={{ y: '100%', transition: isReducedMotion() ? { duration: 0 } : { duration: MOTION.sheetOut, ease: EASE_IN_OUT } }}
+            transition={ease(MOTION.sheetIn)}
             drag="y"
             dragListener={false}
             dragControls={drag}

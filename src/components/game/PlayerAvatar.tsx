@@ -2,6 +2,7 @@ import { useId } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Player } from '@/types';
 import { nationInfo } from '@/data/nations';
+import { MOTION, ease } from '@/ui/motion';
 
 function initials(name: string) {
   const parts = name.split(/\s+/).filter(Boolean);
@@ -55,9 +56,9 @@ export function PlayerAvatar({ player, revealed, size = 'md', scanning = false }
             <motion.div
               key="revealed"
               className="absolute inset-0 grid place-items-center"
-              initial={{ opacity: 0, scale: 1.18 }}
+              initial={{ opacity: 0, scale: 1.08 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              transition={ease(MOTION.number)}
             >
               <div className="text-center">
                 <div className={`font-display font-extrabold leading-none tracking-[-0.06em] text-ink ${big ? 'text-[46px] sm:text-[52px]' : 'text-[32px]'}`}>
@@ -67,7 +68,7 @@ export function PlayerAvatar({ player, revealed, size = 'md', scanning = false }
               </div>
             </motion.div>
           ) : (
-            <motion.div key="mystery" className="absolute inset-0" exit={{ opacity: 0, scale: 0.96 }}>
+            <motion.div key="mystery" className="absolute inset-0" exit={{ opacity: 0, transition: ease(MOTION.fadeOut) }}>
               <div className="absolute inset-x-0 bottom-0 top-[12%] blur-[1.5px]">
                 <Silhouette />
               </div>
@@ -87,9 +88,9 @@ export function PlayerAvatar({ player, revealed, size = 'md', scanning = false }
       </div>
       {revealed && player && (
         <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ type: 'spring', stiffness: 420, damping: 18, delay: 0.45 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={ease(MOTION.quick, 0.4)}
           className={`absolute grid place-items-center rounded-full border border-white/25 bg-pitch-900 shadow-lg ${big ? '-bottom-0.5 -right-0.5 h-11 w-11 text-[22px]' : 'bottom-0 right-0 h-8 w-8 text-base'}`}
         >
           {nationInfo(player.nationality).flag}

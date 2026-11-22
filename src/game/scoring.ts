@@ -16,6 +16,10 @@ export const MODE_MULTIPLIER: Record<GameMode, number> = {
   legends: 1.3,
   clubpath: 1,
   teammate: 1,
+  higherlower: 1,
+  emoji: 1,
+  transfer: 1,
+  xi: 1,
 };
 
 /** XP taken from your total when you reveal the answer instead of solving it. */

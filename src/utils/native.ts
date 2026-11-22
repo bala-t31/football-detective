@@ -6,6 +6,12 @@ import { Capacitor } from '@capacitor/core';
 
 export const isNative = (): boolean => Capacitor.isNativePlatform();
 
+/** Pulls the challenge code out of an app or website link. */
+export function challengeCodeFromUrl(url: string): string | null {
+  const m = url.match(/^footballdetective:\/\/challenge\/([A-Za-z0-9_-]+)/) ?? url.match(/\/c\/?#([A-Za-z0-9_-]+)/);
+  return m ? m[1] : null;
+}
+
 export async function initNative(): Promise<void> {
   if (!isNative()) return;
   document.documentElement.classList.add('native');
@@ -25,6 +31,15 @@ export async function initNative(): Promise<void> {
       }
       void App.exitApp();
     });
+    // Challenge links: footballdetective://challenge/<code> (from the website's "Open in the app"),
+    // or the website's own /c/#<code> address if Android hands it to the app.
+    const openLink = (url?: string) => {
+      const code = url ? challengeCodeFromUrl(url) : null;
+      if (code) window.location.hash = `#/challenge/${code}`;
+    };
+    await App.addListener('appUrlOpen', ({ url }) => openLink(url));
+    const launch = await App.getLaunchUrl();
+    openLink(launch?.url);
   } catch {
     /* back handling falls back to the WebView default */
   }

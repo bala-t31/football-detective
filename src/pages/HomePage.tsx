@@ -1,32 +1,37 @@
 import { motion } from 'framer-motion';
-import { CheckCircle2, ChevronRight, Crown, Dumbbell, Route as RouteIcon, Skull, Users, Waypoints, XCircle } from 'lucide-react';
+import { ArrowUpDown, Banknote, CheckCircle2, ChevronRight, Crown, Dumbbell, History, Route as RouteIcon, Shirt, Skull, Smile, Snowflake, Users, Waypoints, XCircle } from 'lucide-react';
 import { LEGENDS_PER_WEEK, daysUntilNextWeek, legendsProgress, weekKeyFor, weekNumber } from '@/game/weekly';
 import type { GameMode } from '@/types';
 import type { Route } from '@/hooks/useRouter';
 import { useProfile } from '@/hooks/useProfile';
 import { useMidnightCountdown } from '@/hooks/useCountdown';
 import { peekDailyRound } from '@/hooks/useRound';
-import { caseNumberFor } from '@/game/daily';
-import { ACHIEVEMENTS, effectiveStreak } from '@/game/progression';
+import { DAILY_EPOCH, caseNumberFor, dailyPlayerId, dailyTheme } from '@/game/daily';
+import { getPlayer } from '@/data';
+import { nationInfo } from '@/data/nations';
+import { shortClub } from '@/data/clubs';
+import { ACHIEVEMENTS, FREEZE_EVERY, effectiveStreak, freezesNeeded } from '@/game/progression';
 import { MODES } from '@/game/engine';
-import { formatCountdown, fromDateKey } from '@/utils/date';
+import { addDays, formatCountdown, fromDateKey } from '@/utils/date';
 import { Button } from '@/components/ui/Button';
 import { AchievementIcon } from '@/components/ui/AchievementIcon';
 import { RankCard } from '@/components/RankCard';
 import { PlayerAvatar } from '@/components/game/PlayerAvatar';
+import { reveal, pressScale, press } from '@/ui/motion';
 
 const MODE_META: Record<Exclude<GameMode, 'daily' | 'legends'>, { icon: typeof Dumbbell; tint: string; blurb: string; isNew?: boolean }> = {
   practice: { icon: Dumbbell, tint: 'from-[#7ff0bf] to-[#2fc785] text-[#052016]', blurb: 'Pick your level, from Casual to Elite Ball Knowledge.' },
   hardcore: { icon: Skull, tint: 'from-[#ff9d9d] to-[#e0525a] text-[#2a0507]', blurb: 'One clue, three guesses, no hints. 1.5× XP.' },
   career: { icon: RouteIcon, tint: 'from-[#f8dc8a] to-[#e0ac35] text-[#3a2600]', blurb: 'Clubs revealed one at a time, with hints.' },
-  clubpath: { icon: Waypoints, tint: 'from-[#9fd8ff] to-[#3d8fe0] text-[#03182c]', blurb: 'Every club at once. One miss ends the run.', isNew: true },
-  teammate: { icon: Users, tint: 'from-[#e2b6ff] to-[#9b5ce6] text-[#1d0533]', blurb: 'Name players who shared a dressing room with a star.', isNew: true },
+  clubpath: { icon: Waypoints, tint: 'from-[#9fd8ff] to-[#3d8fe0] text-[#03182c]', blurb: 'Every club at once. One miss ends the run.' },
+  teammate: { icon: Users, tint: 'from-[#e2b6ff] to-[#9b5ce6] text-[#1d0533]', blurb: 'Name players who shared a dressing room with a star.' },
+  xi: { icon: Shirt, tint: 'from-[#ffffff] to-[#b9c7c0] text-[#0b1f16]', blurb: 'Name every starter of a famous final line-up.', isNew: true },
+  higherlower: { icon: ArrowUpDown, tint: 'from-[#ffc99a] to-[#e8813a] text-[#2e1302]', blurb: 'Who started their career first? Keep the run going.', isNew: true },
+  emoji: { icon: Smile, tint: 'from-[#fff1a8] to-[#f2c230] text-[#2e2400]', blurb: 'A whole career told in emojis.', isNew: true },
+  transfer: { icon: Banknote, tint: 'from-[#b8f5d6] to-[#4fbf8a] text-[#03210f]', blurb: 'Guess the reported fee of famous transfers.', isNew: true },
 };
 
-const rise = {
-  hidden: { opacity: 0, y: 16 },
-  show: (i: number) => ({ opacity: 1, y: 0, transition: { delay: 0.12 + i * 0.07, type: 'spring', stiffness: 260, damping: 28 } }),
-};
+const rise = reveal;
 
 export function HomePage({ navigate }: { navigate: (r: Route) => void }) {
   const { profile } = useProfile();
@@ -36,6 +41,12 @@ export function HomePage({ navigate }: { navigate: (r: Route) => void }) {
   const done = profile.daily.completed[date];
   const inProgress = !done && daily && daily.status === 'playing' && (daily.guesses.length > 0 || daily.revealed > 1);
   const streak = effectiveStreak(profile, date);
+  const freezes = profile.daily.freezes ?? 0;
+  const savingWith = done ? 0 : freezesNeeded(profile, date);
+  const theme = dailyTheme(date);
+  const yesterday = addDays(date, -1);
+  const yPlayer = yesterday >= DAILY_EPOCH ? getPlayer(dailyPlayerId(yesterday)) : undefined;
+  const yResult = profile.daily.completed[yesterday];
   const played = profile.history.length;
   const won = profile.history.filter((h) => h.won).length;
   const winPct = played ? Math.round((won / played) * 100) : 0;
@@ -61,6 +72,12 @@ export function HomePage({ navigate }: { navigate: (r: Route) => void }) {
           <div className="flex items-start gap-4 sm:gap-6">
             <div className="min-w-0 flex-1">
               <p className="text-[13px] font-semibold text-lime">Daily mystery #{caseNo}</p>
+              {theme && (
+                <p className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-warn/[0.13] px-3 py-1 text-[12.5px] font-semibold text-warn">
+                  <span aria-hidden>⚽</span>
+                  {theme}
+                </p>
+              )}
               <h2 className="heading mt-2 text-[27px] leading-[1.08] sm:text-[34px]">Who is today&apos;s mystery footballer?</h2>
               <p className="mt-2.5 max-w-sm text-[15px] leading-relaxed text-ink-muted">
                 Six guesses. Ask for another clue whenever you&apos;re stuck.
@@ -96,10 +113,37 @@ export function HomePage({ navigate }: { navigate: (r: Route) => void }) {
           </div>
         </motion.section>
 
+        {/* Yesterday's answer */}
+        {yPlayer && (
+          <motion.section custom={1.5} variants={rise} initial="hidden" animate="show" className="card flex items-center gap-3.5 p-4">
+            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-[14px] bg-white/[0.07] text-ink-muted">
+              <History size={19} />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block text-[12.5px] font-medium text-ink-muted">Yesterday&apos;s answer · #{caseNumberFor(yesterday)}</span>
+              <span className="block truncate font-display text-[18px] font-bold tracking-[-0.02em] text-ink">
+                <span aria-hidden className="mr-1.5">{nationInfo(yPlayer.nationality).flag}</span>
+                {yPlayer.name}
+              </span>
+              <span className="block truncate text-[12.5px] text-ink-faint">
+                {yPlayer.position} · {shortClub(yPlayer.mostRecentClub)}
+              </span>
+            </span>
+            <span
+              className={`shrink-0 rounded-full px-2.5 py-1 text-[12px] font-semibold ${
+                yResult ? (yResult.won ? 'bg-ok/[0.12] text-ok' : 'bg-bad/[0.12] text-bad') : 'bg-white/[0.07] text-ink-muted'
+              }`}
+            >
+              {yResult ? (yResult.won ? 'You got it' : 'Missed it') : 'Not played'}
+            </span>
+          </motion.section>
+        )}
+
         {/* Weekly Legends */}
         <motion.section custom={2} variants={rise} initial="hidden" animate="show">
           <motion.button
-            whileTap={{ scale: 0.985 }}
+            whileTap={{ scale: pressScale }}
+            transition={press()}
             onClick={() => navigate({ name: 'play', mode: 'legends' })}
             className="card relative flex w-full items-center gap-4 overflow-hidden p-5 text-left"
           >
@@ -134,18 +178,27 @@ export function HomePage({ navigate }: { navigate: (r: Route) => void }) {
           <Stat value={won} label="Solved" sub={`of ${played}`} />
           <Stat value={`${winPct}%`} label="Win rate" sub="all modes" />
         </motion.section>
+        <motion.p custom={3} variants={rise} initial="hidden" animate="show" className="-mt-2.5 flex items-center gap-2 px-2 text-[13px] text-ink-muted">
+          <Snowflake size={15} className={freezes > 0 ? 'text-[#9fd8ff]' : 'text-ink-faint'} />
+          {savingWith > 0
+            ? `Solve today and ${savingWith === 1 ? 'a streak freeze covers the day' : `${savingWith} streak freezes cover the days`} you missed.`
+            : freezes > 0
+              ? `${freezes} streak freeze${freezes === 1 ? '' : 's'} ready. A freeze covers a day you miss.`
+              : `Win ${FREEZE_EVERY} days in a row to earn a streak freeze.`}
+        </motion.p>
 
         {/* Other modes as a grouped list */}
         <motion.section custom={4} variants={rise} initial="hidden" animate="show">
           <h2 className="mb-2.5 px-1 font-display text-[20px] font-bold tracking-[-0.02em]">More ways to play</h2>
           <div className="card divide-y divide-white/[0.07] overflow-hidden p-1.5">
-            {(['clubpath', 'teammate', 'practice', 'hardcore', 'career'] as const).map((m) => {
+            {(['xi', 'higherlower', 'emoji', 'transfer', 'clubpath', 'teammate', 'practice', 'hardcore', 'career'] as const).map((m) => {
               const meta = MODE_META[m];
               const Icon = meta.icon;
               return (
                 <motion.button
                   key={m}
-                  whileTap={{ scale: 0.985 }}
+                  whileTap={{ scale: pressScale }}
+            transition={press()}
                   onClick={() => navigate({ name: 'play', mode: m })}
                   className="flex w-full items-center gap-3.5 rounded-[22px] px-3 py-3.5 text-left transition-colors hover:bg-white/[0.05]"
                 >

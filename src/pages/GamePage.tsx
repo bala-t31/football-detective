@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronLeft, Eye, Lightbulb } from 'lucide-react';
+import { ChevronLeft, Eye, Lightbulb, Swords } from 'lucide-react';
 import type { Difficulty, GameMode } from '@/types';
 import { useRound } from '@/hooks/useRound';
 import { useProfile } from '@/hooks/useProfile';
@@ -17,6 +17,8 @@ import { ResultsPanel } from '@/components/game/ResultsPanel';
 import type { Route } from '@/hooks/useRouter';
 import { WeekSummary } from '@/components/game/WeekSummary';
 import { LEGENDS_PER_WEEK, weekNumber } from '@/game/weekly';
+import { MOTION, ease } from '@/ui/motion';
+import { dailyTheme } from '@/game/daily';
 
 const DIFFICULTY: Record<Difficulty, { label: string; style: string }> = {
   easy: { label: 'Casual', style: 'border-ok/30 bg-ok/10 text-ok' },
@@ -32,6 +34,10 @@ const MODE_TITLE: Record<GameMode, string> = {
   legends: 'Weekly Legends',
   clubpath: 'Club Path Run',
   teammate: 'Name the Teammate',
+  higherlower: 'Higher or Lower',
+  emoji: 'Emoji Clue',
+  transfer: 'Transfer Fee',
+  xi: 'Guess the XI',
 };
 
 interface Props {
@@ -92,6 +98,7 @@ export function GamePage({ mode, navigate }: Props) {
           <p className="text-[13px] font-medium text-ink-muted">
             {MODE_TITLE[mode]}
             {isLegends && round.date ? ` · Week ${weekNumber(round.date)}` : ''}
+            {mode === 'daily' && round.date && dailyTheme(round.date) ? ` · ${dailyTheme(round.date)}` : ''}
           </p>
           <h1 className="heading text-[24px] leading-tight">
             {isLegends ? (weekLocked ? 'Week complete' : `Legend ${round.caseNumber} of ${LEGENDS_PER_WEEK}`) : `Case ${round.caseNumber}`}
@@ -100,7 +107,7 @@ export function GamePage({ mode, navigate }: Props) {
         <span className={`rounded-full border px-3 py-1 text-[12.5px] font-semibold ${diff.style}`}>{diff.label}</span>
       </div>
 
-      {mode === 'practice' && !finished && (
+      {mode === 'practice' && !finished && !round.challenge && (
         <div className="mb-4 sm:mb-5">
           <div role="radiogroup" aria-label="Practice level" className="grid grid-cols-4 gap-1 rounded-full border border-white/[0.08] bg-white/[0.04] p-1">
             {PRACTICE_LEVELS.map((l) => {
@@ -168,6 +175,18 @@ export function GamePage({ mode, navigate }: Props) {
           )}
         </div>
       ) : (
+        <>
+        {round.challenge && (
+          <div className="mb-4 flex items-center gap-3 rounded-[22px] border border-warn/25 bg-warn/[0.08] px-4 py-3">
+            <Swords size={18} className="shrink-0 text-warn" />
+            <p className="text-[14px] leading-snug text-ink">
+              <span className="font-semibold">Challenge: </span>
+              {round.challenge.won
+                ? `your friend found this player in ${round.challenge.guesses} guess${round.challenge.guesses === 1 ? '' : 'es'} for ${round.challenge.score} XP. Beat it.`
+                : 'this player beat your friend. Find him to win.'}
+            </p>
+          </div>
+        )}
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,400px)_minmax(0,1fr)] lg:gap-6">
           {/* Evidence */}
           <section className="card p-4 sm:p-5" aria-label="Clues">
@@ -226,6 +245,7 @@ export function GamePage({ mode, navigate }: Props) {
             </div>
           </section>
         </div>
+        </>
       )}
     </div>
   );
@@ -242,7 +262,7 @@ function Beads({ left, max }: { left: number; max: number }) {
             key={i}
             initial={false}
             animate={{ scale: on ? 1 : 0.7, opacity: on ? 1 : 0.35 }}
-            transition={{ type: 'spring', stiffness: 500, damping: 18 }}
+            transition={ease(MOTION.quick)}
             className={`h-3 w-3 rounded-full ${
               on
                 ? left <= 1

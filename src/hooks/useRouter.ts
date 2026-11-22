@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import type { GameMode } from '@/types';
+import { decodeChallenge, startChallenge } from '@/game/challenge';
 
 export type Route =
   | { name: 'home' }
@@ -8,7 +9,7 @@ export type Route =
   | { name: 'players' }
   | { name: 'about' };
 
-const MODES: GameMode[] = ['daily', 'practice', 'hardcore', 'career', 'legends', 'clubpath', 'teammate'];
+const MODES: GameMode[] = ['daily', 'practice', 'hardcore', 'career', 'legends', 'clubpath', 'teammate', 'higherlower', 'emoji', 'transfer', 'xi'];
 
 export function parseHash(hash: string): Route {
   const parts = hash.replace(/^#\/?/, '').split('/').filter(Boolean);
@@ -34,11 +35,27 @@ export function routeToHash(r: Route): string {
   }
 }
 
+/**
+ * A challenge link (#/challenge/<code>) sets up the round and is then replaced by the game screen,
+ * so Back doesn't land on the link again.
+ */
+function resolveChallenge(): void {
+  const m = window.location.hash.match(/^#\/challenge\/([A-Za-z0-9_-]+)/);
+  if (!m) return;
+  const challenge = decodeChallenge(m[1]);
+  const target = challenge ? `#/play/${startChallenge(challenge)}` : '#/';
+  window.history.replaceState(null, '', target);
+}
+
 export function useRouter() {
-  const [route, setRoute] = useState<Route>(() => parseHash(window.location.hash));
+  const [route, setRoute] = useState<Route>(() => {
+    resolveChallenge();
+    return parseHash(window.location.hash);
+  });
 
   useEffect(() => {
     const onHash = () => {
+      resolveChallenge();
       setRoute(parseHash(window.location.hash));
       window.scrollTo({ top: 0 });
     };

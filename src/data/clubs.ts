@@ -486,3 +486,10 @@ export function shortClub(club: string): string {
 export function shortLeague(league: string): string {
   return LEAGUE_SHORT[league] ?? league;
 }
+
+/** Adds clubs and short names from the online content (see `./remote`). */
+export function registerClubs(clubs?: Record<string, string>, clubShort?: Record<string, string>, leagueShort?: Record<string, string>) {
+  if (clubs) Object.assign(CLUB_LEAGUE, clubs);
+  if (clubShort) Object.assign(CLUB_SHORT, clubShort);
+  if (leagueShort) Object.assign(LEAGUE_SHORT, leagueShort);
+}

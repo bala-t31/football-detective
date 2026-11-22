@@ -121,9 +121,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-scan,
-  .animate-sheen,
-  .animate-drift {
+  .animate-scan {
     animation: none;
   }
 }

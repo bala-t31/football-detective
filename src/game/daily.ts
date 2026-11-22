@@ -1,4 +1,5 @@
-import { PLAYER_BY_ID, PLAYER_IDS_STABLE } from '@/data';
+import { PLAYER_BY_ID, SCHEDULED_DAYS } from '@/data';
+import { DAILY_POOL_IDS } from '@/data/dailyPool';
 import { daysBetween, toDateKey } from '@/utils/date';
 import { seededShuffle } from './random';
 
@@ -7,7 +8,7 @@ export const DAILY_EPOCH = '2026-11-01';
 const DAILY_SEED = 0x5eed_f00d;
 
 /** Daily pool: the most famous (Casual level) players, in a stable id order so every device agrees. */
-const DAILY_POOL: string[] = PLAYER_IDS_STABLE.filter((id) => PLAYER_BY_ID[id].difficulty === 'easy');
+const DAILY_POOL: string[] = DAILY_POOL_IDS.filter((id) => PLAYER_BY_ID[id]);
 
 function cycleOrder(cycle: number): string[] {
   return seededShuffle(DAILY_POOL, DAILY_SEED + cycle * 7919);
@@ -28,6 +29,8 @@ export function caseNumberFor(dateKey: string): number {
  * the new cycle differs from the last pick of the previous one.
  */
 export function dailyPlayerId(dateKey: string = toDateKey()): string {
+  const scheduled = SCHEDULED_DAYS[dateKey];
+  if (scheduled && PLAYER_BY_ID[scheduled.playerId]) return scheduled.playerId;
   const n = DAILY_POOL.length;
   const idx = dayIndex(dateKey);
   const cycle = Math.floor(idx / n);
@@ -41,3 +44,9 @@ export function dailyPlayerId(dateKey: string = toDateKey()): string {
 }
 
 export const DAILY_POOL_SIZE = DAILY_POOL.length;
+
+/** Banner for a scheduled day, e.g. "Match day: El Clásico". */
+export function dailyTheme(dateKey: string = toDateKey()): string | undefined {
+  const s = SCHEDULED_DAYS[dateKey];
+  return s && PLAYER_BY_ID[s.playerId] ? s.theme : undefined;
+}

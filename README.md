@@ -53,6 +53,15 @@ This is a debug-signed APK, which is fine for sideloading and sharing. Publishin
 | Practice | 6 | yes | ×1 | pick a level: Casual, Ball Knower, Elite or Mixed |
 | Hardcore | 3 | no | ×1.5 | medium + hard |
 | Career Detective | 6 | club-by-club | ×1.2 | players with 3+ clubs |
+| Weekly Legends | 6 | yes | ×1.3 | five retired greats a week, same for everyone |
+| Club Path Run | 2 per player | no | run | clubs only; one miss ends the run |
+| Name the Teammate | 3 lives | no | 40 per name | teammates of a star at one club |
+| Guess the XI | free text | no | 25 per starter, +50 full XI | 12 famous line-ups (`src/data/lineups.ts`) |
+| Higher or Lower | 1 per pair | no | 40 + 5 per streak | who started their senior career first |
+| Emoji Clue | 3 | extra hint per miss | 150 / 100 / 60 | a career in emojis |
+| Transfer Fee | 8 questions | no | 50 each | reported fees (`src/data/transfers.ts`) |
+
+Any finished case except the daily can be sent as a challenge link (`/c/#code`). The code holds the player and the friend's result, so no server is needed. On Android the website offers "Open in the app" (`footballdetective://challenge/<code>`); otherwise the friend plays it on the website.
 
 Scoring: 1000 for a solve, −100 per wrong guess, −75 per extra clue, +300 for a first-guess solve, +200 for a no-hint solve. A loss scores 0, and the score never goes below 0.
 
@@ -77,7 +86,21 @@ assets/        source app icon + splash images
 
 Add an entry to one of the files in `src/data/players/`. Give famous players an `honours` line so the first hint says what they won. Clues go from vague to specific, and none should contain the player's name. Every club must exist in `src/data/clubs.ts`. Run `npm test` to catch missing clubs and nations, clues that give away the name, and duplicate IDs.
 
-Daily picks come from a seeded shuffle of the player pool, so adding players changes which player falls on which future date.
+The daily schedule and the Weekly Legends pool are frozen lists (`src/data/dailyPool.ts`, `src/data/legendsPool.ts`), so adding players never moves a future daily.
+
+## Updating the game without a new APK
+
+The app reads three files from the website (`website/data/`) a moment after it opens. Edit them, push, and Netlify publishes them. Nothing to pay for and nothing to run.
+
+| File | What it does |
+|---|---|
+| `version.json` | When `latest` is newer than the installed app, a pop-up offers the download (`notes` are the bullet points). Bump it after a new release. |
+| `announcement.json` | A one-off message. Change `id` to show a new one; each `id` is shown once. `until` stops it after a date. |
+| `content.json` | New or fixed players, extra clubs/nations, and scheduled daily players with a match-day theme (`daily`). Raise `rev` every time. Downloads apply the next time the app opens. |
+
+Run `npm run content:check` before pushing `content.json`: it loads the file the way the app does and runs every test on the merged data. A player whose clubs or nation the app doesn't know is ignored by the app, so add those under `clubs` / `nations` in the same file.
+
+Motion follows `docs/ANIMATION.md`.
 
 ## Website
 

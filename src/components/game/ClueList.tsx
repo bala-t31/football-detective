@@ -3,6 +3,7 @@ import {
   Award, Building2, Flag, Footprints, Globe2, Lock, Milestone, Shirt, ArrowRightLeft, Trophy, Users, BarChart3, type LucideIcon,
 } from 'lucide-react';
 import type { Clue, ClueCategory, GameMode } from '@/types';
+import { MOTION, ease, isReducedMotion } from '@/ui/motion';
 
 const CATEGORY: Record<ClueCategory, { label: string; icon: LucideIcon }> = {
   nationality: { label: 'Nationality', icon: Flag },
@@ -52,9 +53,9 @@ export function ClueList({ clues, revealed, mode, showAll = false }: Props) {
         return (
           <motion.li
             key={clue.id}
-            initial={showAll ? false : { opacity: 0, y: 8, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            initial={showAll || isReducedMotion() ? false : { opacity: 0, y: MOTION.rise }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={ease(MOTION.enter)}
             className={`flex gap-3 rounded-2xl border p-3 ${
               newest ? 'border-lime/30 bg-lime/[0.07] shadow-[inset_0_1px_0_rgb(255_255_255/0.08)]' : 'border-white/[0.08] bg-white/[0.045]'
             }`}
@@ -93,9 +94,9 @@ function CareerTimeline({ clues, revealed }: { clues: Clue[]; revealed: number }
             />
             {open ? (
               <motion.div
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                initial={isReducedMotion() ? false : { opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={ease(MOTION.enter)}
                 className={`flex items-center gap-3 rounded-2xl border px-3.5 py-3 ${
                   i === revealed - 1 ? 'border-lime/30 bg-lime/[0.07]' : 'border-white/[0.08] bg-white/[0.045]'
                 }`}

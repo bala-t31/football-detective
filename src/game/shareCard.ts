@@ -219,13 +219,29 @@ export async function renderShareCard(data: ShareCardData): Promise<Blob> {
     });
     gy += rows.length * (c + g);
   } else if (data.tiles && data.tiles.length) {
-    const n = data.tiles.length;
-    const per = Math.min(n, 8);
-    const size = n > 8 ? 84 : 112;
-    const gap = 20;
+    // Fit every tile in the space between the score panel and the footer: shrink the tiles until
+    // they fit, and if even the smallest size can't hold them all, keep the most recent ones.
+    const space = H - 330 - 58 - 50 - gy - (data.reveal ? 170 : 0);
+    let tiles = data.tiles;
+    let size = 112;
+    let gap = 20;
+    let per = Math.min(tiles.length, 8);
+    for (;;) {
+      gap = Math.round(size * 0.2);
+      per = Math.min(tiles.length, Math.floor((W - 160 + gap) / (size + gap)), size >= 84 ? 8 : 10);
+      const need = Math.ceil(tiles.length / per) * (size + gap) - gap;
+      if (need <= space) break;
+      if (size > 60) size -= 4;
+      else {
+        const maxLines = Math.max(1, Math.floor((space + gap) / (size + gap)));
+        tiles = tiles.slice(-maxLines * per);
+        break;
+      }
+    }
+    const n = tiles.length;
     const lines = Math.ceil(n / per);
     for (let l = 0; l < lines; l++) {
-      const slice = data.tiles.slice(l * per, l * per + per);
+      const slice = tiles.slice(l * per, l * per + per);
       const rw = slice.length * size + (slice.length - 1) * gap;
       slice.forEach((t, i) => {
         const x = (W - rw) / 2 + i * (size + gap);
@@ -236,7 +252,7 @@ export async function renderShareCard(data: ShareCardData): Promise<Blob> {
         ctx.fill();
         if (t !== 'empty') {
           ctx.strokeStyle = 'rgba(6,16,13,0.85)';
-          ctx.lineWidth = 9;
+          ctx.lineWidth = Math.max(6, size * 0.08);
           ctx.lineCap = 'round';
           ctx.beginPath();
           const cx = x + size / 2;

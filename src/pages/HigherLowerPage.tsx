@@ -177,7 +177,7 @@ export function HigherLowerPage({ navigate }: { navigate: (r: Route) => void }) 
                   won: run.streak > 0,
                   score: run.points,
                   detail: `${run.streak} right in a row: who started first?`,
-                  tiles: [...Array.from({ length: Math.min(run.streak, 24) }, () => 'hit' as const), 'miss' as const],
+                  tiles: [...Array.from({ length: Math.min(run.streak, 60) }, () => 'hit' as const), 'miss' as const],
                   cta: 'Can you beat my run?',
                 })}
               />
